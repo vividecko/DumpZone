@@ -8,7 +8,7 @@
 6. Create a file called `.env` and write `SESSION_SECRET=[randomstring]`, where `[randomstring]` is, you know, a random string of letters and numbers.
 
 ## Commit Changes
-1. Edit some files, then run `npx nodemon server.js` in the directory of your cloned repo. Look at the output on the command line for any errors.
+1. Edit some files, then run `npx nodemon server.js` in the directory of your cloned repo. Look at the output on the command line for any errors. You can keep Nodemon running in a separate terminal because it dynamically updates the server as you change files.
 2. Open `http://localhost:3000` in your web browser, and use the website to test out your changes. Also, open the web browser's console to check for any errors there.
 3. If there are no errors or problems, then run `git add [files]`, where `[files]` is a list of _each_ file you changed. This stages the files, meaning they're selected when you commit (upload) them to our GitHub repo.
 4. Run `git status` to make sure you staged the right files. (They'll be labelled as "tracked.")
