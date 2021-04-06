@@ -1,0 +1,64 @@
+<!--Set some sane defaults and global style info.-->
+<!--The variables in :root are global, which makes values easier to tweak and
+apply across many elements.-->
+<style>
+/* global variables to make tweaking stuff across the whole site easier
+ * Refer to our UI presentation to see why it's set up like this. */
+:root {
+  --def-color: black;   /* default text color */
+  --off-color: gray;    /* used for less emphasized text */
+  --alt-color: white;   /* used for dark backgrounds */
+
+  --bighead-size: 24px;
+  --bighead-color: var(--def-color);
+  --bighead-style: normal;
+  --bighead-weight: normal;
+
+  --head-size: 18px;
+  --head-color: var(--def-color);
+  --head-style: normal;
+  --head-weight: normal;
+
+  --subhead-size: 18px;
+  --subhead-color: var(--off-color);
+  --subhead-style: normal;
+  --subhead-weight: normal;
+
+  /* mostly used for buttons */
+  --smalltext-size: 12px;
+  --smalltext-color: var(--alt-color);
+  --smalltext-style: normal;
+
+  /* width of content boxes (items in the nav + menus in the body) */
+  --def-width: 800px;
+}
+body {
+  margin: 0px 0px 0px 0px;
+  padding: 0px 0px 0px 0px;
+  font-family: Arial, sans-serif;
+}
+a {
+  text-decoration: none;
+  color: white;
+}
+/* big text (e.g. "Pages" on student home page or "Settings" on settings
+ * page) */
+h1 {
+  font-size: var(--bighead-size);
+  color: var(--bighead-color);
+  font-style: var(--bighead-style);
+  font-weight: var(--bighead-weight);
+}
+h2 {
+  font-size: var(--head-size);
+  color: var(--head-color);
+  font-style: var(--head-style);
+  font-weight: var(--head-weight);
+}
+h3 {
+  font-size: var(--subhead-size);
+  color: var(--subhead-color);
+  font-style: var(--subhead-style);
+  font-weight: var(--subhead-weight);
+}
+</style>

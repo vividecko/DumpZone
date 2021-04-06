@@ -1,0 +1,52 @@
+<html>
+<head>
+<title>Login - HomeMath</title>
+<%- include('global-style.ejs'); -%>
+<style>
+.container {
+  margin: auto;
+  max-width: var(--def-width);
+}
+.panel {
+  width: 45%;
+  margin: auto;
+  text-align: center;
+}
+label {
+  display: block;
+}
+</style>
+</head>
+<body>
+
+<%- include('nav.ejs'); -%>
+<div class="container">
+  <div class="panel" style="float:left;">
+    <h2>New?</h2>
+    <h3>Are you a student or a teacher?</h3>
+    <button/>
+    <button/>
+  </div>
+  <div class="panel" style="float:right;">
+    <h3>Already have an account?</h3>
+    <!--This displays an express-flash message if the username or password is
+    incorrect.-->
+      <% if (messages.error) { %>
+        <%= messages.error %>
+      <% } %>
+    <form action="/login" method="POST">
+      <div>
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" required>
+      </div>
+      <div>
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required>
+      </div>
+      <button type="submit">Login</button>
+    </form>
+  </div>
+</div>
+
+</body>
+</html>
