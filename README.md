@@ -3,7 +3,7 @@
 1. Open your command line and `cd` to a directory to work in.
 2. Clone the repo: `git clone https://github.com/mwfsu/KeyboardWarriors-DumpZone`
 3. Make your own branch of the repo: `git checkout -b [branch name]` (where `[branch name]` is whatever name you want)
-4. Install required modules (while you're in the directory in which you cloned the repo): `npm i express ejs express-session express-flash passport passport-local`
+4. Install required modules (while you're in the directory in which you cloned the repo): `npm i express ejs express-session express-flash express-method-override passport passport-local`
 5. Install a couple more (don't forget the `--save-dev` option here): `npm i --save-dev nodemon dotenv`
 6. Create a file called `.env` and write `SESSION_SECRET=[randomstring]`, where `[randomstring]` is, you know, a random string of letters and numbers. (If you're wondering what the session secret is, it's a secret key stored in the server for encrypting cookies. During development, it doesn't matter whether the session key is secure/complex. It just has to be there or else an error will be thrown.)
 
