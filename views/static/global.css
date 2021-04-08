@@ -1,0 +1,109 @@
+/* global variables to make tweaking stuff across the whole site easier */
+:root {
+  --def-color: black;   /* default text color */
+  --off-color: gray;    /* slightly "off" from (lighter than) the default */
+  --alt-color: white;   /* used for dark backgrounds */
+
+  --bg-color: white;
+  --fg-color: gray;
+  --lite-fg-color: lightgray;
+  --hl1-color: #1c3182;
+  --hl2-color: darkblue;
+  --hl3-color: black;
+
+  --def-width: 800px;   /* max width of nav content + main content */
+  --butt-height: 25px;  /* height of buttons and input lines */
+}
+
+/* DEFAULTS */
+* {
+  margin: 0;
+  padding: 0;
+}
+body {
+  font-family: Arial, sans-serif;
+  background-image: url("bg.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+img {
+  vertical-align: middle;
+}
+label {
+  display: block;
+}
+input {
+  width: 50%;
+  height: var(--butt-height);
+  background-color: var(--lite-fg-color);
+  border-style: none;
+  border-radius: 1em;
+  padding-left: 1.5em;
+  padding-right: 1.5em;
+}
+input:focus {
+  outline: none;
+}
+button {
+  width: calc(var(--butt-height) * 3);
+  height: var(--butt-height);
+  background-color: var(--hl1-color);
+  color: var(--alt-color);
+  font-size: 12px;
+  border-style: none;
+  border-radius: 1em;
+  cursor: pointer;
+}
+a, a:visited {
+  text-decoration: none;
+  color: var(--alt-color);
+}
+h1, h2, h3, h4, h5, h6 {
+  font-style: normal;
+  font-weight: normal;
+}
+
+/* SEMANTIC ELEMENTS */
+nav {
+  display: flex;
+  align-items: center;
+  background-color: var(--hl1-color);
+  height: 70px;
+  margin-bottom: 10%;
+}
+/* invisible box containing all the main content in each page */
+main {
+  margin: auto;
+  height: 100%;
+  max-width: var(--def-width);
+}
+/* white panels/boxes containing the main content in each page */
+section {
+  margin: auto;
+  vertical-align: middle;
+  background-color: var(--bg-color);
+  border-radius: 25px;
+  box-shadow: 0 4px 16px gray, 0 4px 16px lightgray;
+}
+
+/* CLASSES */
+/* big labels on student home page + settings page */
+.big-text {
+  font-size: 24px;
+}
+/* mostly labels */
+.main-text {
+  font-size: 18px;
+}
+/* complements main text on login page */
+.sub-text {
+  font-size: 18px;
+  color: var(--off-color);
+}
+/* mostly button text */
+.small-text {
+  font-size: 12px;
+}
+.input-line {
+  margin-bottom: 7%;
+}
