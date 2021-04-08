@@ -1,4 +1,13 @@
-<h1>Hi <%= name %></h1>
+<%- include('template-start'); -%>
+<title>Home - HomeMath</title>
+</head>
+<body>
+
+<%- include('nav'); -%>
+<h1>Hi <%= username %></h1>
 <form action="/logout?_method=DELETE" method="POST">
   <button type="submit">Log Out</button>
 </form>
+
+</body>
+</html>

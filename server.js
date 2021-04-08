@@ -1,26 +1,46 @@
+/* The NODE_ENV environment variable indicates whether the server is running
+ * in development (testing) or production (deployment). If it's testing, which
+ * ours always is, then get a placeholder session key from the file ".env". */
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
 }
 
+const fs = require('fs')
+const http = require('http')
+const https = require('https')
+
+/* Get self-signed SSL certs for the HTTPS connection. (For testing only.) */
+const cert = {key: fs.readFileSync('localhost.key', 'utf8'),
+  cert: fs.readFileSync('localhost.crt', 'utf8')}
+
+/* Set up two Express apps: one for an HTTP server, one for an HTTPS server. */
 const express = require('express')
+const httpApp = express()
 const app = express()
+
+/* Load required Node modules. */
 const bcrypt = require('bcrypt')
 const passport = require('passport')
 const flash = require('express-flash')
 const session = require('express-session')
 const methodOverride = require('method-override')
 
+const httpServer = http.createServer(httpApp)
+const httpsServer = https.createServer(cert, app)
+
+/* Configure Passport so it authenticates with a username and password. */
 const initializePassport = require('./passport-config')
 initializePassport(
   passport,
-  email => users.find(user => user.email === email),
-  id => users.find(user => user.id === id)
+  username => users.find(user => user.username === username)
 )
 
+/* temporary user storage (will use database later) */
 const users = []
 
 app.set('view-engine', 'ejs')
 app.use(express.urlencoded({ extended: false }))
+app.use(express.static("views/static"))
 app.use(flash())
 app.use(session({
   secret: process.env.SESSION_SECRET,
@@ -31,8 +51,12 @@ app.use(passport.initialize())
 app.use(passport.session())
 app.use(methodOverride('_method'))
 
+/* The plain HTTP server simply redirects the user to a more secure HTTPS
+ * connection. In production, the redirection URL would not be localhost. */
+httpApp.all('*', (req, res) => res.redirect(300, 'https://localhost:3000'))
+
 app.get('/', checkAuthenticated, (req, res) => {
-  res.render('index.ejs', { name: req.user.name })
+  res.render('index.ejs', { username: req.user.username })
 })
 
 app.get('/login', checkNotAuthenticated, (req, res) => {
@@ -53,8 +77,9 @@ app.post('/register', checkNotAuthenticated, async (req, res) => {
   try {
     const hashedPassword = await bcrypt.hash(req.body.password, 10)
     users.push({
-      id: Date.now().toString(),
-      name: req.body.name,
+      firstname: req.body.firstname,
+      lastname: req.body.lastname,
+      username: req.body.username,
       email: req.body.email,
       password: hashedPassword
     })
@@ -84,4 +109,7 @@ function checkNotAuthenticated(req, res, next) {
   next()
 }
 
-app.listen(3000)
+/* Make the site accessible on port 3000 for testing HTTPS, and port 80 for
+ * HTTP. */
+httpsServer.listen(3000)
+httpServer.listen(80)

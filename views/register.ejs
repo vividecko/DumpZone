@@ -1,17 +1,62 @@
-<h1>Register</h1>
-<form action="/register" method="POST">
-  <div>
-    <label for="name">Name</label>
-    <input type="text" id="name" name="name" required>
+<%- include('template-start'); -%>
+<title>Register - HomeMath</title>
+<style>
+nav {
+  margin-bottom: 3%;
+}
+main {
+  max-width: calc(var(--def-width) * 0.65);
+}
+section {
+  text-align: center;
+  padding-top: 10%;
+  padding-bottom: 10%;
+}
+.input-line {
+  margin-bottom: 1em;
+}
+</style>
+</head>
+
+<body>
+<%- include('nav.ejs'); -%>
+<main>
+<section>
+  <div class="content">
+    <h1 class="main-text" style="margin-bottom:1em;">Register</h1>
+    <form action="/register" method="POST">
+      <div class="input-line">
+        <label for="firstname">First name</label>
+        <input type="text" id="firstname" name="firstname" autofocus required>
+      </div>
+      <div class="input-line">
+        <label for="lastname">Last name</label>
+        <input type="text" id="lastname" name="lastname" required>
+      </div>
+      <div class="input-line">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" required>
+      </div>
+      <div class="input-line">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required>
+      </div>
+      <div class="input-line">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" minlength=8 required>
+      </div>
+    <!--
+      <div>
+        <label for="password">Confirm password</label>
+        <input type="password" id="password" name="password" required>
+      </div>
+    -->
+      <button type="submit">Sign up</button>
+    </form>
+  <!-- <a href="/login">Login</a> -->
   </div>
-  <div>
-    <label for="email">Email</label>
-    <input type="email" id="email" name="email" required>
-  </div>
-  <div>
-    <label for="password">Password</label>
-    <input type="password" id="password" name="password" required>
-  </div>
-  <button type="submit">Register</button>
-</form>
-<a href="/login">Login</a>
+</section>
+</main>
+
+</body>
+</html>
