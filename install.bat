@@ -1,3 +1,11 @@
+:: Install the HomeMath server for development/testing by:
+::  - cloning and branching the GitHub repo.
+::  - installing required Node modules via Node's npm package manager.
+::  - generating a placeholder session key in the file ".env".
+::  - generating and self-signing the certificates needed for HTTPS to function
+::    during development/testing, which partially follows this guide:
+::    https://zeropointdevelopment.com/how-to-get-https-working-in-windows-10-localhost-dev-environment/
+
 @echo off
 title HomeMath Server Install (Development)
 pause
@@ -21,13 +29,9 @@ git clone "%GIT_URL%/%GIT_NAME%.git"
 cd ./%GIT_NAME%
 git checkout -b "%BRANCH_NAME%"
 
-:: Install required node.js modules.
+:: Install required node.js modules, referencing package.json for dependencies.
 :: A folder "node_modules" will be created by npm within the current directory.
-:: The second line uses "--save-dev" to indicate that nodemon and dotenv are
-:: only development dependencies, and should not be recorded as dependencies of
-:: the server itself.
-npm i express ejs express-session express-flash express-method-override passport passport-local
-npm i --save-dev nodemon dotenv
+npm install
 
 :: For development, we need a placeholder session key, which is used to sign
 :: cookies via the express-session module. This key isn't secure, but it
