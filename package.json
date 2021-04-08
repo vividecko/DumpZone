@@ -1,12 +1,16 @@
 {
-  "name": "current-project",
+  "name": "homemath",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "devStart": "nodemon server.js"
+    "test-site": "nodemon server.js"
   },
-  "author": "",
+  "author": "Keyboard Warriors",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vividecko/DumpZone.git"
+  },
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.0.1",
