@@ -1,5 +1,5 @@
 :: Install the HomeMath server for development/testing by:
-::  - cloning and branching the GitHub repo.
+::  - branching the GitHub repo.
 ::  - installing required Node modules via Node's npm package manager.
 ::  - generating a placeholder session key in the file ".env".
 ::  - generating and self-signing the certificates needed for HTTPS to function
@@ -10,8 +10,6 @@
 title HomeMath Server Install (Development)
 pause
 
-set GIT_URL=https://github.com/vividecko
-set GIT_NAME=DumpZone
 set BRANCH_NAME=myedits   :: This could be anything.
 
 :: You probably have Git for Windows installed, in which case this is probably
@@ -25,8 +23,6 @@ if not exist %GIT_PATH% (
 )
 set PATH=%PATH%;%GIT_PATH%
 
-git clone "%GIT_URL%/%GIT_NAME%.git"
-cd ./%GIT_NAME%
 git checkout -b "%BRANCH_NAME%"
 
 :: Install required node.js modules, referencing package.json for dependencies.
@@ -73,6 +69,6 @@ echo -------------------------------------------------------------------------
 openssl req -new -sha256 -nodes -out %domain%.csr -newkey rsa:2048 -keyout %domain%.key
 openssl x509 -req -in %domain%.csr -CA %rootname%.pem -passin pass:%pw% -CAkey %rootname%.key -CAcreateserial -out %domain%.crt -days 64 -sha256 -extensions "authorityKeyIdentifier=keyid,issuer\n basicConstraints=CA:FALSE\n keyUsage = digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment\n  subjectAltName=DNS:%domain%"
 
-echo If all went well, then run "npx nodemon server.js" in your %GIT_NAME% directory.
+echo If all went well, then run "npm run test-site" or "npx nodemon server.js" to start the server.
 echo Then, go to https://%domain%:3000 in your web browser.
 pause
