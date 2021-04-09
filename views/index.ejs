@@ -1,13 +1,43 @@
 <%- include('template-start'); -%>
-<title>Home - HomeMath</title>
+<title><%= title %></title>
 </head>
+
+
 <body>
 
-<%- include('nav'); -%>
-<h1>Hi <%= username %></h1>
-<form action="/logout?_method=DELETE" method="POST">
-  <button type="submit">Log Out</button>
-</form>
+	<%- include('navUser'); -%>
+
+	<!--Body-->
+	<div class="wrapper">
+		<div class="container shadow">
+			
+			<div class="menu">
+				<img src="https://i.imgur.com/5heSGTk.png" class="menuitem">
+				<h2 class="menuitem">Pages</h2>
+			</div>
+
+			<div class="grid">
+				<a href="#">
+					<img src="https://i.imgur.com/MWsmAju.png" class="appicon shadow">
+					<h3>Work</h3>
+				</a>
+				<a href="#">
+					<img src="https://i.imgur.com/G4JiFBN.png" class="appicon shadow">
+					<h3>Tutorials</h3>
+				</a>
+				<a href="#">
+					<img src="https://i.imgur.com/4PRy0YJ.png" class="appicon shadow">
+					<h3>Practice Tests</h3>
+				</a>
+				<a href="#">
+					<img src="https://i.imgur.com/yrWLPXz.png" class="appicon shadow">
+					<h3>Settings</h3>
+				</a>
+			</div>
+
+		</div>
+	</div>
+	<!--Body end-->
 
 </body>
 </html>

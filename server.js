@@ -36,6 +36,7 @@ initializePassport(
 )
 
 /* temporary user storage (will use database later) */
+/*const hashedPassword1 = bcrypt.hash("testtest", 10) {firstname: "XDDDDDD", lastname: "XDDDDDD", username: "Nick1234", email: "XDDDDDD@xd.com", password: hashedPassword1}*/
 const users = []
 
 app.set('view-engine', 'ejs')
@@ -56,7 +57,7 @@ app.use(methodOverride('_method'))
 httpApp.all('*', (req, res) => res.redirect(300, 'https://localhost:3000'))
 
 app.get('/', checkAuthenticated, (req, res) => {
-  res.render('index.ejs', { username: req.user.username })
+  res.render('index.ejs', { username: req.user.username, title: "XDDDDDD - HomeMath"})
 })
 
 app.get('/login', checkNotAuthenticated, (req, res) => {
@@ -89,7 +90,7 @@ app.post('/register', checkNotAuthenticated, async (req, res) => {
   }
 })
 
-app.delete('/logout', (req, res) => {
+app.get('/logout', (req, res) => {
   req.logOut()
   res.redirect('/login')
 })

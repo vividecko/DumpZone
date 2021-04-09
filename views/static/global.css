@@ -11,7 +11,7 @@
   --hl2-color: darkblue;
   --hl3-color: black;
 
-  --def-width: 800px;   /* max width of nav content + main content */
+  --def-width: 1000px;   /* max width of nav content + main content */
   --butt-height: 25px;  /* height of buttons and input lines */
 }
 
