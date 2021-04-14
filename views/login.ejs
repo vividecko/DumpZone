@@ -1,4 +1,4 @@
-<main>
+<main style="margin-top:10%;">
   <div class="section-container">
   <section class="shadow">
     <div class="content">
@@ -14,13 +14,17 @@
   </section>
   <section class="shadow">
     <div class="content">
-      <h1 class="main-text" style="margin-bottom:7%;">Already have an account?</h1>
+      <h1 class="main-text">Already have an account?</h1>
       <!--
         This displays an express-flash message if the username or password
         is incorrect.
       -->
         <% if (messages.error) { %>
-          <%= messages.error %>
+          <%- '<p class="sub-text" style="margin-bottom:1em;">' %>
+            <%= messages.error %>
+          <%- '</p>' %>
+        <% } else { %>
+          <%- '<br><br>' %>
         <% } %>
       <form action="/login" method="POST">
         <div class="input-line">
@@ -31,7 +35,7 @@
           <label for="password">Password</label>
           <input type="password" id="password" name="password" minlength=8 required>
         </div>
-        <button type="submit">Login</button>
+        <button type="submit" class="pop">Login</button>
       </form>
     </div>
   </section>
