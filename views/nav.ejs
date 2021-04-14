@@ -1,10 +1,45 @@
 <nav>
-<div style="margin:auto; width:var(--def-width);">
-<a href="/" style="float:left; display:flex; align-items:center;">
-  <img src="logo.png" alt="logo" style="width:64px;">
+<div class="wrapper">
+
+<a href="/" style="float:left;" class="menuitem2">
+<!--display:flex; align-items:center;">-->
+  <img src="logo.png" alt="logo" style="width:64px;" class="logo">
   <h1 class="big-text" style="display:inline; padding-left:10px; color:var(--alt-color);">
-    HomeMath
+    <% if (doc === 'login' || doc === 'register') { %>
+      <%= 'HomeMath' %>
+    <% } else { %>
+      <%= 'Home' %>
+    <% } %>
   </h1>
 </a>
+
+<!--
+reference for making the user info a dropdown menu later
+
+<div 
+<div class="dropdown">
+  <button class="dropbtn">Dropdown</button>
+  <div class="dropdown-content">
+    <a href="#">Link 1</a>
+    <a href="#">Link 2</a>
+    <a href="#">Link 3</a>
+  </div>
+</div> 
+-->
+
+<% if (!(doc === 'login' || doc === 'register')) { %>
+<%- '<div class="menu2" style="float:right;">' %>
+<%-   '<a href="#" class="menuitem2">' %>
+<%-     '<img src="FROG.png" alt="Profile picture" style="width:48px;" class="logo">' %>
+<%-   '</a>' %>
+<%-   '<a href="#" class="highlighted menuitem2">' %>
+<%-     username %>
+<%-   '</a>' %>
+<%-   '<a href="/logout" class="menuitem2">' %>
+<%-     '<img src="logout.png" alt="Logout icon" style="width:48px;" class="logo">' %>
+<%-   '</a>' %>
+<%- '</div>' %>
+<% } %>
+
 </div>
 </nav>
