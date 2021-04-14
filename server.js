@@ -57,7 +57,10 @@ app.use(methodOverride('_method'))
 httpApp.all('*', (req, res) => res.redirect(300, 'https://localhost:3000'))
 
 app.get('/', checkAuthenticated, (req, res) => {
-  res.render('index.ejs', { username: req.user.username, title: "XDDDDDD - HomeMath"})
+  res.render('index.ejs', {
+    username: req.user.username,
+    title: "XDDDDDD - HomeMath"
+  })
 })
 
 app.get('/login', checkNotAuthenticated, (req, res) => {
