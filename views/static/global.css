@@ -7,14 +7,19 @@
   --bg-color: white;
   --fg-color: gray;
   --lite-fg-color: lightgray;
+  --lighter-fg-color: #d9d9d9;
   --hl1-color: #1c3182;
   --hl2-color: #0d1d5c;
   /*--hl2-color: darkblue;*/
   --hl3-color: black;
 
+  --big-shadow: 0px 0px 34px 0px rgba(0,0,0,0.3);
+  --small-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+
   --tr-time: 0.2s;      /* standard length of transitions */
 
   --def-width: 1000px;  /* max width of nav content + main content */
+  --def-top-margin: 10px;
   --butt-height: 25px;  /* height of buttons and input lines */
 }
 
@@ -48,9 +53,17 @@ input {
   border-radius: 1em;
   padding-left: 1.5em;
   padding-right: 1.5em;
+  transition: var(--tr-time);
+}
+input:hover {
+	box-shadow: var(--small-shadow);
 }
 input:focus {
   outline: none;
+  background-color: var(--lighter-fg-color);
+	-webkit-box-shadow: var(--small-shadow);
+	-moz-box-shadow: var(--small-shadow);
+	box-shadow: var(--small-shadow);
 }
 button {
   width: calc(var(--butt-height) * 3);
@@ -83,12 +96,13 @@ nav {
   display: flex;
   align-items: center;
   background-color: var(--hl1-color);
-  height: 70px;
+  height: 78px;
   /* margin-bottom: 10px; */
 }
 /* invisible box containing all the main content in each page */
 main {
   margin: auto;
+  margin-top: var(--def-top-margin);
   height: 100%;
   max-width: var(--def-width);
 }
@@ -122,8 +136,14 @@ section {
 .input-line {
   margin-bottom: 7%;
 }
+.pop {
+  transition: var(--tr-time);
+}
 .pop:hover {
-  transform: scale(1.1);
+  transform: scale(1.05);
+}
+.pop:active {
+  transform: scale(0.98);
 }
 
 /* NICK'S CSS */
@@ -137,9 +157,9 @@ section {
                                   supported by Chrome, Edge, Opera and Firefox */
 }
 .shadow {
-	-webkit-box-shadow: 0px 0px 34px 0px rgba(0,0,0,0.3);
-	-moz-box-shadow: 0px 0px 34px 0px rgba(0,0,0,0.3);
-	box-shadow: 0px 0px 34px 0px rgba(0,0,0,0.3);
+	-webkit-box-shadow: var(--big-shadow);
+	-moz-box-shadow: var(--big-shadow);
+	box-shadow: var(--big-shadow);
 }
 .grid {
 	display: grid;
@@ -178,9 +198,11 @@ section {
 .menuitem2:hover {
 	background-color: var(--hl2-color);
 }
+/*
 .menuitem2:active {
 	transform: scale(0.98);
 }
+*/
 .logo {
 	/* width: 48px; */
 	padding: 10px 0px;
