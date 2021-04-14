@@ -111,6 +111,7 @@ section {
   margin: auto;
   vertical-align: middle;
   background-color: var(--bg-color);
+  opacity: 0.95;
   border-radius: 25px;
   /*box-shadow: 0 4px 16px gray, 0 4px 16px lightgray;*/
 }
@@ -213,6 +214,19 @@ section {
 	opacity: 0.95;
 	border-radius: 20px;
 	margin: 0px 0px 10px 0px;
-	min-height: 380px;
-	height: 89vh;
+	/*min-height: 380px;*/
+	/*height: 89vh;*/
+  height: 60vh;
+}
+.trophyBar {
+  background-color: white;
+  opacity: 0.95;
+  border-radius: 20px;
+  margin: 0px 0px 10px 0px;
+}
+.trophyitem {
+  justify-content: center;
+  align-items: end;
+  display: inline-flex;
+  padding: 0px 5px;
 }
