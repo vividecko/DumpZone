@@ -57,14 +57,19 @@ app.use(methodOverride('_method'))
 httpApp.all('*', (req, res) => res.redirect(300, 'https://localhost:3000'))
 
 app.get('/', checkAuthenticated, (req, res) => {
-  res.render('index.ejs', {
-    username: req.user.username,
-    title: "XDDDDDD - HomeMath"
+  res.render('template.ejs', {
+    title: 'Home',
+    doc: 'index',
+    username: req.user.username
   })
 })
 
 app.get('/login', checkNotAuthenticated, (req, res) => {
-  res.render('login.ejs')
+  //res.render('login.ejs')
+  res.render('template.ejs', {
+    title: 'Login',
+    doc: 'login'
+  })
 })
 
 app.post('/login', checkNotAuthenticated, passport.authenticate('local', {
@@ -74,7 +79,11 @@ app.post('/login', checkNotAuthenticated, passport.authenticate('local', {
 }))
 
 app.get('/register', checkNotAuthenticated, (req, res) => {
-  res.render('register.ejs')
+  //res.render('register.ejs')
+  res.render('template.ejs', {
+    title: 'Register',
+    doc: 'register'
+  })
 })
 
 app.post('/register', checkNotAuthenticated, async (req, res) => {

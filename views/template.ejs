@@ -1,0 +1,26 @@
+<!--
+  This template consolidates the lines common to every document.
+  It's a skeleton document that uses EJS syntax to dynamically load the body.
+  The filename within the "body" variable, which is passed from within
+  server.js, determines which EJS file to load.
+-->
+
+<!DOCTYPE html>
+<html>
+<head lang="en-us">
+
+<title><%= title + ' - HomeMath' %></title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="shortcut icon" href="logo.png">
+<link rel="stylesheet" type="text/css" href="global.css">
+<link rel="stylesheet" type="text/css" href="<%= doc + '.css' %>">
+
+</head>
+<body>
+
+<%- include('nav2.ejs'); %>
+<%- include(doc + '.ejs'); %>
+
+</body>
+</html>
