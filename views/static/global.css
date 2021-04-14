@@ -1,8 +1,8 @@
 /* global variables to make tweaking stuff across the whole site easier */
 :root {
-  --def-color: black;   /* default text color */
-  --off-color: #525252;    /* slightly "off" from (lighter than) the default */
-  --alt-color: white;   /* used for dark backgrounds */
+  --def-color: black;     /* default text color */
+  --off-color: #525252;   /* slightly "off" from (lighter than) the default */
+  --alt-color: white;     /* used for dark backgrounds */
 
   --bg-color: white;
   --fg-color: gray;
@@ -12,7 +12,9 @@
   /*--hl2-color: darkblue;*/
   --hl3-color: black;
 
-  --def-width: 1000px;   /* max width of nav content + main content */
+  --tr-time: 0.2s;      /* standard length of transitions */
+
+  --def-width: 1000px;  /* max width of nav content + main content */
   --butt-height: 25px;  /* height of buttons and input lines */
 }
 
@@ -59,6 +61,10 @@ button {
   border-style: none;
   border-radius: 1em;
   cursor: pointer;
+  transition: var(--tr-time);
+}
+button:hover {
+  background-color: var(--hl2-color);
 }
 a, a:visited {
   text-decoration: none;
@@ -78,7 +84,6 @@ nav {
   align-items: center;
   background-color: var(--hl1-color);
   height: 70px;
-  margin-bottom: 10%;
   /* margin-bottom: 10px; */
 }
 /* invisible box containing all the main content in each page */
@@ -136,10 +141,6 @@ section {
 	-moz-box-shadow: 0px 0px 34px 0px rgba(0,0,0,0.3);
 	box-shadow: 0px 0px 34px 0px rgba(0,0,0,0.3);
 }
-.wrapper {
-	width: 1000px;
-	margin: 0px auto;
-}
 .grid {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -154,8 +155,12 @@ section {
 /* Nav */
 .masthead {
 	color: white;
-	background-color: #1c3182;
+	background-color: var(--hl1-color);
 	margin: 0px 0px 10px 0px;
+}
+.wrapper {
+	width: var(--def-width);
+	margin: 0px auto;
 }
 .menu2 {
 	height: 78px;
@@ -168,16 +173,16 @@ section {
 	align-items: center;
 	font-size: 20px;
 	padding: 0px 15px;
-	transition: 0.2s;
+	transition: var(--tr-time);
 }
 .menuitem2:hover {
-	background-color: #0d1d5c;
+	background-color: var(--hl2-color);
 }
 .menuitem2:active {
 	transform: scale(0.98);
 }
 .logo {
-	width: 48px;
+	/* width: 48px; */
 	padding: 10px 0px;
 }
 /* Body */
