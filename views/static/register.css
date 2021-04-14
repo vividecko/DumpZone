@@ -1,0 +1,14 @@
+nav {
+  margin-bottom: 3%;
+}
+main {
+  max-width: calc(var(--def-width) * 0.65);
+}
+section {
+  text-align: center;
+  padding-top: 10%;
+  padding-bottom: 10%;
+}
+.input-line {
+  margin-bottom: 1em;
+}
