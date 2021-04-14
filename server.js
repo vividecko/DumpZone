@@ -65,7 +65,6 @@ app.get('/', checkAuthenticated, (req, res) => {
 })
 
 app.get('/login', checkNotAuthenticated, (req, res) => {
-  //res.render('login.ejs')
   res.render('template.ejs', {
     title: 'Login',
     doc: 'login'
@@ -78,15 +77,23 @@ app.post('/login', checkNotAuthenticated, passport.authenticate('local', {
   failureFlash: true
 }))
 
-app.get('/register', checkNotAuthenticated, (req, res) => {
-  //res.render('register.ejs')
+app.get('/register-student', checkNotAuthenticated, (req, res) => {
   res.render('template.ejs', {
     title: 'Register',
-    doc: 'register'
+    doc: 'register',
+    user_type: 'student'
   })
 })
 
-app.post('/register', checkNotAuthenticated, async (req, res) => {
+app.get('/register-instructor', checkNotAuthenticated, (req, res) => {
+  res.render('template.ejs', {
+    title: 'Register',
+    doc: 'register',
+    user_type: 'instructor'
+  })
+})
+
+app.post('/register-student', checkNotAuthenticated, async (req, res) => {
   try {
     const hashedPassword = await bcrypt.hash(req.body.password, 10)
     users.push({
@@ -94,11 +101,29 @@ app.post('/register', checkNotAuthenticated, async (req, res) => {
       lastname: req.body.lastname,
       username: req.body.username,
       email: req.body.email,
-      password: hashedPassword
+      password: hashedPassword,
+      user_type: 'student'
     })
     res.redirect('/login')
   } catch {
-    res.redirect('/register')
+    res.redirect('/register-student')
+  }
+})
+
+app.post('/register-instructor', checkNotAuthenticated, async (req, res) => {
+  try {
+    const hashedPassword = await bcrypt.hash(req.body.password, 10)
+    users.push({
+      firstname: req.body.firstname,
+      lastname: req.body.lastname,
+      username: req.body.username,
+      email: req.body.email,
+      password: hashedPassword,
+      user_type: 'instructor'
+    })
+    res.redirect('/login')
+  } catch {
+    res.redirect('/register-instructor')
   }
 })
 
