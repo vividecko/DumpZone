@@ -4,14 +4,12 @@
   --off-color: #525252;   /* slightly "off" from (lighter than) the default */
   --alt-color: white;     /* used for dark backgrounds */
 
-  --bg-color: white;
-  --fg-color: gray;
-  --lite-fg-color: lightgray;
+  --bg-color: white;      /* normal background color */
+  --lite-fg-color: lightgray;   /* elements on white background (e.g. input fields) */
   --lighter-fg-color: #d9d9d9;
-  --hl1-color: #1c3182;
-  --hl2-color: #0d1d5c;
-  /*--hl2-color: darkblue;*/
-  --hl3-color: black;
+  --hl1-color: #1c3182;   /* "stand-out" color (blue) */
+  --hl2-color: #0d1d5c;   /* darker */
+  --hl3-color: black;     /* even darker */
 
   --big-shadow: 0px 0px 34px 0px rgba(0,0,0,0.3);
   --small-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
@@ -19,7 +17,7 @@
   --tr-time: 0.2s;      /* standard length of transitions */
 
   --def-width: 1000px;  /* max width of nav content + main content */
-  --def-top-margin: 10px;
+  --def-top-margin: 10px;   /* usual space between nav and main content */
   --butt-height: 25px;  /* height of buttons and input lines */
 }
 
@@ -113,7 +111,6 @@ section {
   background-color: var(--bg-color);
   opacity: 0.95;
   border-radius: 25px;
-  /*box-shadow: 0 4px 16px gray, 0 4px 16px lightgray;*/
 }
 
 /* CLASSES */
@@ -134,9 +131,11 @@ section {
 .small-text {
   font-size: 12px;
 }
+/* form fields in the login/register pages */
 .input-line {
   margin-bottom: 7%;
 }
+/* generic class for anything that should "pop" when hovered over */
 .pop {
   transition: var(--tr-time);
 }
@@ -147,7 +146,7 @@ section {
   transform: scale(0.98);
 }
 
-/* NICK'S CSS */
+/* generic class for anything whose text should not be highlight-able */
 .noselect {
   -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none; /* Safari */
@@ -157,32 +156,24 @@ section {
             user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome, Edge, Opera and Firefox */
 }
+/* generic class for stuff with drop shadows */
 .shadow {
 	-webkit-box-shadow: var(--big-shadow);
 	-moz-box-shadow: var(--big-shadow);
 	box-shadow: var(--big-shadow);
 }
+/* appicon grid */
 .grid {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
 	text-align: center;
 	/*grid-template-columns: repeat(auto-fit, minmax(140px, 430px));*/
 }
+/* generic class for something that is highlighted (dark blue) */
 .highlighted {
-	background-color: #0d1d5c;
-	height: 100%;
-	vertical-align: middle;
+	background-color: var(--hl2-color);
 }
-/* Nav */
-.masthead {
-	color: white;
-	background-color: var(--hl1-color);
-	margin: 0px 0px 10px 0px;
-}
-.wrapper {
-	width: var(--def-width);
-	margin: 0px auto;
-}
+/* items in the nav */
 .menu2 {
 	height: 78px;
 	color: white;
@@ -199,31 +190,12 @@ section {
 .menuitem2:hover {
 	background-color: var(--hl2-color);
 }
-/*
-.menuitem2:active {
-	transform: scale(0.98);
-}
-*/
+/* properties of images in the nav */
 .logo {
-	/* width: 48px; */
+	width: 48px;
 	padding: 10px 0px;
 }
-/* Body */
-.container {
-	background-color: white;
-	opacity: 0.95;
-	border-radius: 20px;
-	margin: 0px 0px 10px 0px;
-	/*min-height: 380px;*/
-	/*height: 89vh;*/
-  height: 60vh;
-}
-.trophyBar {
-  background-color: white;
-  opacity: 0.95;
-  border-radius: 20px;
-  margin: 0px 0px 10px 0px;
-}
+/* items within the student header (formerly trophy bar) */
 .trophyitem {
   justify-content: center;
   align-items: end;

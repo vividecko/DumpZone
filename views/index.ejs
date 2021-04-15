@@ -1,33 +1,14 @@
-<div class="wrapper" style="margin-top:10px;">
+<main>
 
-<div class="trophyBar shadow">
+<%- include('student_header.ejs'); %>
+
+<section class="shadow" style="height:60vh;">
   <div class="menu">
-    <h1 style="font-size:80px;color:var(--off-color);">80</h1>
-    <h3 class="trophyitem">/100</h3>
-
-    <img src="trophy_blue.png" alt="Blue trophy icon" class="menuitem pop">
-    <h3 class="trophyitem">x2</h3>
-
-    <img src="trophy_green.png" alt="Green trophy icon" class="menuitem pop">
-    <h3 class="trophyitem">x2</h3>
-
-    <img src="trophy_purple.png" alt="Purple trophy icon" class="menuitem pop">
-    <h3 class="trophyitem">x2</h3>
-
-    <img src="trophy_gold.png" alt="Gold trophy icon" class="menuitem pop">
-    <h3 class="trophyitem">x2</h3>
-
-    <h3 class="menuitem" style="align-items:right;font-size:25px;padding-left:10px;">Mr. Morabito's Class</h3>
-  </div>
-</div>
-
-<div class="container shadow">
-  <div class="menu">
-    <img src="pages.png" class="menuitem">
+    <img src="pages.png" class="menuitem pop">
     <h2 class="menuitem" style="padding-left:10px;">Pages</h2>
   </div>
   <div class="grid">
-    <a href="#">
+    <a href="/work">
       <img src="homework.png" alt="Work icon" class="appicon shadow">
       <h3>Work</h3>
     </a>
@@ -44,6 +25,6 @@
       <h3>Settings</h3>
     </a>
   </div>
-</div>
+</section>
 
-</div>
+</main>
