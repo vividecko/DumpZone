@@ -127,6 +127,14 @@ app.post('/register-instructor', checkNotAuthenticated, async (req, res) => {
   }
 })
 
+app.get('/work', (req, res) => {
+  res.render('template.ejs', {
+    title: 'Work',
+    doc: 'work',
+    username: req.user.username
+  })
+})
+
 app.get('/logout', (req, res) => {
   req.logOut()
   res.redirect('/login')
