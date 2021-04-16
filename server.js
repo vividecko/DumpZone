@@ -1,3 +1,10 @@
+
+//Database handler + models
+var Handler = require("./models/Handler");
+var User = require("./models/User");
+
+
+
 /* The NODE_ENV environment variable indicates whether the server is running
  * in development (testing) or production (deployment). If it's testing, which
  * ours always is, then get a placeholder session key from the file ".env". */
@@ -55,7 +62,6 @@ app.use(methodOverride('_method'))
 /* The plain HTTP server simply redirects the user to a more secure HTTPS
  * connection. In production, the redirection URL would not be localhost. */
 httpApp.all('*', (req, res) => res.redirect(300, 'https://localhost:3000'))
-
 
 
 // ROUTES + CONTROLLER
@@ -138,17 +144,31 @@ app.post('/register-student', checkNotAuthenticated, async (req, res) => {
 
 app.post('/register-instructor', checkNotAuthenticated, async (req, res) => {
   try {
+
+    var connection = Handler.connect();
+
     const hashedPassword = await bcrypt.hash(req.body.password, 10)
-    users.push({
+
+    var newUser = new User(req.body.username, req.body.firstname, req.body.lastname, req.body.email, hashedPassword);
+
+    creationStatus = newUser.create(connection); //Should be -1 or 0 but is always -1
+
+    connection.end(); //Not sure if making and closing connections works 100% properly since they are also async
+                      //Also, the reason I did not establish the connection at the top is because then I cannot guarantee that the connection will ever close
+                      //But maybe this is not an issue
+
+    /*users.push({
       firstname: req.body.firstname,
       lastname: req.body.lastname,
       username: req.body.username,
       email: req.body.email,
       password: hashedPassword,
       user_type: 'instructor'
-    })
+    })*/
+
     res.redirect('/login')
-  } catch {
+  } catch (e) {
+    console.log(e)
     res.redirect('/register-instructor')
   }
 })
