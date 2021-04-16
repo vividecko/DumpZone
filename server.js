@@ -56,6 +56,12 @@ app.use(methodOverride('_method'))
  * connection. In production, the redirection URL would not be localhost. */
 httpApp.all('*', (req, res) => res.redirect(300, 'https://localhost:3000'))
 
+
+
+// ROUTES + CONTROLLER
+
+// INDEX
+
 app.get('/', checkAuthenticated, (req, res) => {
   res.render('template.ejs', {
     title: 'Home',
@@ -63,6 +69,20 @@ app.get('/', checkAuthenticated, (req, res) => {
     username: req.user.username
   })
 })
+
+
+// Work page
+
+app.get('/work', (req, res) => {
+  res.render('template.ejs', {
+    title: 'Work',
+    doc: 'work',
+    username: req.user.username
+  })
+})
+
+
+// Login page
 
 app.get('/login', checkNotAuthenticated, (req, res) => {
   res.render('template.ejs', {
@@ -76,6 +96,9 @@ app.post('/login', checkNotAuthenticated, passport.authenticate('local', {
   failureRedirect: '/login',
   failureFlash: true
 }))
+
+
+// Registration pages
 
 app.get('/register-student', checkNotAuthenticated, (req, res) => {
   res.render('template.ejs', {
@@ -92,6 +115,9 @@ app.get('/register-instructor', checkNotAuthenticated, (req, res) => {
     user_type: 'instructor'
   })
 })
+
+
+// Registration forms
 
 app.post('/register-student', checkNotAuthenticated, async (req, res) => {
   try {
@@ -127,18 +153,16 @@ app.post('/register-instructor', checkNotAuthenticated, async (req, res) => {
   }
 })
 
-app.get('/work', (req, res) => {
-  res.render('template.ejs', {
-    title: 'Work',
-    doc: 'work',
-    username: req.user.username
-  })
-})
+
+// Logout
 
 app.get('/logout', (req, res) => {
   req.logOut()
   res.redirect('/login')
 })
+
+
+// Redirecting/Validation methods
 
 function checkAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
