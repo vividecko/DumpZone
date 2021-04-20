@@ -157,14 +157,14 @@ app.post('/register-instructor', checkNotAuthenticated, async (req, res) => {
                       //Also, the reason I did not establish the connection at the top is because then I cannot guarantee that the connection will ever close
                       //But maybe this is not an issue
 
-    /*users.push({
+    users.push({
       firstname: req.body.firstname,
       lastname: req.body.lastname,
       username: req.body.username,
       email: req.body.email,
       password: hashedPassword,
       user_type: 'instructor'
-    })*/
+    })
 
     res.redirect('/login')
   } catch (e) {

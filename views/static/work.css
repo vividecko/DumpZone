@@ -14,6 +14,8 @@ h3 {
 	color: white;
 	display: inline-flex;
 	padding: 25px 20px;
+	width: 960px;
+	justify-content: space-between;
 }
 .menuitem {
 	display: inline-flex;
@@ -30,4 +32,53 @@ h3 {
 }
 .appicon:active {
 	transform: scale(1.0);
+}
+
+.assignmentnav {
+	height: 65px;
+}
+
+.duedate {
+	color: white;
+	background-color: #ccb03c;
+	border-radius: 20px;
+	height: 40px;
+	padding: 0px 20px;
+	margin-top: 10px;
+}
+
+.arrowglyph {
+	height: 70px;
+	font-size: 80px;
+}
+
+.answerfield, .submitanswer {
+	font-size: 20px;
+	padding: 10px 20px;
+	border-radius: 30px;
+}
+
+.answerfield {
+	width: 78%;
+}
+
+.submitanswer {
+	background-color: #3ccc62;
+	width: 15%;
+	height: 45px;
+}
+.submitanswer:hover {
+	background-color: #22a344;
+}
+
+.question {
+	height: 398px;
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+	width: 1000px;
+}
+
+.questionimage {
+	text-align: center;
 }
