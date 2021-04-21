@@ -22,9 +22,11 @@
 </div>
 
 <!--Input box answer, going to add MC next-->
-<div class="menu">
-	<input class="answerfield" type="text" placeholder="Answer..." required>
-	<button class="submitanswer pop" type="submit" class="pop">Submit</button>
-</div>
+<!--<div class="menu">-->
+  <form class="menu" action="/work" method="POST">
+    <input class="answerfield" id="attempt" name="attempt" type="text" placeholder="Answer..." required>
+    <button class="submitanswer pop" type="submit" class="pop">Submit</button>
+  </form>
+<!--</div>-->
 
 </section>
