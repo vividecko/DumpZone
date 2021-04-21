@@ -9,7 +9,6 @@ function initialize(passport, getUserByUsername) {
     } catch (e) {
       return done(e);
     }
-    console.log(user);
 
     if (user == null) {
       return done(null, false, { message: 'No user with that username.' })

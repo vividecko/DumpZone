@@ -10,6 +10,9 @@ if (process.env.NODE_ENV !== 'production') {
 const Handler = require("./models/Handler");
 const User = require("./models/User");
 */
+
+/* Database connection for testing.
+ * The password is just arbitrary, and obviously not secret. */
 const mysql = require('mysql2/promise');
 const connection = mysql.createPool({
   host: 'localhost', 
@@ -88,7 +91,7 @@ app.get('/', checkAuthenticated, (req, res) => {
   res.render('template.ejs', {
     title: 'Home',
     doc: 'index',
-    username: req.user.username
+    username: req.session.passport.user
   })
 })
 
@@ -99,10 +102,13 @@ app.get('/work', (req, res) => {
   res.render('template.ejs', {
     title: 'Work',
     doc: 'work',
-    username: req.user.username
+    username: req.session.passport.user
   })
 })
 
+app.post('/work', (req, res) => {
+  console.log('answer received');
+});
 
 // Login page
 
@@ -144,14 +150,16 @@ app.get('/register-instructor', checkNotAuthenticated, (req, res) => {
 app.post('/register-student', checkNotAuthenticated, async (req, res) => {
   try {
     const hashedPassword = await bcrypt.hash(req.body.password, 10)
-    users.push({
-      firstname: req.body.firstname,
-      lastname: req.body.lastname,
-      username: req.body.username,
-      email: req.body.email,
-      password: hashedPassword,
-      user_type: 'student'
-    })
+
+    connection.query(
+      'INSERT INTO user VALUES (?, ?, ?, ?, ?)',
+      [req.body.username, req.body.firstname, req.body.lastname, req.body.email, hashedPassword],
+      (err, result) => {
+        if (err) throw err;
+        console.log('Registered user ' + req.body.username + '.');
+      }
+    );
+
     res.redirect('/login')
   } catch {
     res.redirect('/register-student')
@@ -161,27 +169,15 @@ app.post('/register-student', checkNotAuthenticated, async (req, res) => {
 app.post('/register-instructor', checkNotAuthenticated, async (req, res) => {
   try {
     const hashedPassword = await bcrypt.hash(req.body.password, 10)
-    //const newUser = new User(req.body.username, req.body.firstname, req.body.lastname, req.body.email, hashedPassword);
-
-    //creationStatus = newUser.create(connection); //Should be -1 or 0 but is always -1
-    //console.log(creationStatus);
 
     connection.query(
       'INSERT INTO user VALUES (?, ?, ?, ?, ?)',
       [req.body.username, req.body.firstname, req.body.lastname, req.body.email, hashedPassword],
       (err, result) => {
         if (err) throw err;
-        console.log(result);
-    });
-
-    users.push({
-      firstname: req.body.firstname,
-      lastname: req.body.lastname,
-      username: req.body.username,
-      email: req.body.email,
-      password: hashedPassword,
-      user_type: 'instructor'
-    })
+        console.log('Registered user ' + req.body.username + '.');
+      }
+    );
 
     res.redirect('/login')
   } catch (e) {
