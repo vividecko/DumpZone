@@ -1,16 +1,22 @@
-
-//Database handler + models
-var Handler = require("./models/Handler");
-var User = require("./models/User");
-
-
-
 /* The NODE_ENV environment variable indicates whether the server is running
  * in development (testing) or production (deployment). If it's testing, which
  * ours always is, then get a placeholder session key from the file ".env". */
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
 }
+
+/* Database handler and models */
+/*
+const Handler = require("./models/Handler");
+const User = require("./models/User");
+*/
+const mysql = require('mysql2/promise');
+const connection = mysql.createPool({
+  host: 'localhost', 
+  user: 'server',
+  password: 'dgPqnf1vtPje7dLoLu3h',
+  database: 'homemath'
+});
 
 const fs = require('fs')
 const http = require('http')
@@ -35,16 +41,26 @@ const methodOverride = require('method-override')
 const httpServer = http.createServer(httpApp)
 const httpsServer = https.createServer(cert, app)
 
-/* Configure Passport so it authenticates with a username and password. */
+/*
+ * Set up username/password authentication via Passport by executing the
+ * initialization function in passport-config.js. Pass it an asynchronous
+ * function that takes a username and returns the corresponding user object
+ * from the database.
+ */
 const initializePassport = require('./passport-config')
 initializePassport(
   passport,
-  username => users.find(user => user.username === username)
-)
-
-/* temporary user storage (will use database later) */
-/*const hashedPassword1 = bcrypt.hash("testtest", 10) {firstname: "XDDDDDD", lastname: "XDDDDDD", username: "Nick1234", email: "XDDDDDD@xd.com", password: hashedPassword1}*/
-const users = []
+  async (username) => {
+    const user_object = await connection.query(
+      'SELECT * FROM user WHERE user_name=?',
+      [username], 
+      (err, result) => {
+        if (err) throw err;
+      }
+    );
+    return user_object[0][0];
+  }
+);
 
 app.set('view-engine', 'ejs')
 app.use(express.urlencoded({ extended: false }))
@@ -144,18 +160,19 @@ app.post('/register-student', checkNotAuthenticated, async (req, res) => {
 
 app.post('/register-instructor', checkNotAuthenticated, async (req, res) => {
   try {
-
-    var connection = Handler.connect();
-
     const hashedPassword = await bcrypt.hash(req.body.password, 10)
+    //const newUser = new User(req.body.username, req.body.firstname, req.body.lastname, req.body.email, hashedPassword);
 
-    var newUser = new User(req.body.username, req.body.firstname, req.body.lastname, req.body.email, hashedPassword);
+    //creationStatus = newUser.create(connection); //Should be -1 or 0 but is always -1
+    //console.log(creationStatus);
 
-    creationStatus = newUser.create(connection); //Should be -1 or 0 but is always -1
-
-    connection.end(); //Not sure if making and closing connections works 100% properly since they are also async
-                      //Also, the reason I did not establish the connection at the top is because then I cannot guarantee that the connection will ever close
-                      //But maybe this is not an issue
+    connection.query(
+      'INSERT INTO user VALUES (?, ?, ?, ?, ?)',
+      [req.body.username, req.body.firstname, req.body.lastname, req.body.email, hashedPassword],
+      (err, result) => {
+        if (err) throw err;
+        console.log(result);
+    });
 
     /*users.push({
       firstname: req.body.firstname,
