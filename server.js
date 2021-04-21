@@ -174,14 +174,14 @@ app.post('/register-instructor', checkNotAuthenticated, async (req, res) => {
         console.log(result);
     });
 
-    /*users.push({
+    users.push({
       firstname: req.body.firstname,
       lastname: req.body.lastname,
       username: req.body.username,
       email: req.body.email,
       password: hashedPassword,
       user_type: 'instructor'
-    })*/
+    })
 
     res.redirect('/login')
   } catch (e) {

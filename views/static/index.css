@@ -14,6 +14,8 @@ h3 {
 	color: white;
 	display: inline-flex;
 	padding: 25px 20px;
+	width: 960px;
+	justify-content: space-between;
 }
 .menuitem {
 	display: inline-flex;

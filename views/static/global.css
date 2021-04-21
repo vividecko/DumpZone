@@ -204,3 +204,11 @@ section {
   display: inline-flex;
   padding: 0px 5px;
 }
+.trophyicon {
+  height: 72px;
+  margin: 3px 0px;
+}
+.stats {
+  width: 70%;
+  display: inline-flex;
+}
