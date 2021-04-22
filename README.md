@@ -3,7 +3,7 @@
 * [Git basics](https://git-scm.com/book/en/v2/Git-Basics-Getting-a-Git-Repository)
 * [GitHub basics](https://git-scm.com/book/en/v2/GitHub-Contributing-to-a-Project)
 
-## Install for Development
+## Install for Development/Testing
 0. Install [node.js](https://nodejs.org/en/download/).
 1. Open your command line and `cd` (change directory) to whatever directory you want the server to be in.
 2. Clone the repo: `git clone https://github.com/vividecko/DumpZone`
