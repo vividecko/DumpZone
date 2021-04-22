@@ -18,7 +18,7 @@
 ## Contribute Changes
 1. If you're about to start editing files, then before you do so, run `git pull origin main` in your `DumpZone` directory. This updates the files with what's currently on GitHub.
 2. Edit some files, then start the server by running `npm run test-site` or `npx nodemon server.js` (same thing). As long as this command is running, you can view the website in your browser.
-3. Open `https://localhost:3000` in your browser to test stuff. Look at the browser's console (`ctrl+shift+J`) for any errors.
+3. Open `localhost` in your browser to test stuff. Look at the browser's console (`ctrl+shift+J`) for any errors.
 4. If there are no errors or problems, then select which files you modified and want to commit by issuing `git add [list of files]`.
 5. Run `git status` and look at the output to make sure you're about to commit the correct files that you modified.
 Run `git commit -m "[describe what you changed]"`. Now Git has recorded the changes in your *local* copy of the repo. (If this is your first commit, Git will make you enter your email and display name.)
