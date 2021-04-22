@@ -10,10 +10,10 @@
 3. Now you have all the files in a folder called `DumpZone`. Run the installation script inside: that means running `.\install.bat` on the command line (**with admin privileges**), or right-clicking `install.bat` in File Explorer and selecting "Run as Administrator". Follow any instructions you see in the installation script.
 3. Now you have all the files in a folder called `DumpZone`. Run the installation script inside: that means running `.\install.bat` on the command line (**with admin privileges**). It might only work from the command line. Follow any instructions you see in the installation script.
 4. Install MySQL according to [this tutorial](https://www.prisma.io/dataguide/mysql/setting-up-a-local-mysql-database).
-5. Run `mysql` from the command line and log in with your MySQL root user password. (If `mysql` is not recognized as a command, you can specify the full path to the executable file - under `Program Files/MySQL` in Windows.)
+5. Run `mysql` from the command line and log in with your MySQL root user password. (If `mysql` is not recognized as a command, you can specify the full path to the executable file - probably under something like `C:\Program Files\MySQL\MySQLsomethingsomething\bin\mysql` in Windows.)
 6. Using the `mysql` command, issue `CREATE DATABASE homemath;`.
-7. Next, issue `CREATE USER server IDENTIFIED BY [pw];`. Replace `[pw]` with the not-so-secret password in `server.js`.
-8. Next, issue `GRANT SELECT, UPDATE, ALTER, DELETE ON homemath.* TO server@localhost;`.
+7. Next, issue `CREATE USER server@localhost IDENTIFIED BY 'pw';`. Replace `pw` with the not-so-secret password in `server.js` - look for the random string of letters among the DB info. Make sure to surround `pw` with single quotes.
+8. Next, issue `GRANT SELECT, INSERT, UPDATE, ALTER, DELETE ON homemath.* TO server@localhost;`.
 9. Issue `\q` to quit `mysql`. Now issue `mysql -u root -p homemath < homemath.sql` in your `DumpZone` directory.
 
 ## Contribute Changes
