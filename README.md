@@ -7,11 +7,14 @@
 0. Install [node.js](https://nodejs.org/en/download/).
 1. Open your command line and `cd` (change directory) to whatever directory you want the server to be in.
 2. Clone the repo: `git clone https://github.com/vividecko/DumpZone`
-<<<<<<< HEAD
 3. Now you have all the files in a folder called `DumpZone`. Run the installation script inside: that means running `.\install.bat` on the command line (**with admin privileges**), or right-clicking `install.bat` in File Explorer and selecting "Run as Administrator". Follow any instructions you see in the installation script.
-=======
 3. Now you have all the files in a folder called `DumpZone`. Run the installation script inside: that means running `.\install.bat` on the command line (**with admin privileges**). It might only work from the command line. Follow any instructions you see in the installation script.
->>>>>>> ee855db2aa63126a946361358751dfa7c31872be
+4. Install MySQL according to [this tutorial](https://www.prisma.io/dataguide/mysql/setting-up-a-local-mysql-database).
+5. Run `mysql` from the command line and log in with your MySQL root user password. (If `mysql` is not recognized as a command, you can specify the full path to the executable file - under `Program Files/MySQL` in Windows.)
+6. Using the `mysql` command, issue `CREATE DATABASE homemath;`.
+7. Next, issue `CREATE USER server IDENTIFIED BY [pw];`. Replace `[pw]` with the not-so-secret password in `server.js`.
+8. Next, issue `GRANT SELECT, UPDATE, ALTER, DELETE ON homemath.* TO server@localhost;`.
+9. Issue `\q` to quit `mysql`. Now issue `mysql -u root -p homemath < homemath.sql` in your `DumpZone` directory.
 
 ## Contribute Changes
 1. If you're about to start editing files, then before you do so, run `git pull origin main` in your `DumpZone` directory. This updates the files with what's currently on GitHub.
