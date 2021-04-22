@@ -2,7 +2,7 @@
 
 <%- include('student_header.ejs'); %>
 
-<section class="shadow" style="height:615px;">
+<section class="shadow" style="min-height:615px;">
 
 <div class="menu">
 	<!--Topic/question title-->
@@ -21,12 +21,43 @@
 	<img class="questionimage" src="https://i.imgur.com/OWmz6yx.png">
 </div>
 
-<!--Input box answer, going to add MC next-->
-<!--<div class="menu">-->
-  <form class="menu" action="/work" method="POST">
-    <input class="answerfield" id="attempt" name="attempt" type="text" placeholder="Answer..." required>
-    <button class="submitanswer pop" type="submit" class="pop">Submit</button>
-  </form>
-<!--</div>-->
+<!--Input box short answer-->
+<form class="menu" style="height: 45px;">
+	<input class="answerfield" type="text" placeholder="Answer..." required>
+	<button class="submitanswer pop" type="submit" class="pop">Submit</button>
+</form>
+
+<!--Small MC list not rigged to radio buttons-->
+<div class="menu" style="height: 45px;">
+
+  <div class="mcgrid">
+    <h3 class="mcanswer pop noselect">Answer 1</h3>
+    <h3 class="mcanswer pop noselect">Answer 2</h3>
+    <h3 class="mcanswer pop noselect">Answer 3</h3>
+    <h3 class="mcanswer pop noselect">Answer 4</h3>
+  </div>
+
+  <button class="submitanswer pop" type="submit" class="pop">Submit</button>
+</div>
+
+<!--Large MC list not rigged to radio buttons-->
+<div class="menu" style="height: 170px; align-items: center;">
+
+  <div class="mcgrid">
+    <h3 class="mctile pop noselect">1</h3>
+    <h3 class="mctile pop noselect">2</h3>
+    <h3 class="mctile pop noselect">3</h3>
+    <h3 class="mctile pop noselect">4</h3>
+  </div>
+
+  <button class="submitanswer pop" type="submit" class="pop">Submit</button>
+</div>
+
+
+<script type="text/javascript">
+  //
+</script>
+
 
 </section>
+<br />

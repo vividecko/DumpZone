@@ -4,15 +4,15 @@ module.exports = class Handler {
 
 	// DB handler actions
 
-	static connect() {
+	static async connect() {
 		var connection = mysql.createConnection({
 			host: "localhost", 
 			user: "root",
 			password: "",
-			database: "homemath"
+			database: "homemath2"
 		});
 
-		connection.connect();
+		await connection.connect();
 
 		return connection;
 	}

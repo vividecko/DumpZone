@@ -52,13 +52,13 @@ h3 {
 	font-size: 80px;
 }
 
-.answerfield, .submitanswer {
+.answerfield, .submitanswer, .mcanswer {
 	font-size: 20px;
 	padding: 10px 20px;
 	border-radius: 30px;
 }
 
-.answerfield {
+.answerfield, .mcgrid {
 	width: 78%;
 }
 
@@ -81,4 +81,30 @@ h3 {
 
 .questionimage {
 	text-align: center;
+}
+
+.mcgrid {
+	display: grid;
+	grid-template-columns: 25% 25% 25% 25%;
+	grid-column-gap: 10px;
+}
+
+.mcanswer, .mctile {
+	background-color: var(--lite-fg-color);
+}
+.mcanswer:hover, .mctile:hover {
+	background-color: #bdbdbd;
+}
+.mcanswer:active, .mctile:active, .mcactive {
+	color: white;
+	background-color: var(--hl1-color);
+}
+
+.mctile {
+	display: inline-flex;
+	font-size: 85px;
+	border-radius: 30px;
+	justify-content: center;
+	align-items: center;
+	height: 150px;
 }

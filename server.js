@@ -21,6 +21,15 @@ const connection = mysql.createPool({
   database: 'homemath'
 });
 
+/* PHPMyAdmin Alt. Info
+const connection = mysql.createPool({
+  host: 'localhost', 
+  user: 'root',
+  password: '',
+  database: 'homemath2'
+});
+*/
+
 const fs = require('fs')
 const http = require('http')
 const https = require('https')
