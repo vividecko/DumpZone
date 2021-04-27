@@ -1,11 +1,11 @@
-var mysql = require('mysql');
+var mysql = require('mysql2/promise');
 
 module.exports = class Handler {
 
 	// DB handler actions
 
 	static async connect() {
-		var connection = mysql.createConnection({
+		var connection = mysql.createPool({
 			host: "localhost", 
 			user: "root",
 			password: "",

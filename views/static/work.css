@@ -90,12 +90,13 @@ h3 {
 }
 
 .mcanswer, .mctile {
+	color: black;
 	background-color: var(--lite-fg-color);
 }
 .mcanswer:hover, .mctile:hover {
 	background-color: #bdbdbd;
 }
-.mcanswer:active, .mctile:active, .mcactive {
+.mcanswer:active, .mctile:active, .radio__input:checked + .mcanswer, .radio__input:checked + .mctile {
 	color: white;
 	background-color: var(--hl1-color);
 }
@@ -107,4 +108,9 @@ h3 {
 	justify-content: center;
 	align-items: center;
 	height: 150px;
+	width: 100%;
+}
+
+.radio__input {
+	display: none;
 }

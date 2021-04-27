@@ -16,10 +16,12 @@
   </div>
 </div>
 
+
 <!--Question image-->
 <div class="question">
 	<img class="questionimage" src="https://i.imgur.com/OWmz6yx.png">
 </div>
+
 
 <!--Input box short answer-->
 <form class="menu" style="height: 45px;">
@@ -27,36 +29,63 @@
 	<button class="submitanswer pop" type="submit" class="pop">Submit</button>
 </form>
 
-<!--Small MC list not rigged to radio buttons-->
-<div class="menu" style="height: 45px;">
+
+<!--Small MC list rigged to radio buttons-->
+<form class="menu" style="height: 45px;">
 
   <div class="mcgrid">
-    <h3 class="mcanswer pop noselect">Answer 1</h3>
-    <h3 class="mcanswer pop noselect">Answer 2</h3>
-    <h3 class="mcanswer pop noselect">Answer 3</h3>
-    <h3 class="mcanswer pop noselect">Answer 4</h3>
+    <label for="answer_1">
+      <input type="radio" name="answer" id="answer_1" value="answer_1" class="radio__input" required>
+      <div class="mcanswer pop noselect">Answer 1</div>
+    </label>
+
+    <label for="answer_2">
+      <input type="radio" name="answer" id="answer_2" value="answer_2" class="radio__input" required>
+      <div class="mcanswer pop noselect">Answer 2</div>
+    </label>
+
+    <label for="answer_3">
+      <input type="radio" name="answer" id="answer_3" value="answer_3" class="radio__input" required>
+      <div class="mcanswer pop noselect">Answer 3</div>
+    </label>
+
+    <label for="answer_4">
+      <input type="radio" name="answer" id="answer_4" value="answer_4" class="radio__input" required>
+      <div class="mcanswer pop noselect">Answer 4</div>
+    </label>
   </div>
 
   <button class="submitanswer pop" type="submit" class="pop">Submit</button>
-</div>
+</form>
 
-<!--Large MC list not rigged to radio buttons-->
-<div class="menu" style="height: 170px; align-items: center;">
+
+<!--Large MC list rigged to radio buttons, must comment out small list in order to function properly-->
+<form class="menu" style="height: 170px; align-items: center;">
 
   <div class="mcgrid">
-    <h3 class="mctile pop noselect">1</h3>
-    <h3 class="mctile pop noselect">2</h3>
-    <h3 class="mctile pop noselect">3</h3>
-    <h3 class="mctile pop noselect">4</h3>
+    <label for="answer_1">
+        <input type="radio" name="answer" id="answer_1" value="answer_1" class="radio__input" required>
+        <div class="mctile pop noselect">1</div>
+      </label>
+
+      <label for="answer_2">
+        <input type="radio" name="answer" id="answer_2" value="answer_2" class="radio__input" required>
+        <div class="mctile pop noselect">2</div>
+      </label>
+
+      <label for="answer_3">
+        <input type="radio" name="answer" id="answer_3" value="answer_3" class="radio__input" required>
+        <div class="mctile pop noselect">3</div>
+      </label>
+
+      <label for="answer_4">
+        <input type="radio" name="answer" id="answer_4" value="answer_4" class="radio__input" required>
+        <div class="mctile pop noselect">4</div>
+      </label>
   </div>
 
   <button class="submitanswer pop" type="submit" class="pop">Submit</button>
-</div>
-
-
-<script type="text/javascript">
-  //
-</script>
+</form>
 
 
 </section>
