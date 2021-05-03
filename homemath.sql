@@ -144,8 +144,11 @@ CREATE TABLE `classroom` (
   `id` mediumint NOT NULL AUTO_INCREMENT,
   `name` varchar(30) NOT NULL,
   `grade` char(1) DEFAULT 'K',
+  `instructor_name` varchar(16) NOT NULL,
   PRIMARY KEY (`id`),
-  CONSTRAINT `valid_grade` CHECK (((`grade` = _cp850'K') or (`grade` = _cp850'1') or (`grade` = _cp850'2') or (`grade` = _cp850'3') or (`grade` = _cp850'4')))
+  KEY `instructor_name` (`instructor_name`),
+  CONSTRAINT `classroom_ibfk_1` FOREIGN KEY (`instructor_name`) REFERENCES `user` (`user_name`),
+  CONSTRAINT `valid_grade` CHECK (((`grade` = _utf8mb4'K') or (`grade` = _utf8mb4'1') or (`grade` = _utf8mb4'2') or (`grade` = _utf8mb4'3') or (`grade` = _utf8mb4'4')))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -313,6 +316,7 @@ CREATE TABLE `user` (
   `password` varchar(200) NOT NULL,
   `is_teacher` tinyint(1) NOT NULL,
   `classroom_id` mediumint DEFAULT NULL,
+  `hex_color` char(6) DEFAULT '00ff00',
   PRIMARY KEY (`user_name`),
   UNIQUE KEY `user_name` (`user_name`),
   KEY `FK_classroom_id` (`classroom_id`),
@@ -398,4 +402,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-04-28 19:08:07
+-- Dump completed on 2021-05-03  7:17:24
