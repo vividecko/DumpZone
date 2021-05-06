@@ -1,5 +1,5 @@
-const LocalStrategy = require('passport-local').Strategy
-const bcrypt = require('bcrypt')
+const LocalStrategy = require('passport-local').Strategy;
+const bcrypt = require('bcrypt');
 
 function initialize(passport, getUserByUsername) {
   const authenticateUser = async (username, password, done) => {
@@ -11,30 +11,30 @@ function initialize(passport, getUserByUsername) {
     }
 
     if (user == null) {
-      return done(null, false, { message: 'No user with that username.' })
+      return done(null, false, { message: 'No user with that username.' });
     }
 
     /* The bcrypt.compare() method verifies the plain-text password from the
      * login attempt against the hashed password from the database. */
     try {
       if (await bcrypt.compare(password, user.password)) {
-        return done(null, user)
+        return done(null, user);
       } else {
-        return done(null, false, { message: 'Password incorrect.' })
+        return done(null, false, { message: 'Password incorrect.' });
       }
     } catch (e) {
-      return done(e)
+      return done(e);
     }
   }
 
-  passport.use(new LocalStrategy(authenticateUser))
-  passport.serializeUser((user, done) => done(null, user.user_name))
+  passport.use(new LocalStrategy(authenticateUser));
+  passport.serializeUser((user, done) => done(null, user.user_name));
   passport.deserializeUser((username, done) => {
-    return done(null, getUserByUsername(username))
-  })
+    return done(null, getUserByUsername(username));
+  });
 }
 
 /* Return the "initialize" function to the caller when the server requires this
  * module (passport-config.js), thus letting the server call the "initialize"
  * function to set up local authentication via Passport. */
-module.exports = initialize
+module.exports = initialize;

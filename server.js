@@ -1,227 +1,215 @@
-/* The NODE_ENV environment variable indicates whether the server is running
- * in development (testing) or production (deployment). If it's testing, which
- * ours always is, then get a placeholder session key from the file ".env". */
+/*
+ * ----------------------------------------------------------------------------
+ * USER DATA:
+ * Upon login, one's username is stored in Passport session data, in
+ * "req.session.passport.user". This username can be used to retrieve the rest
+ * of the user data from storage. During retrieval from storage, the server
+ * cache is first queried due to its speed, then the database is queried if the
+ * cache has not yet loaded the given user's data.
+ * ----------------------------------------------------------------------------
+ */
+
 if (process.env.NODE_ENV !== 'production') {
-  require('dotenv').config()
+  require('dotenv').config();
 }
 
-/* Database handler and models */
-/*
-const Handler = require("./models/Handler");
-const User = require("./models/User");
-*/
+const uncache = require('./storage').uncache;
+const user = require('./models/User');
+const student = require('./models/Student');
+const instructor = require('./models/Instructor');
 
-/* Database connection for testing.
- * The password is just arbitrary, and obviously not secret. */
-const mysql = require('mysql2/promise');
-const connection = mysql.createPool({
-  host: 'localhost', 
-  user: 'server',
-  password: 'dgPqnf1vtPje7dLoLu3h',
-  database: 'homemath'
-});
+const fs = require('fs');
+const http = require('http');
+const https = require('https');
 
-/* PHPMyAdmin Alt. Info
-const connection = mysql.createPool({
-  host: 'localhost', 
-  user: 'root',
-  password: '',
-  database: 'homemath2'
-});
-*/
-
-const fs = require('fs')
-const http = require('http')
-const https = require('https')
-
-/* Get self-signed SSL certs for the HTTPS connection. (For testing only.) */
 const cert = {key: fs.readFileSync('localhost.key', 'utf8'),
   cert: fs.readFileSync('localhost.crt', 'utf8')}
 
-/* Set up two Express apps: one for an HTTP server, one for an HTTPS server. */
-const express = require('express')
-const httpApp = express()
-const app = express()
+const express = require('express');
+const httpApp = express();          /* for plain HTTP */
+const app = express();              /* for HTTPS (main app) */
 
-/* Load required Node modules. */
-const bcrypt = require('bcrypt')
-const passport = require('passport')
-const flash = require('express-flash')
-const session = require('express-session')
-const methodOverride = require('method-override')
+const bcrypt = require('bcrypt');
+const passport = require('passport');
+const flash = require('express-flash');
+const session = require('express-session');
+const methodOverride = require('method-override');
 
-const httpServer = http.createServer(httpApp)
-const httpsServer = https.createServer(cert, app)
+const httpServer = http.createServer(httpApp);
+const httpsServer = https.createServer(cert, app);
 
 /*
  * Set up username/password authentication via Passport by executing the
- * initialization function in passport-config.js. Pass it an asynchronous
- * function that takes a username and returns the corresponding user object
- * from the database.
+ * initialization function in passport-config.js. Pass it a function that takes
+ * a username and returns the corresponding user object from the database.
  */
-const initializePassport = require('./passport-config')
-initializePassport(
-  passport,
-  async (username) => {
-    const user_object = await connection.query(
-      'SELECT * FROM user WHERE user_name=?',
-      [username], 
-      (err, result) => {
-        if (err) throw err;
-      }
-    );
-    return user_object[0][0];
-  }
-);
+const initializePassport = require('./passport-config');
+initializePassport(passport, user.get);
 
-app.set('view-engine', 'ejs')
-app.use(express.urlencoded({ extended: false }))
-app.use(express.static("views/static"))
-app.use(flash())
+app.set('view-engine', 'ejs');
+app.use(express.urlencoded({ extended: false }));
+app.use(express.static("views/static"));
+app.use(flash());
 app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false
-}))
-app.use(passport.initialize())
-app.use(passport.session())
-app.use(methodOverride('_method'))
-
-/* The plain HTTP server simply redirects the user to a more secure HTTPS
- * connection. In production, the redirection URL would not be localhost. */
-httpApp.all('*', (req, res) => res.redirect(300, 'https://localhost:3000'))
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(methodOverride('_method'));
 
 
-// ROUTES + CONTROLLER
+/*
+ * ----------------------------------------------------------------------------
+ * ROUTES
+ * ----------------------------------------------------------------------------
+ */
 
-// INDEX
+/*
+ * Upgrade all plain HTTP requests to more secure HTTPS connections.
+ */
+httpApp.all('*', (req, res) => res.redirect(300, 'https://localhost:3000'));
 
+
+/*
+ * Home page/dashboard, which differs based on whether the user is a student
+ * or an instructor.
+ */
 app.get('/', checkAuthenticated, (req, res) => {
   res.render('template.ejs', {
     title: 'Home',
     doc: 'index',
     username: req.session.passport.user
-  })
-})
+  });
+});
 
 
-// Work page
-
+/*
+ * Work page, where students do assignments or tests.
+ */
 app.get('/work', (req, res) => {
   res.render('template.ejs', {
     title: 'Work',
     doc: 'work',
     username: req.session.passport.user
-  })
-})
+  });
+});
 
 app.post('/work', (req, res) => {
   console.log('answer received');
 });
 
-// Login page
 
+/*
+ * Login page/form.
+ */
 app.get('/login', checkNotAuthenticated, (req, res) => {
   res.render('template.ejs', {
     title: 'Login',
     doc: 'login'
-  })
-})
+  });
+});
 
+/*
+ * Authenticate a user when they fill out the login form.
+ */
 app.post('/login', checkNotAuthenticated, passport.authenticate('local', {
   successRedirect: '/',
   failureRedirect: '/login',
   failureFlash: true
-}))
+}));
 
 
-// Registration pages
-
+/*
+ * Registration pages/forms, where new users are created.
+ */
 app.get('/register-student', checkNotAuthenticated, (req, res) => {
   res.render('template.ejs', {
     title: 'Register',
     doc: 'register',
     user_type: 'student'
-  })
-})
+  });
+});
 
 app.get('/register-instructor', checkNotAuthenticated, (req, res) => {
   res.render('template.ejs', {
     title: 'Register',
     doc: 'register',
     user_type: 'instructor'
-  })
-})
+  });
+});
 
 
-// Registration forms
-
+/*
+ * Register a new student or instructor/teacher user respectively. The input is
+ * received from the user via the registration form.
+ */
 app.post('/register-student', checkNotAuthenticated, async (req, res) => {
   try {
-    const hashedPassword = await bcrypt.hash(req.body.password, 10)
-
-    connection.query(
-      'INSERT INTO user VALUES (?, ?, ?, ?, ?)',
-      [req.body.username, req.body.firstname, req.body.lastname, req.body.email, hashedPassword],
-      (err, result) => {
-        if (err) throw err;
-        console.log('Registered user ' + req.body.username + '.');
-      }
+    const hashedPassword = await bcrypt.hash(req.body.password, 10);
+    student.create(
+      req.body.username,
+      req.body.firstname,
+      req.body.lastname,
+      req.body.email,
+      hashedPassword
     );
 
-    res.redirect('/login')
+    res.redirect('/login');
   } catch {
-    res.redirect('/register-student')
+    res.redirect('/register-student');
   }
-})
+});
 
 app.post('/register-instructor', checkNotAuthenticated, async (req, res) => {
   try {
-    const hashedPassword = await bcrypt.hash(req.body.password, 10)
-
-    connection.query(
-      'INSERT INTO user VALUES (?, ?, ?, ?, ?)',
-      [req.body.username, req.body.firstname, req.body.lastname, req.body.email, hashedPassword],
-      (err, result) => {
-        if (err) throw err;
-        console.log('Registered user ' + req.body.username + '.');
-      }
+    const hashedPassword = await bcrypt.hash(req.body.password, 10);
+    instructor.create(
+      req.body.username,
+      req.body.firstname,
+      req.body.lastname,
+      req.body.email,
+      hashedPassword
     );
 
-    res.redirect('/login')
+    res.redirect('/login');
   } catch (e) {
-    console.log(e)
-    res.redirect('/register-instructor')
+    console.log(e);
+    res.redirect('/register-instructor');
   }
-})
+});
 
 
-// Logout
-
+/*
+ * Log the user out and end the session.
+ */
 app.get('/logout', (req, res) => {
-  req.logOut()
-  res.redirect('/login')
-})
+  uncache(req.session.passport.user);
+  req.logOut();
+  res.redirect('/login');
+});
 
 
-// Redirecting/Validation methods
-
+/*
+ * Ensure the user is authenticated or not authenticated before accessing
+ * certain pages; otherwise, redirect the user.
+ */
 function checkAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
-    return next()
+    return next();
   }
 
-  res.redirect('/login')
+  res.redirect('/login');
 }
 
 function checkNotAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
-    return res.redirect('/')
+    return res.redirect('/');
   }
-  next()
+  next();
 }
 
-/* Make the site accessible on port 3000 for testing HTTPS, and port 80 for
- * HTTP. */
-httpsServer.listen(3000)
-httpServer.listen(80)
+
+httpsServer.listen(3000);
+httpServer.listen(80);
