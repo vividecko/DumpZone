@@ -38,6 +38,7 @@ body {
   background-repeat: no-repeat;
   background-attachment: fixed;
   overflow-x: hidden;
+  overflow-y: scroll;
 }
 img {
   vertical-align: middle;
@@ -104,7 +105,7 @@ main {
   margin: auto;
   margin-top: var(--def-top-margin);
   height: 100%;
-  max-width: var(--def-width);
+  width: var(--def-width);
 }
 /* white panels/boxes containing the main content in each page */
 section {

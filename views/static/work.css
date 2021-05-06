@@ -46,6 +46,14 @@ h3 {
 	padding: 0px 20px;
 	margin-top: 10px;
 }
+.practice {
+	color: white;
+	background-color: #3ccc62;
+	border-radius: 20px;
+	height: 40px;
+	padding: 0px 20px;
+	margin-top: 10px;
+}
 
 .arrowglyph {
 	height: 70px;
