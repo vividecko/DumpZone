@@ -1,16 +1,22 @@
 <nav class="noselect">
 <div style="width:var(--def-width); margin:auto;">
 
-<a href="/" style="float:left;" class="menuitem2">
-  <img src="logo.png" alt="logo" style="width:64px;" class="logo pop">
-  <h1 class="big-text pop" style="padding-left:10px; color:var(--alt-color);">
-    <% if (doc === 'login' || doc === 'register') { %>
-      <%= 'HomeMath' %>
-    <% } else { %>
-      <%= 'Home' %>
-    <% } %>
-  </h1>
-</a>
+<div class="menu2">
+  <a href="/" style="float:left;" class="menuitem2">
+    <img src="logo.png" alt="logo" style="width:64px;" class="logo pop">
+    <h1 class="big-text pop" style="padding-left:10px; color:var(--alt-color);">
+      <% if (doc === 'login' || doc === 'register') { %>
+        <%= 'HomeMath' %>
+      <% } else { %>
+        <%= 'Home' %>
+      <% } %>
+    </h1>
+  </a>
+
+  <a href="#" class="highlighted menuitem2">
+    <p style="font-size: 25px;" class="pop">Class: Mr. Morabito's Class</p>
+  </a>
+</div>
 
 <!--
 reference for making the user info a dropdown menu later

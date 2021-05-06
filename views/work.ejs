@@ -10,7 +10,15 @@
 
   <!--Work page navigation-->
   <div class="assignmentnav menuitem">
-  	<h3 class="menuitem duedate">Due 02/18</h3>
+
+
+    <% if (title === "Work") { %>
+      <%- '<h3 class="menuitem duedate">Due 02/18</h3>' %>
+    <% } else if (title === "Practice") { %>
+      <%- '<h3 class="menuitem practice">Practice</h3>' %>
+    <% } %>
+
+
   	<a href="#" class="menuitem arrowglyph pop noselect" style="color: #525252">🡄</a>
   	<a href="#" class="menuitem arrowglyph pop noselect" style="color: #525252">🡆</a>
   </div>
@@ -24,14 +32,14 @@
 
 
 <!--Input box short answer-->
-<form class="menu" style="height: 45px;">
+<form class="menu" style="height: 45px;" action="/work" method="POST">
 	<input class="answerfield" type="text" placeholder="Answer..." required>
 	<button class="submitanswer pop" type="submit" class="pop">Submit</button>
 </form>
 
 
 <!--Small MC list rigged to radio buttons-->
-<form class="menu" style="height: 45px;">
+<form class="menu" style="height: 45px;" action="/work" method="POST">
 
   <div class="mcgrid">
     <label for="answer_1">
@@ -60,7 +68,7 @@
 
 
 <!--Large MC list rigged to radio buttons, must comment out small list in order to function properly-->
-<form class="menu" style="height: 170px; align-items: center;">
+<form class="menu" style="height: 170px; align-items: center;" action="/work" method="POST">
 
   <div class="mcgrid">
     <label for="answer_1">
