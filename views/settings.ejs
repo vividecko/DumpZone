@@ -1,0 +1,142 @@
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script> -->
+    <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> -->
+</head>
+<div class="container">
+    <div class="rectangle-section">
+        <div class="row">
+            <div class="col-md-6">
+                <!-- <div class="settings-container"> -->
+                <img src="settings-Icon.png" class="settings-image" />
+                <h3 id="text-align">Settings</h3>
+                <!-- </div> -->
+                <br />
+                <br />
+                <br />
+                <div class="form">
+                    <h3 class="form-text">Change Password</h3>
+                    <br />
+
+                    <form class="form-text-align" method="POST" action="/change-password">
+                        <label for="password">New Password</label><br />
+                        <input type="password" class="newPassword" id="password" name="password"
+                            placeholder="New Password" minlength="8" required />
+                        <br />
+                        <br />
+                        <label for="confirmPassword"> Confirm Password </label><br />
+                        <input type="password" id="confirmPassword" name="confirmPassword"
+                            placeholder="Confirm Password" minlength="8" required />
+
+                        <br />
+                        <br />
+
+                        <button type="submit" class="submit-button-class">Submit</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <br />
+                <br />
+                <br />
+                <div class="change-icon text-center">
+                    <form class="form-text-align" method="POST" action="/change-color">
+                        <label for="changeIcon" class="form-text1"> Change Icon </label><br />
+                        <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" class="logo pop"
+                            viewBox="0 0 104.33 103.68">
+                            <title>frog vector</title>
+                            <path d="M199.25,250.94a51.84,51.84,0,1,1-51.84-51.84A51.86,51.86,0,0,1,199.25,250.94Z"
+                                transform="translate(-94.92 -199.1)" id="bg" fill=<%= color.bg %> />
+                            <path
+                                d="M95.74,249.23c1.38-2.3,4-3.24,8.43-2a1.19,1.19,0,0,0,1.53-1,7.43,7.43,0,0,1,4.28-6,1.13,1.13,0,0,0,.24-1.91c-12-9.45,3.72-34.2,23.2-13.87a1.23,1.23,0,0,0,1,.36c2.93-.41,15.91-2,25.9-.06a1.19,1.19,0,0,0,1.15-.39c12.77-15,32.47-4.1,21.08,13a1.12,1.12,0,0,0,.13,1.43,16.12,16.12,0,0,1,4.55,7.8,1.2,1.2,0,0,0,1.74.8c2.4-1.25,6.33-1.12,9.61.27,2.89,8-3.61,55-50.2,55h-1c-34.58-1.61-56.66-30.53-51.82-53A1,1,0,0,1,95.74,249.23Z"
+                                transform="translate(-94.92 -199.1)" id="body" fill=<%= color.body %> />
+                            <path
+                                d="M119.22,282.35a13.55,13.55,0,0,1-3.61,9.54c-5.57-4.34-11.23-9.78-14.66-16a10.55,10.55,0,0,1,8.91-5.64C115,270.25,119.22,275.67,119.22,282.35Z"
+                                transform="translate(-94.92 -199.1)" id="circle" fill=<%= color.circle %> />
+                            <path
+                                d="M169.75,297c0,.25,0,1.49-.06,1.73-6.75,3.22-14.31,4-22.28,4a51.75,51.75,0,0,1-21.24-4.53h0c0-15.41,9.16-22.91,21.24-23.74C157.67,274.5,170.36,283,169.75,297Z"
+                                transform="translate(-94.92 -199.1)" fill="#fbeea0" />
+                            <ellipse cx="186.51" cy="279.95" rx="6.15" ry="2.71"
+                                transform="translate(-244.11 102.39) rotate(-60)" id="circle"
+                                fill=<%= color.circle %> />
+                            <circle cx="91.96" cy="56.91" r="2.53" id="circle" fill=<%= color.circle %> />
+                            <circle cx="47.29" cy="37.78" r="2.53" id="circle" fill=<%= color.circle %> />
+                            <circle cx="56.62" cy="37.78" r="2.53" id="circle" fill=<%= color.circle %> />
+                            <circle cx="87.72" cy="70.8" r="2.71" id="circle" fill=<%= color.circle %> />
+                            <circle cx="16.41" cy="61.4" r="2.44" id="circle" fill=<%= color.circle %> />
+                            <circle cx="26.7" cy="72.22" r="3.18" id="circle" fill=<%= color.circle %> />
+                            <ellipse cx="27.31" cy="46.51" rx="5.94" ry="5.33" id="circle" fill=<%= color.circle %> />
+                            <ellipse cx="80.3" cy="47.7" rx="5.89" ry="5.33" id="circle" fill=<%= color.circle %> />
+                            <path d="M118.33,248.17l2.55-1a2.62,2.62,0,0,1,3.41,1.7c6,19.26,43.4,17.07,51.21-1.91"
+                                transform="translate(-94.92 -199.1)" fill="none" stroke="#000" stroke-miterlimit="10"
+                                stroke-width="2" />
+                            <path
+                                d="M105.35,248.67c-.24,2.7-2,6-.84,7.66,5.67,2.35,15.64-4.83,8.16-13.83C112.67,242.5,106.35,237.33,105.35,248.67Z"
+                                transform="translate(-94.92 -199.1)" id="circle" fill=<%= color.circle %> />
+                            <ellipse cx="25.43" cy="30" rx="9.94" ry="9.15" fill="#fff" />
+                            <ellipse cx="25.43" cy="29.25" rx="6.53" ry="6" />
+                            <ellipse cx="23.52" cy="27.9" rx="1.91" ry="1.35" fill="#fff" />
+                            <ellipse cx="77.34" cy="30.34" rx="9.94" ry="8.81" fill="#fff" />
+                            <ellipse cx="77.34" cy="29.16" rx="6.53" ry="5.45" />
+                            <ellipse cx="75.44" cy="27.94" rx="1.91" ry="1.23" fill="#fff" />
+                        </svg>
+                        <input type="color" name="changeIcon" required id="iconColor" style="width:60px; padding: 0 5px; border-radius: 0;" />
+
+                        <br />
+                        <br />
+
+                        <button type="submit" class="submit-button-class">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>
+                Need additional help? Contact us here: HomeMath.com/help
+                <span id="circle-dot">&#9899;</span> (508) 867-5309
+            </p>
+        </footer>
+    </div>
+</div>
+<script>
+    const password = document.getElementById('password');
+    const confirmPassword = document.getElementById('confirmPassword');
+    const iconColor = document.getElementById('iconColor');
+    const circle = Array.from(document.querySelectorAll("#circle"));
+    const bg = document.getElementById('bg');
+    const body = document.getElementById('body');
+
+    const validatePassword = () => {
+        if (password.value != confirmPassword.value) {
+            confirmPassword.setCustomValidity("Passwords Don't Match");
+        } else {
+            confirmPassword.setCustomValidity('');
+        }
+    };
+    const colorValue = () => {
+        circle.forEach(el=>el.style.fill=iconColor.value)
+        bg.style.fill=colorAdjust(iconColor.value, 100);
+        body.style.fill=colorAdjust(iconColor.value, 25);
+    }
+    password.onchange = validatePassword;
+    confirmPassword.onkeyup = validatePassword;
+    iconColor.onchange = colorValue
+
+
+    function colorAdjust(color, amount) {
+        return (
+            '#' +
+            color
+            .replace(/^#/, '')
+            .replace(/../g, (color) =>
+                (
+                    '0' +
+                    Math.min(255, Math.max(0, parseInt(color, 16) + amount)).toString(16)
+                ).substr(-2)
+            )
+        );
+    }
+</script>
