@@ -213,3 +213,23 @@ section {
   width: 70%;
   display: inline-flex;
 }
+
+.submenu {
+  position: absolute;
+  top: 78px;
+  display: none; 
+  z-index: 2;
+  text-align: center;
+  min-width: 100%;
+  white-space: nowrap;
+}
+
+.submenu a {
+  display: block;
+  padding: 20px;
+  text-align: center;
+}
+
+.menuitem2:hover .submenu {
+  display: block;
+}

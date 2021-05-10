@@ -84,8 +84,14 @@ td p {
 
 .heading {
 	display: inline-flex;
-	justify-content: center;
+	justify-content: space-between;
 	align-items: center;
+	width: 100%;
+}
+.heading .title {
+	display: inline-flex;
+	align-items: center;
+	width: 50%;
 }
 .heading img {
 	height: 26px;
@@ -106,10 +112,52 @@ td p {
 }
 .student_grade {
 	font-size: 40px;
+	text-align: right;
 }
 .trophy_count {
 	width: 490px;
 }
+
+
+
+.popup-bg {
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.7);
+	position: absolute;
+	top: 0;
+	left: 0;
+	display: none;
+	justify-content: center;
+	align-items: center;
+}
+
+.prompt {
+	display: none;
+	background-color: white;
+	padding: 20px;
+	border-radius: 30px;
+	width: 300px;
+	position: relative;
+}
+
+.x-button {
+	color: var(--lite-fg-color);
+	position: absolute;
+	top: 5px;
+	right: 18px;
+	font-size: 40px;
+	transform: rotate(45deg);
+	transition: 0.2s;
+}
+.x-button:hover {
+	color: var(--off-color);
+}
+.x-button:active {
+	color: red;
+	transform: rotate(45deg) scale(0.95);
+}
+
 
 /*Styles from Work*/
 
@@ -165,4 +213,24 @@ td p {
 .mcanswer:active {
 	color: white;
 	background-color: var(--hl1-color);
+}
+
+.answerfield, .submitanswer, .mcanswer {
+	font-size: 20px;
+	padding: 10px 20px;
+	border-radius: 30px;
+	width: 100%;
+	margin: 20px 0px 0px 0px;
+}
+
+.answerfield {
+	width: 87%;
+}
+
+.submitanswer {
+	background-color: #3ccc62;
+	height: 45px;
+}
+.submitanswer:hover {
+	background-color: #22a344;
 }

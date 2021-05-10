@@ -1,0 +1,119 @@
+body {
+    background-image: url('bg.png');
+}
+
+#header-section {
+    background-color: rgb(19, 19, 136);
+    height: 80px;
+}
+
+#logo-design {
+    width: 70px;
+    height: 70px;
+    float: left;
+}
+
+.alignment {
+    width: 50px;
+    height: 50px;
+    float: right;
+    color: white;
+    font-size: 30px;
+    text-decoration: none;
+    margin-right: 202px;
+    margin-top: 10px;
+    display:flex;
+}
+
+#a-profile-name {
+    text-decoration: none;
+    padding-left: 5px;
+}
+
+#logout-icon {
+    padding-left: 5px;
+}
+
+.container-section {
+    width: 50px;
+    height: 50px;
+    margin-top: 7px;
+    margin-right: 300px;
+}
+
+.rectangle-section {
+    background-color: white;
+    border-radius: 20px;
+    margin-top: 25px;
+    height: 600px;
+}
+
+.settings-image {
+    float: left;
+    width: 100px;
+    height: 100px;
+    margin-left: 25px;
+    margin-top: 20px;
+}
+
+#text-align {
+    margin-top: 50px;
+    margin-left: 125px;
+    font-size: 30px;
+    color: rgb(128, 128, 128);
+}
+
+.form-text {
+    margin-top: 50px;
+    margin-left: 190px;
+    font-size: 20px;
+    color: rgb(128, 128, 128);
+}
+
+.form-text1 {
+    font-size: 20px;
+    color: rgb(128, 128, 128);
+}
+
+form {
+    font-size: 20px;
+    color: rgb(128, 128, 128);
+}
+
+input[type=password] {
+    border-radius: 50px;
+    width: 330px;
+    height: 35px;
+    background-color: rgb(170, 162, 162);
+}
+
+input[type=color] {
+    border: transparent;
+}
+
+.form-text-align {
+    text-align: center;
+}
+
+.submit-button-class {
+    border-radius: 50px;
+    width: 100px;
+    height: 35px;
+    background-color:rgb(19, 19, 136);
+    color: white;
+}
+
+.change-icon {
+    margin-top: 134px;
+}
+
+footer {
+    padding-top: 90px;
+    text-align: center;
+    font-size: 20px;
+
+}
+
+#circle-dot {
+    font-size: 10px;
+}
