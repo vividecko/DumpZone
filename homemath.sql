@@ -36,15 +36,6 @@ CREATE TABLE `assignment_practice` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `assignment_practice`
---
-
-LOCK TABLES `assignment_practice` WRITE;
-/*!40000 ALTER TABLE `assignment_practice` DISABLE KEYS */;
-/*!40000 ALTER TABLE `assignment_practice` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `assignment_tutorial`
 --
 
@@ -70,15 +61,6 @@ CREATE TABLE `assignment_tutorial` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `assignment_tutorial`
---
-
-LOCK TABLES `assignment_tutorial` WRITE;
-/*!40000 ALTER TABLE `assignment_tutorial` DISABLE KEYS */;
-/*!40000 ALTER TABLE `assignment_tutorial` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `assignment_work`
 --
 
@@ -102,15 +84,6 @@ CREATE TABLE `assignment_work` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `assignment_work`
---
-
-LOCK TABLES `assignment_work` WRITE;
-/*!40000 ALTER TABLE `assignment_work` DISABLE KEYS */;
-/*!40000 ALTER TABLE `assignment_work` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `award`
 --
 
@@ -123,15 +96,6 @@ CREATE TABLE `award` (
   PRIMARY KEY (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `award`
---
-
-LOCK TABLES `award` WRITE;
-/*!40000 ALTER TABLE `award` DISABLE KEYS */;
-/*!40000 ALTER TABLE `award` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `classroom`
@@ -153,15 +117,6 @@ CREATE TABLE `classroom` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `classroom`
---
-
-LOCK TABLES `classroom` WRITE;
-/*!40000 ALTER TABLE `classroom` DISABLE KEYS */;
-/*!40000 ALTER TABLE `classroom` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `earns_award`
 --
 
@@ -179,15 +134,6 @@ CREATE TABLE `earns_award` (
   CONSTRAINT `earns_award_ibfk_2` FOREIGN KEY (`award_name`) REFERENCES `award` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `earns_award`
---
-
-LOCK TABLES `earns_award` WRITE;
-/*!40000 ALTER TABLE `earns_award` DISABLE KEYS */;
-/*!40000 ALTER TABLE `earns_award` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `practice_attempt`
@@ -209,15 +155,6 @@ CREATE TABLE `practice_attempt` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `practice_attempt`
---
-
-LOCK TABLES `practice_attempt` WRITE;
-/*!40000 ALTER TABLE `practice_attempt` DISABLE KEYS */;
-/*!40000 ALTER TABLE `practice_attempt` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `practice_question`
 --
 
@@ -237,15 +174,6 @@ CREATE TABLE `practice_question` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `practice_question`
---
-
-LOCK TABLES `practice_question` WRITE;
-/*!40000 ALTER TABLE `practice_question` DISABLE KEYS */;
-/*!40000 ALTER TABLE `practice_question` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `question`
 --
 
@@ -259,20 +187,31 @@ CREATE TABLE `question` (
   `question` json NOT NULL,
   `answers` json NOT NULL,
   `author_name` varchar(16) DEFAULT NULL,
+  `preset_id` mediumint DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_author_name` (`author_name`),
-  CONSTRAINT `FK_author_name` FOREIGN KEY (`author_name`) REFERENCES `user` (`user_name`)
+  KEY `preset_id` (`preset_id`),
+  CONSTRAINT `FK_author_name` FOREIGN KEY (`author_name`) REFERENCES `user` (`user_name`),
+  CONSTRAINT `question_ibfk_1` FOREIGN KEY (`preset_id`) REFERENCES `question_preset` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `question`
+-- Table structure for table `question_preset`
 --
 
-LOCK TABLES `question` WRITE;
-/*!40000 ALTER TABLE `question` DISABLE KEYS */;
-/*!40000 ALTER TABLE `question` ENABLE KEYS */;
-UNLOCK TABLES;
+DROP TABLE IF EXISTS `question_preset`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `question_preset` (
+  `id` mediumint NOT NULL AUTO_INCREMENT,
+  `name` varchar(30) NOT NULL,
+  `grade` char(1) DEFAULT NULL,
+  `author_name` varchar(16) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `valid_grade_2` CHECK (((`grade` = _cp850'K') or (`grade` = _cp850'1') or (`grade` = _cp850'2') or (`grade` = _cp850'3') or (`grade` = _cp850'4')))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `tutorial_view`
@@ -284,22 +223,13 @@ DROP TABLE IF EXISTS `tutorial_view`;
 CREATE TABLE `tutorial_view` (
   `student_name` varchar(16) NOT NULL,
   `assignment_id` mediumint NOT NULL,
-  `view_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`student_name`,`assignment_id`,`view_date`),
+  `completion_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`student_name`,`assignment_id`,`completion_date`),
   KEY `assignment_id` (`assignment_id`),
   CONSTRAINT `tutorial_view_ibfk_1` FOREIGN KEY (`student_name`) REFERENCES `user` (`user_name`),
   CONSTRAINT `tutorial_view_ibfk_2` FOREIGN KEY (`assignment_id`) REFERENCES `assignment_tutorial` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `tutorial_view`
---
-
-LOCK TABLES `tutorial_view` WRITE;
-/*!40000 ALTER TABLE `tutorial_view` DISABLE KEYS */;
-/*!40000 ALTER TABLE `tutorial_view` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `user`
@@ -325,15 +255,6 @@ CREATE TABLE `user` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `user`
---
-
-LOCK TABLES `user` WRITE;
-/*!40000 ALTER TABLE `user` DISABLE KEYS */;
-/*!40000 ALTER TABLE `user` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `work_attempt`
 --
 
@@ -356,15 +277,6 @@ CREATE TABLE `work_attempt` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `work_attempt`
---
-
-LOCK TABLES `work_attempt` WRITE;
-/*!40000 ALTER TABLE `work_attempt` DISABLE KEYS */;
-/*!40000 ALTER TABLE `work_attempt` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `work_question`
 --
 
@@ -383,15 +295,6 @@ CREATE TABLE `work_question` (
   CONSTRAINT `FK_question_id` FOREIGN KEY (`question_id`) REFERENCES `question` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `work_question`
---
-
-LOCK TABLES `work_question` WRITE;
-/*!40000 ALTER TABLE `work_question` DISABLE KEYS */;
-/*!40000 ALTER TABLE `work_question` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -402,4 +305,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-05-03  7:17:24
+-- Dump completed on 2021-05-10 12:06:21
