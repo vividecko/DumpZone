@@ -91,9 +91,28 @@ const getList = (table, fields, values) => {
     `SELECT * FROM ${table}`
     + ` WHERE ${fields.join('=? AND ') + '=?'}`,
     values,
-    (err, result) => {
-      if (err) throw err;
-    }
+    errFunction
+  );
+  return list[0];
+}
+
+const getByNullValue = (table, fields, values, null_field) => {
+  const extra = (fields == null)
+    ? '' : `AND ${fields.join('=? AND ') + '=?'}`;
+  const list = db.query(
+    `SELECT * FROM ${table}`
+    + `WHERE ${null_field} IS NULL`
+    + extra,
+    values,
+    errFunction
+  );
+  return list[0];
+}
+
+const getAll = (table) => {
+  const list = db.query(
+    `SELECT * FROM ${table}`,
+    errFunction
   );
   return list[0];
 }
@@ -103,7 +122,7 @@ const getList = (table, fields, values) => {
  * "max_field". The lists "other_fields" and "other_values" determine further
  * selection criteria.
  */
-const getMax = (table, max_field, other_fields, other_values) => {
+const getMax = (table, other_fields, other_values, max_field) => {
   const value = db.query(
     `SELECT * FROM ${table}`
     + ` WHERE ${other_fields.join('=? AND ') + '=?'}`
@@ -140,6 +159,8 @@ const uncache = (key) => {
 
 module.exports.getObject = getObject;
 module.exports.getList = getList;
+module.exports.getByNullValue = getByNullValue;
+module.exports.getAll = getAll;
 module.exports.getMax = getMax;
 module.exports.insert = insert;
 module.exports.uncache = uncache;

@@ -1,9 +1,16 @@
-var User = require("./User");
+const storage = require('../storage');
+const user = require('./User');
 
-module.exports = class Teacher extends User {
-
-	constructor(username, firstName, lastName, email, password) {
-		super(username, firstName, lastName, email, password);
-	}
-
+/*
+ * Add a new user with "is_teacher" set to 1 (true).
+ */
+const create = (username, fname, lname, email, hashed_pw) => {
+  user.create(username, fname, lname, email, hashed_pw, 1);
 }
+
+const get = (username) => {
+  user.get(username);
+}
+
+module.exports.create = create;
+module.exports.get = get;

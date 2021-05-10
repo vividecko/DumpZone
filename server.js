@@ -13,17 +13,18 @@ if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
 }
 
-const uncache = require('./storage').uncache;
-const user = require('./models/User');
-const student = require('./models/Student');
-const instructor = require('./models/Instructor');
+const storage = require('./storage');
+const requireDir = require('require-dir');
+const models = requireDir('./models');
 
 const fs = require('fs');
 const http = require('http');
 const https = require('https');
 
-const cert = {key: fs.readFileSync('localhost.key', 'utf8'),
-  cert: fs.readFileSync('localhost.crt', 'utf8')}
+const cert = {
+  key: fs.readFileSync('localhost.key', 'utf8'),
+  cert: fs.readFileSync('localhost.crt', 'utf8')
+}
 
 const express = require('express');
 const httpApp = express();          /* for plain HTTP */
@@ -44,7 +45,7 @@ const httpsServer = https.createServer(cert, app);
  * a username and returns the corresponding user object from the database.
  */
 const initializePassport = require('./passport-config');
-initializePassport(passport, user.get);
+initializePassport(passport, models.User.get);
 
 app.set('view-engine', 'ejs');
 app.use(express.urlencoded({ extended: false }));
@@ -148,7 +149,7 @@ app.get('/register-instructor', checkNotAuthenticated, (req, res) => {
 app.post('/register-student', checkNotAuthenticated, async (req, res) => {
   try {
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
-    student.create(
+    models.Student.create(
       req.body.username,
       req.body.firstname,
       req.body.lastname,
@@ -165,7 +166,7 @@ app.post('/register-student', checkNotAuthenticated, async (req, res) => {
 app.post('/register-instructor', checkNotAuthenticated, async (req, res) => {
   try {
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
-    instructor.create(
+    models.Teacher.create(
       req.body.username,
       req.body.firstname,
       req.body.lastname,
@@ -185,7 +186,7 @@ app.post('/register-instructor', checkNotAuthenticated, async (req, res) => {
  * Log the user out and end the session.
  */
 app.get('/logout', (req, res) => {
-  uncache(req.session.passport.user);
+  storage.uncache(req.session.passport.user);
   req.logOut();
   res.redirect('/login');
 });
