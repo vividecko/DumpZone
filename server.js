@@ -90,6 +90,8 @@ app.get('/', checkAuthenticated, (req, res) => {
  * Work page, where students do assignments or tests.
  */
 app.get('/work', (req, res) => {
+  //const user = models.Student.get(req.session.passport.user);
+  //models.WorkAssignment.
   res.render('template.ejs', {
     title: 'Work',
     doc: 'work',
@@ -99,6 +101,62 @@ app.get('/work', (req, res) => {
 
 app.post('/work', (req, res) => {
   console.log('answer received');
+});
+
+
+/*
+ * Practice page, where students can try problems an unlimited number of
+ * times.
+ */
+app.get('/practice', (req, res) => {
+  //const user = models.Student.get(req.session.passport.user);
+  //models.WorkAssignment.
+  res.render('template.ejs', {
+    title: 'Practice',
+    doc: 'work',
+    username: req.session.passport.user
+  });
+});
+
+app.post('/practice', (req, res) => {
+  console.log('answer received');
+});
+
+
+/*
+ * Tutorial page, where students view video tutorials.
+ */
+app.get('/tutorial', (req, res) => {
+  res.render('template.ejs', {
+    title: 'Tutorials',
+    doc: 'tutorials',
+    username: req.session.passport.user
+  });
+});
+
+
+/*
+ * Parrot collection page, where students can gaze upon their majestic
+ * collection of party parrots.
+ */
+app.get('/parrots', (req, res) => {
+  res.render('template.ejs', {
+    title: 'Parrot Collection',
+    doc: 'parrots',
+    username: req.session.passport.user
+  });
+});
+
+
+/*
+ * Teacher dashboard page, where teachers can manage their virtual classrooms.
+ */
+app.get('/tp', (req, res) => {
+  res.render('template.ejs', {
+    title: 'Teacher Dashboard',
+    doc: 'teacher',
+    username: req.session.passport.user
+  });
 });
 
 
@@ -120,6 +178,19 @@ app.post('/login', checkNotAuthenticated, passport.authenticate('local', {
   failureRedirect: '/login',
   failureFlash: true
 }));
+
+
+/*
+ * Settings page where users can change profile settings.
+ */
+app.get('/settings', (req, res) => {
+  res.render('template.ejs', {
+    title: 'Settings',
+    doc: 'settings',
+    username: req.session.passport.user,
+    color: "#333"
+  });
+});
 
 
 /*
