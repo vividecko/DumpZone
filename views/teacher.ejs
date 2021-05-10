@@ -8,8 +8,10 @@
       <div class="rightcol">
         
         <div class="heading">
-          <h2>Assignments</h2>
-          <img src="https://cdn3.iconfinder.com/data/icons/navigation-icons-1/32/add-512.png" class="pop">
+          <div class="title">
+            <h2>Assignments</h2>
+            <img src="https://cdn3.iconfinder.com/data/icons/navigation-icons-1/32/add-512.png" class="pop" id="addAssignment">
+          </div>
         </div>
 
         <table>
@@ -20,37 +22,37 @@
           </tr>
 
           <tr>
-            <td class="duedate"><p>12/18</p></td>
+            <td class="duedate pop noselect"><p>12/18</p></td>
             <td>Math Test 1</td>
             <td>20</td>
           </tr>
 
           <tr>
-            <td class="duedate"><p>12/18</p></td>
+            <td class="duedate pop noselect"><p>12/18</p></td>
             <td>Math Test 1</td>
             <td>20</td>
           </tr>
 
           <tr>
-            <td class="duedate"><p>12/18</p></td>
+            <td class="duedate pop noselect"><p>12/18</p></td>
             <td>Math Test 1</td>
             <td>20</td>
           </tr>
 
           <tr>
-            <td class="duedate"><p>12/18</p></td>
+            <td class="duedate pop noselect"><p>12/18</p></td>
             <td>Math Test 1</td>
             <td>20</td>
           </tr>
 
           <tr>
-            <td class="duedate"><p>12/18</p></td>
+            <td class="duedate pop noselect"><p>12/18</p></td>
             <td>Math Test 1</td>
             <td>20</td>
           </tr>
 
           <tr>
-            <td class="duedate"><p>12/18</p></td>
+            <td class="duedate pop noselect"><p>12/18</p></td>
             <td>Math Test 1</td>
             <td>20</td>
           </tr>
@@ -61,8 +63,10 @@
       <div class="leftcol">
         
         <div class="heading">
-          <h2>Resources</h2>
-          <img src="https://cdn3.iconfinder.com/data/icons/navigation-icons-1/32/add-512.png" class="pop">
+          <div class="title">
+            <h2>Resources</h2>
+            <img src="https://cdn3.iconfinder.com/data/icons/navigation-icons-1/32/add-512.png" class="pop" id="addResource">
+          </div>
         </div>
 
         <table>
@@ -123,8 +127,13 @@
 
         <div class="rightcol" style="width: 100%; height: 400px;">
           <div class="heading">
-            <h2>Students</h2>
-            <img src="https://cdn3.iconfinder.com/data/icons/navigation-icons-1/32/add-512.png" class="pop">
+              
+            <div class="title">
+              <h2>Students</h2>
+              <img src="https://cdn3.iconfinder.com/data/icons/navigation-icons-1/32/add-512.png" class="pop" id="addStudent">
+            </div>
+
+            <h2 style="color: #9d9d9d">Total: 20</h2>
           </div>
 
           <table class="student_table">
@@ -208,3 +217,85 @@
       </div>
 
     </section>
+
+    <div class="popup-bg">
+      
+      <div class="add-assignment-box prompt shadow">
+
+        <div class="x-button noselect" onclick="closePrompts();">+</div>
+
+        <h2>Add Assignment</h2>
+
+        <form action="#">
+          <input class="answerfield" type="text" name="assignment_name" placeholder="Name">
+          <input class="answerfield" type="text" name="assignment_material" placeholder="Material">
+          <button class="submitanswer pop" type="submit" class="pop">Submit</button>
+        </form>
+
+      </div>
+
+      <div class="add-resource-box prompt shadow">
+
+        <div class="x-button noselect" onclick="closePrompts();">+</div>
+
+        <h2>Add Resource</h2>
+
+        <form action="#">
+          <input class="answerfield" type="text" name="assignment_name" placeholder="Name">
+          <input class="answerfield" type="text" name="assignment_material" placeholder="Link">
+          <button class="submitanswer pop" type="submit" class="pop">Submit</button>
+        </form>
+
+      </div>
+
+      <div class="add-student-box prompt shadow">
+
+        <div class="x-button noselect" onclick="closePrompts();">+</div>
+
+        <h2>Add Student</h2>
+
+        <form action="#">
+          <input class="answerfield" type="text" name="assignment_name" placeholder="Username">
+          <button class="submitanswer pop" type="submit" class="pop">Submit</button>
+        </form>
+
+      </div>
+
+    </div>
+
+    <script type="text/javascript">
+      
+      document.getElementById("addAssignment").addEventListener("click", function() {
+
+        document.querySelector(".popup-bg").style.display = "flex";
+        document.querySelector(".add-assignment-box").style.display = "block";
+
+      });
+
+      document.getElementById("addResource").addEventListener("click", function() {
+
+        document.querySelector(".popup-bg").style.display = "flex";
+        document.querySelector(".add-resource-box").style.display = "block";
+
+      });
+
+      document.getElementById("addStudent").addEventListener("click", function() {
+
+        document.querySelector(".popup-bg").style.display = "flex";
+        document.querySelector(".add-student-box").style.display = "block";
+
+      });
+
+      function closePrompts() {
+
+        let prompts = document.querySelectorAll(".prompt");
+
+        for (var i = 0; i < prompts.length; i++) {
+          prompts[i].style.display = "none";
+        }
+
+        document.querySelector(".popup-bg").style.display = "none";
+
+      }
+
+    </script>
