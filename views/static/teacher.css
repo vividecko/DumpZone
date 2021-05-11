@@ -234,3 +234,22 @@ td p {
 .submitanswer:hover {
 	background-color: #22a344;
 }
+
+.selectionbox {
+	border: none;
+	background-color: var(--lite-fg-color);
+	width: 100%;
+	-webkit-appearance: none;
+    -moz-appearance: none;
+    text-indent: 1px;
+    text-overflow: '';
+    transition: 0.2s;
+}
+
+.selectionbox:hover {
+	background-color: #bdbdbd;
+}
+
+.selectionbox option {
+	background-color: white;
+}

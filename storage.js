@@ -14,8 +14,8 @@ const db = mysql.createPool({
   connectionLimit: 50,
   connectTimeout: 60 * 60 * 1000,
   host: 'localhost',
-  user: 'server',
-  password: 'dgPqnf1vtPje7dLoLu3h',
+  user: 'root',
+  password: 'root',
   database: 'homemath'
 });
 /* PHPMyAdmin Alt. Info
@@ -96,10 +96,10 @@ const getList = async (table, fields, values) => {
   return list[0];
 }
 
-const getByNullValue = async (table, fields, values, null_field) => {
+const getByNullValue = (table, fields, values, null_field) => {
   const extra = (fields == null)
     ? '' : `AND ${fields.join('=? AND ') + '=?'}`;
-  const list = await db.query(
+  const list = db.query(
     `SELECT * FROM ${table}`
     + `WHERE ${null_field} IS NULL`
     + extra,
@@ -109,8 +109,8 @@ const getByNullValue = async (table, fields, values, null_field) => {
   return list[0];
 }
 
-const getAll = async (table) => {
-  const list = await db.query(
+const getAll = (table) => {
+  const list = db.query(
     `SELECT * FROM ${table}`,
     errFunction
   );
@@ -122,8 +122,8 @@ const getAll = async (table) => {
  * "max_field". The lists "other_fields" and "other_values" determine further
  * selection criteria.
  */
-const getMax = async (table, other_fields, other_values, max_field) => {
-  const value = await db.query(
+const getMax = (table, other_fields, other_values, max_field) => {
+  const value = db.query(
     `SELECT * FROM ${table}`
     + ` WHERE ${other_fields.join('=? AND ') + '=?'}`
     + ` ORDER BY ${max_field} DESC LIMIT 1`,

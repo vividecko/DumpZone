@@ -8,8 +8,7 @@ const f = {
   practice_id: 'follow_up_practice_id'
 }
 
-const create = (name, desc, is_visible, date, class_id, vid, tag,
-practice_id) => {
+const create = (name, desc, is_visible, date, class_id, vid, tag, practice_id) => {
   assignment.create(
     table,
     name,
@@ -18,7 +17,7 @@ practice_id) => {
     date,
     class_id,
     [f.vid, f.tag, f.practice_id],
-    [vid, tag, due_date]
+    [vid, tag, practice_id]
   );
 }
 

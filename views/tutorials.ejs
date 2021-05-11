@@ -6,7 +6,7 @@
 
     <div class="menu">
       <!--Topic/question title-->
-      <h2 class="menuitem" style="padding-left:10px;">Number and Operations - Fractions/Division</h2>
+      <h2 class="menuitem" style="padding-left:10px;" id="tutorialTitle">No video loaded.</h2>
 
       <!--Work page navigation
       <div class="assignmentnav menuitem">
@@ -20,33 +20,62 @@
     <div class="player">
       
       <div class="video">
-        <iframe class="shadow" width="620" height="348.75" src="https://www.youtube.com/embed/mGvunan-I-Q" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+        <% if (tutorials.length !== 0) { %>
+
+          <iframe class="shadow" width="620" height="348.75" src="<%- tutorials[0].video_url %>" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="display: none;"></iframe>
+
+          <div class="screen shadow" style="width: 620px; height: 348.75px; background: url('https://i.imgur.com/ps8e8B2.png');"></div>
+
+        <% } else { %>
+
+          <div class="screen shadow" style="width: 620px; height: 348.75px; background: url('https://i.imgur.com/ps8e8B2.png');"></div>
+
+        <% } %>
 
         <div class="description">
           <h3>Description:</h3>
-          <h3>This is a quick tutorial on how to divide numbers. It will also serve as an introduction to fractions.</h3>
+          <h3 id="videoDesc">Select a tutorial to get started.</h3>
         </div>
 
       </div>
 
 
       <div class="videolist">
-        <div class="mcanswer pop noselect">Multiplication 1</div>
-        <div class="mcanswer pop noselect">Addition 1</div>
-        <div class="mcanswer pop noselect">Subtraction 1</div>
-        <div class="mcanswer pop noselect">Multiplication 1</div>
-        <div class="mcanswer pop noselect">Addition 1</div>
-        <div class="mcanswer pop noselect">Subtraction 1</div>
-        <div class="mcanswer pop noselect">Multiplication 1</div>
-        <div class="mcanswer pop noselect">Addition 1</div>
-        <div class="mcanswer pop noselect">Subtraction 1</div>
-        <div class="mcanswer pop noselect">Multiplication 1</div>
-        <div class="mcanswer pop noselect">Addition 1</div>
-        <div class="mcanswer pop noselect">Subtraction 1</div>
+
+        <% if (currentClass != null) { %>
+
+          <% tutorials.forEach(function(tuto) { if (tuto.classroom_id == currentClass.id) { %>
+
+            <div class="mcanswer pop noselect" onclick="loadVideo('<%- tuto.name%>', '<%- tuto.video_url%>', '<%- tuto.description%>')"><%- tuto.tag %></div>
+
+          <% }}); %>
+
+        <% } %>
+
       </div>
 
     </div>
 
-
     </section>
     <br />
+
+    <script type="text/javascript">
+      
+      function loadVideo(tutoTitle, url, description) {
+
+        let title = document.getElementById("tutorialTitle");
+        let desc = document.getElementById("videoDesc");
+        let vid = document.getElementsByTagName("iframe")[0];
+        let waitingscreen = document.querySelector(".screen");
+
+        title.innerHTML = tutoTitle;
+        desc.innerHTML = description;
+        vid.setAttribute("src", url);
+
+        waitingscreen.style.display = "none";
+        vid.style.display = "block";
+
+      }
+
+    </script>

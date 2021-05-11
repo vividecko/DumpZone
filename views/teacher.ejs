@@ -2,9 +2,9 @@
 
 <section class="shadow" style="display:flex; align-items:center; height:300px;">
 
-  <% if (classes == undefined) { %>
+  <% if (classrooms.length == 0) { %>
 
-    <div style="padding-top:2%; margin:0 auto;">
+    <div style="padding-top:2%; margin:0 auto; display: flex; justify-content: center; align-items: center; flex-flow: column;">
     <h1 class="sub-text">
       Looks like you aren't teaching any classes yet.
     </h1>
@@ -17,9 +17,9 @@
       <div class="add-class-box prompt shadow">
         <div class="x-button noselect" onclick="closePrompts();">+</div>
         <h2>Create Classroom</h2>
-        <form action="/add-class" method="POST">
+        <form action="/add/class" method="POST">
           <input class="answerfield" type="text" name="class_name" placeholder="Name">
-          <select class="answerfield" name="grade">
+          <select class="answerfield selectionbox" name="grade">
             <option value="K">K</option>
             <option value="1">1</option>
             <option value="2">2</option>
@@ -121,41 +121,15 @@
             <th>Views</th>
           </tr>
 
-          <tr>
-            <td class="practice"><p>12/18</p></td>
-            <td>Math Test 1</td>
-            <td>20</td>
-          </tr>
+          <% tutorials.forEach(function(tuto) { if (tuto.is_visible == 1) { %>
 
-          <tr>
-            <td class="practice"><p>12/18</p></td>
-            <td>Math Test 1</td>
-            <td>20</td>
-          </tr>
+            <tr>
+              <td class="practice"><p><%- tuto.assign_date.getMonth() + 1 %>/<%- tuto.assign_date.getDate() %></p></td>
+              <td><%- tuto.tag %></td>
+              <td>0</td>
+            </tr>
 
-          <tr>
-            <td class="practice"><p>12/18</p></td>
-            <td>Math Test 1</td>
-            <td>20</td>
-          </tr>
-
-          <tr>
-            <td class="practice"><p>12/18</p></td>
-            <td>Math Test 1</td>
-            <td>20</td>
-          </tr>
-
-          <tr>
-            <td class="practice"><p>12/18</p></td>
-            <td>Math Test 1</td>
-            <td>20</td>
-          </tr>
-
-          <tr>
-            <td class="practice"><p>12/18</p></td>
-            <td>Math Test 1</td>
-            <td>20</td>
-          </tr>
+          <% }}); %>
 
         </table>
 

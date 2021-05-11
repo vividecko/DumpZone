@@ -33,3 +33,5 @@ const getByAuthor = (author_name) => {
     [author_name]
   );
 }
+
+module.exports.create = create;

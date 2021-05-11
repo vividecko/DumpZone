@@ -13,17 +13,27 @@
     </h1>
   </a>
 
-  <!--Dropdown menus-->
-  <% if (doc === 'teacher' && classes != undefined) { %>
-    <div class="highlighted menuitem2" style="position: relative;">
-      <a href="/tp" class="pop">Mr. Morabito's Class</a>
 
-      <div class="submenu highlighted shadow">
-        <a href="#"><p class="pop">Ms. X's Class</p></a>
-        <a href="#"><p class="pop">Mr. Z's Class</p></a>
-      </div>
 
-    </div>
+  <% if (doc !== 'login' || doc !== 'register') { %>
+    <% if (teacher == 1) { %>
+      <% if (classrooms.length !== 0) { %>
+
+        <!--Dropdown menus-->
+        <div class="highlighted menuitem2" style="position: relative;">
+          <a href="/tp" class="pop"><%- currentClass.name %></a>
+
+          <div class="submenu highlighted shadow">
+            
+            <% classrooms.forEach(function(classroom) { %>
+              <a href="/tp/?class=<%- classroom.name %>"><p class="pop"><%- classroom.name %></p></a>
+            <% }); %>
+
+          </div>
+
+        </div>
+      <% } %>
+    <% } %>
   <% } %>
 
 </div>
@@ -31,31 +41,37 @@
 
 <% if (!(doc === 'login' || doc === 'register')) { %>
 
-<%- '<div class="menu2" style="float:right;">' %>
+ <div class="menu2" style="float:right;">
 
-<%-   '<a href="#" class="menuitem2">' %>
-<%-     '<img src="FROG.png" alt="Profile picture" style="width:48px;" class="logo pop">' %>
-<%-   '</a>' %>
-
-
+   <a href="#" class="menuitem2">
+     <img src="FROG.png" alt="Profile picture" style="width:48px;" class="logo pop">
+   </a>
 
 
 
-<%-   '<div class="highlighted menuitem2" style="position: relative;"><p class="pop">' %>
-<%-     username %>
 
-<%-     '<div class="submenu highlighted shadow">' %>
-<%-       '<a href="#"><p class="pop">Change password</p></a>' %>
-<%-       '<a href="#"><p class="pop">Change icon</p></a>' %>
-<%-     '</div>' %>
 
-<%-   '</p></div>' %>
+   <div class="highlighted menuitem2" style="position: relative;"><p class="pop">
+     <%- username %>
 
-<%-   '<a href="/logout" class="menuitem2">' %>
-<%-     '<img src="logout.png" alt="Logout icon" style="width:48px;" class="logo pop">' %>
-<%-   '</a>' %>
+     <div class="submenu highlighted shadow">
+          <% if (teacher == 1) { %>
 
-<%- '</div>' %>
+            <a href="/tutorials"><p class="pop">View tutorials</p></a>
+
+          <% } %>
+
+       <a href="#"><p class="pop">Change password</p></a>
+       <a href="#"><p class="pop">Change icon</p></a>
+     </div>
+
+   </p></div>
+
+   <a href="/logout" class="menuitem2"> %>
+     <img src="logout.png" alt="Logout icon" style="width:48px;" class="logo pop">
+   </a>
+
+ </div>
 
 <% } %>
 

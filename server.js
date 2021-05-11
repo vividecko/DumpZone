@@ -63,7 +63,7 @@ app.use(methodOverride('_method'));
 
 /*
  * ----------------------------------------------------------------------------
- * ROUTES/FUNCTIONS
+ * ROUTES
  * ----------------------------------------------------------------------------
  */
 
@@ -74,37 +74,16 @@ httpApp.all('*', (req, res) => res.redirect(300, 'https://localhost:3000'));
 
 
 /*
- * Ensure the user is a teacher before accessing teacher pages.
- */
-const checkIfTeacher = async (req, res, next) => {
-  const user = await models.User.get(req.session.passport.user);
-  if (user.is_teacher === 0) {    /* not teacher */
-    return res.redirect('/');
-  }
-  next();
-}
-
-/*
- * Ensure the user is a student before accessing student pages.
- */
-const checkIfStudent = async (req, res, next) => {
-  const user = await models.User.get(req.session.passport.user);
-  if (user.is_teacher === 1) {    /* is teacher */
-    return res.redirect('/');
-  }
-  next();
-}
-
-
-/*
  * Home page/dashboard, which differs based on whether the user is a student
  * or an instructor.
  */
-app.get('/', checkAuthenticated, (req, res) => {
+app.get('/', checkAuthenticated, checkIfStudent, (req, res) => {
+
   res.render('template.ejs', {
     title: 'Home',
     doc: 'index',
-    username: req.session.passport.user
+    username: req.session.passport.user,
+    teacher: 0
   });
 });
 
@@ -112,17 +91,18 @@ app.get('/', checkAuthenticated, (req, res) => {
 /*
  * Work page, where students do assignments or tests.
  */
-app.get('/work', (req, res) => {
+app.get('/work', checkAuthenticated, checkIfStudent, (req, res) => {
   //const user = models.Student.get(req.session.passport.user);
   //models.WorkAssignment.
   res.render('template.ejs', {
     title: 'Work',
     doc: 'work',
-    username: req.session.passport.user
+    username: req.session.passport.user,
+    teacher: 0
   });
 });
 
-app.post('/work', (req, res) => {
+app.post('/work', checkAuthenticated, checkIfStudent, (req, res) => {
   console.log('answer received');
 });
 
@@ -131,13 +111,14 @@ app.post('/work', (req, res) => {
  * Practice page, where students can try problems an unlimited number of
  * times.
  */
-app.get('/practice', (req, res) => {
+app.get('/practice', checkAuthenticated, checkIfStudent, (req, res) => {
   //const user = models.Student.get(req.session.passport.user);
   //models.WorkAssignment.
   res.render('template.ejs', {
     title: 'Practice',
     doc: 'work',
-    username: req.session.passport.user
+    username: req.session.passport.user,
+    teacher: 0
   });
 });
 
@@ -149,12 +130,39 @@ app.post('/practice', (req, res) => {
 /*
  * Tutorial page, where students view video tutorials.
  */
-app.get('/tutorial', (req, res) => {
-  res.render('template.ejs', {
-    title: 'Tutorials',
-    doc: 'tutorials',
-    username: req.session.passport.user
-  });
+app.get('/tutorials', checkAuthenticated, async (req, res) => {
+
+  let theuser = await models.User.get(req.session.passport.user);
+
+  if (theuser.is_teacher == 1) {
+
+    let classroomList = await models.Classroom.getByInstructor(req.session.passport.user);
+    let tutorialList = await models.TutorialAssignment.getByClass(1);
+
+    res.render('template.ejs', {
+      title: 'Tutorials',
+      doc: 'tutorials',
+      username: req.session.passport.user,
+      teacher: theuser.is_teacher,
+      currentClass: classroomList[0],
+      classrooms: classroomList,
+      tutorials: tutorialList
+    });
+
+  } else {
+
+    //Gonna organize this better once there's a way to specify which class
+    res.render('template.ejs', {
+      title: 'Tutorials',
+      doc: 'tutorials',
+      username: req.session.passport.user,
+      teacher: theuser.is_teacher,
+      currentClass: new Object(),
+      tutorials: []
+    });
+
+  }
+
 });
 
 
@@ -166,7 +174,8 @@ app.get('/parrots', (req, res) => {
   res.render('template.ejs', {
     title: 'Parrot Collection',
     doc: 'parrots',
-    username: req.session.passport.user
+    username: req.session.passport.user,
+    teacher: 0
   });
 });
 
@@ -175,25 +184,55 @@ app.get('/parrots', (req, res) => {
  * Teacher dashboard page, where teachers can manage their virtual classrooms.
  */
 app.get('/tp', checkAuthenticated, checkIfTeacher, async (req, res) => {
-  const classes = await models.Classroom.getByInstructor(
-    req.session.passport.user
-  );
-  console.log(classes);
-  res.render('template.ejs', {
-    title: 'Teacher Dashboard',
-    doc: 'teacher',
-    username: req.session.passport.user,
-    classes: classes
-  });
+
+  let classroomList = await models.Classroom.getByInstructor(req.session.passport.user);
+
+  let tutorialList = await models.TutorialAssignment.getByClass(1);
+
+  if (classroomList.length > 0) {
+    res.render('template.ejs', {
+      title: 'Teacher Dashboard',
+      doc: 'teacher',
+      username: req.session.passport.user,
+      teacher: 1,
+      currentClass: classroomList[0],
+      classrooms: classroomList,
+      tutorials: tutorialList
+    });
+  } else {
+    res.render('template.ejs', {
+      title: 'Teacher Dashboard',
+      doc: 'teacher',
+      username: req.session.passport.user,
+      teacher: 1,
+      classrooms: classroomList,
+      tutorials: tutorialList
+    });
+  }
+
 });
 
-app.post('/add-class', checkAuthenticated, checkIfTeacher, (req, res) => {
+app.post('/add/class', checkAuthenticated, checkIfTeacher, (req, res) => {
   models.Classroom.create(
     req.body.class_name,
     req.body.grade,
     req.session.passport.user
   );
-  res.redirect('/tp');
+  res.redirect('/');
+});
+
+app.post('/add/tutorial', checkAuthenticated, checkIfTeacher, async (req, res) => {
+  try {
+    let currentDate = new Date();
+
+    await models.TutorialAssignment.create(req.body.tutorial_name, req.body.tutorial_description, 1, currentDate, 1, req.body.tutorial_link, req.body.tutorial_tag, null);
+
+    console.log("New resource/tutorial created!");
+
+    res.redirect('/tp');
+  } catch (e) {
+    console.log(e);
+  }
 });
 
 
@@ -203,7 +242,8 @@ app.post('/add-class', checkAuthenticated, checkIfTeacher, (req, res) => {
 app.get('/login', checkNotAuthenticated, (req, res) => {
   res.render('template.ejs', {
     title: 'Login',
-    doc: 'login'
+    doc: 'login',
+    teacher: 0
   });
 });
 
@@ -225,7 +265,8 @@ app.get('/settings', (req, res) => {
     title: 'Settings',
     doc: 'settings',
     username: req.session.passport.user,
-    color: "#333"
+    color: "#333",
+    teacher: 0
   });
 });
 
@@ -237,7 +278,8 @@ app.get('/register-student', checkNotAuthenticated, (req, res) => {
   res.render('template.ejs', {
     title: 'Register',
     doc: 'register',
-    user_type: 'student'
+    user_type: 'student',
+    teacher: 0
   });
 });
 
@@ -245,7 +287,8 @@ app.get('/register-instructor', checkNotAuthenticated, (req, res) => {
   res.render('template.ejs', {
     title: 'Register',
     doc: 'register',
-    user_type: 'instructor'
+    user_type: 'instructor',
+    teacher: 0
   });
 });
 
@@ -315,6 +358,30 @@ function checkAuthenticated(req, res, next) {
 function checkNotAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
     return res.redirect('/');
+  }
+  next();
+}
+
+/*
+ * Ensure the user is a teacher before accessing teacher pages.
+ */
+async function checkIfTeacher(req, res, next) {;
+
+  let user = await models.User.get(req.session.passport.user);
+
+  if (user.is_teacher === 0) {    /* not teacher */
+    return res.redirect('/');
+  }
+  next();
+}
+
+/*
+ * Ensure the user is a student before accessing student pages.
+ */
+async function checkIfStudent(req, res, next) {
+  const user = await models.User.get(req.session.passport.user);
+  if (user.is_teacher === 1) {    /* is teacher */
+    return res.redirect('/tp');
   }
   next();
 }
