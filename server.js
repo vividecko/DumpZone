@@ -235,6 +235,35 @@ app.post('/add/tutorial', checkAuthenticated, checkIfTeacher, async (req, res) =
   }
 });
 
+app.post('/add/assignment', checkAuthenticated, checkIfTeacher, async (req, res) => {
+  try {
+    const currentDate = new Date();
+    const dueDate = new Date(req.body.due_date);
+    const desc = (req.body.work_description) ? req.body.work_description : '';
+    const time_limit = (req.body.time_limit) ? req.body.time_limit : 0;
+
+    /* Should do something better with this later. */
+    if (dueDate < currentDate) {
+      res.redirect('/tp');
+    }
+
+    await models.WorkAssignment.create(
+      req.body.work_name,
+      desc,
+      1,
+      currentDate,
+      1,
+      time_limit,
+      dueDate
+    );
+
+    console.log("New assignment created!");
+    res.redirect('/tp');
+  } catch (e) {
+    console.log(e);
+  }
+});
+
 
 /*
  * Login page/form.
@@ -365,7 +394,7 @@ function checkNotAuthenticated(req, res, next) {
 /*
  * Ensure the user is a teacher before accessing teacher pages.
  */
-async function checkIfTeacher(req, res, next) {;
+async function checkIfTeacher(req, res, next) {
 
   let user = await models.User.get(req.session.passport.user);
 
