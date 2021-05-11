@@ -174,12 +174,26 @@ app.get('/parrots', (req, res) => {
 /*
  * Teacher dashboard page, where teachers can manage their virtual classrooms.
  */
-app.get('/tp', checkAuthenticated, checkIfTeacher, (req, res) => {
+app.get('/tp', checkAuthenticated, checkIfTeacher, async (req, res) => {
+  const classes = await models.Classroom.getByInstructor(
+    req.session.passport.user
+  );
+  console.log(classes);
   res.render('template.ejs', {
     title: 'Teacher Dashboard',
     doc: 'teacher',
-    username: req.session.passport.user
+    username: req.session.passport.user,
+    classes: classes
   });
+});
+
+app.post('/add-class', checkAuthenticated, checkIfTeacher, (req, res) => {
+  models.Classroom.create(
+    req.body.class_name,
+    req.body.grade,
+    req.session.passport.user
+  );
+  res.redirect('/tp');
 });
 
 

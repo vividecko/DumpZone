@@ -1,8 +1,53 @@
 <main>
 
+<section class="shadow" style="display:flex; align-items:center; height:300px;">
 
+  <% if (classes == undefined) { %>
 
-<section class="shadow" style="height:300px;">
+    <div style="padding-top:2%; margin:0 auto;">
+    <h1 class="sub-text">
+      Looks like you aren't teaching any classes yet.
+    </h1>
+    <button id="addClass" class="submitanswer pop" style="width:200px;" type="submit" class="pop">
+      Create class
+    </button>
+    </div>
+
+    <div class="popup-bg">
+      <div class="add-class-box prompt shadow">
+        <div class="x-button noselect" onclick="closePrompts();">+</div>
+        <h2>Create Classroom</h2>
+        <form action="/add-class" method="POST">
+          <input class="answerfield" type="text" name="class_name" placeholder="Name">
+          <select class="answerfield" name="grade">
+            <option value="K">K</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+          </select>
+          <button class="submitanswer pop" type="submit" class="pop">Submit</button>
+        </form>
+      </div>
+    </div>
+
+    <script type="text/javascript">
+      document.getElementById("addClass").addEventListener("click", function() {
+        document.querySelector(".popup-bg").style.display = "flex";
+        document.querySelector(".add-class-box").style.display = "block";
+      });
+
+      function closePrompts() {
+        let prompts = document.querySelectorAll(".prompt");
+
+        for (var i = 0; i < prompts.length; i++) {
+          prompts[i].style.display = "none";
+        }
+        document.querySelector(".popup-bg").style.display = "none";
+      }
+    </script>
+
+  <% } else { %>
 
     <div class="topmenu">
       <div class="rightcol">
@@ -299,3 +344,5 @@
       }
 
     </script>
+
+  <% } %>
