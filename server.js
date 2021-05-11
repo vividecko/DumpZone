@@ -282,6 +282,27 @@ function checkNotAuthenticated(req, res, next) {
   next();
 }
 
+/*
+ * Ensure the user is a teacher before accessing teacher pages.
+ */
+const checkIfTeacher = (req, res, next) => {
+  const user = models.User.get(req.session.passport.user);
+  if (user.is_teacher === 0) {    /* not teacher */
+    return res.redirect('/');
+  }
+  next();
+}
+
+/*
+ * Ensure the user is a student before accessing student pages.
+ */
+const checkIfStudent = (req, res, next) => {
+  const user = models.User.get(req.session.passport.user);
+  if (user.is_teacher === 1) {    /* is teacher */
+    return res.redirect('/');
+  }
+  next();
+}
 
 httpsServer.listen(3000);
 httpServer.listen(80);
