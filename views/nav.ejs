@@ -14,15 +14,17 @@
   </a>
 
   <!--Dropdown menus-->
-  <div class="highlighted menuitem2" style="position: relative;">
-    <a href="/tp" class="pop">Mr. Morabito's Class</a>
+  <% if (doc === 'teacher') { %>
+    <div class="highlighted menuitem2" style="position: relative;">
+      <a href="/tp" class="pop">Mr. Morabito's Class</a>
 
-    <div class="submenu highlighted shadow">
-      <a href="#"><p class="pop">Ms. X's Class</p></a>
-      <a href="#"><p class="pop">Mr. Z's Class</p></a>
+      <div class="submenu highlighted shadow">
+        <a href="#"><p class="pop">Ms. X's Class</p></a>
+        <a href="#"><p class="pop">Mr. Z's Class</p></a>
+      </div>
+
     </div>
-
-  </div>
+  <% } %>
 
 </div>
 
