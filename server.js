@@ -63,7 +63,7 @@ app.use(methodOverride('_method'));
 
 /*
  * ----------------------------------------------------------------------------
- * ROUTES
+ * ROUTES/FUNCTIONS
  * ----------------------------------------------------------------------------
  */
 
@@ -71,6 +71,29 @@ app.use(methodOverride('_method'));
  * Upgrade all plain HTTP requests to more secure HTTPS connections.
  */
 httpApp.all('*', (req, res) => res.redirect(300, 'https://localhost:3000'));
+
+
+/*
+ * Ensure the user is a teacher before accessing teacher pages.
+ */
+const checkIfTeacher = async (req, res, next) => {
+  const user = await models.User.get(req.session.passport.user);
+  if (user.is_teacher === 0) {    /* not teacher */
+    return res.redirect('/');
+  }
+  next();
+}
+
+/*
+ * Ensure the user is a student before accessing student pages.
+ */
+const checkIfStudent = async (req, res, next) => {
+  const user = await models.User.get(req.session.passport.user);
+  if (user.is_teacher === 1) {    /* is teacher */
+    return res.redirect('/');
+  }
+  next();
+}
 
 
 /*
@@ -151,7 +174,7 @@ app.get('/parrots', (req, res) => {
 /*
  * Teacher dashboard page, where teachers can manage their virtual classrooms.
  */
-app.get('/tp', (req, res) => {
+app.get('/tp', checkAuthenticated, checkIfTeacher, (req, res) => {
   res.render('template.ejs', {
     title: 'Teacher Dashboard',
     doc: 'teacher',
@@ -277,28 +300,6 @@ function checkAuthenticated(req, res, next) {
 
 function checkNotAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
-    return res.redirect('/');
-  }
-  next();
-}
-
-/*
- * Ensure the user is a teacher before accessing teacher pages.
- */
-const checkIfTeacher = (req, res, next) => {
-  const user = models.User.get(req.session.passport.user);
-  if (user.is_teacher === 0) {    /* not teacher */
-    return res.redirect('/');
-  }
-  next();
-}
-
-/*
- * Ensure the user is a student before accessing student pages.
- */
-const checkIfStudent = (req, res, next) => {
-  const user = models.User.get(req.session.passport.user);
-  if (user.is_teacher === 1) {    /* is teacher */
     return res.redirect('/');
   }
   next();
