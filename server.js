@@ -188,6 +188,7 @@ app.get('/tp', checkAuthenticated, checkIfTeacher, async (req, res) => {
   let classroomList = await models.Classroom.getByInstructor(req.session.passport.user);
 
   let tutorialList = await models.TutorialAssignment.getByClass(1);
+  const assignmentList = await models.WorkAssignment.getByClass(1);
 
   if (classroomList.length > 0) {
     res.render('template.ejs', {
@@ -197,7 +198,8 @@ app.get('/tp', checkAuthenticated, checkIfTeacher, async (req, res) => {
       teacher: 1,
       currentClass: classroomList[0],
       classrooms: classroomList,
-      tutorials: tutorialList
+      tutorials: tutorialList,
+      assignments: assignmentList
     });
   } else {
     res.render('template.ejs', {
@@ -206,7 +208,8 @@ app.get('/tp', checkAuthenticated, checkIfTeacher, async (req, res) => {
       username: req.session.passport.user,
       teacher: 1,
       classrooms: classroomList,
-      tutorials: tutorialList
+      tutorials: tutorialList,
+      assignments: assignmentList
     });
   }
 

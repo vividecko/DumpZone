@@ -66,41 +66,15 @@
             <th>Completed</th>
           </tr>
 
-          <tr>
-            <td class="duedate pop noselect"><p>12/18</p></td>
-            <td>Math Test 1</td>
-            <td>20</td>
-          </tr>
-
-          <tr>
-            <td class="duedate pop noselect"><p>12/18</p></td>
-            <td>Math Test 1</td>
-            <td>20</td>
-          </tr>
-
-          <tr>
-            <td class="duedate pop noselect"><p>12/18</p></td>
-            <td>Math Test 1</td>
-            <td>20</td>
-          </tr>
-
-          <tr>
-            <td class="duedate pop noselect"><p>12/18</p></td>
-            <td>Math Test 1</td>
-            <td>20</td>
-          </tr>
-
-          <tr>
-            <td class="duedate pop noselect"><p>12/18</p></td>
-            <td>Math Test 1</td>
-            <td>20</td>
-          </tr>
-
-          <tr>
-            <td class="duedate pop noselect"><p>12/18</p></td>
-            <td>Math Test 1</td>
-            <td>20</td>
-          </tr>
+          <% assignments.forEach( (assign) => { %>
+            <tr>
+              <td class="duedate pop noselect"><p>
+                <%- assign.due_date.getMonth() + 1 %>/<%- assign.due_date.getDate() %>
+              </p></td>
+              <td><%- assign.name %></td>
+              <td>20</td>
+            </tr>
+          <% }); %>
 
         </table>
 
