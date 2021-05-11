@@ -93,7 +93,6 @@ const getList = async (table, fields, values) => {
     values,
     errFunction
   );
-  console.log(list);
   return list[0];
 }
 
