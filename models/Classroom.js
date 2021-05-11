@@ -17,7 +17,7 @@ const create = (name, grade, instr_name) => {
 }
 
 const getByID = (id) => {
-  storage.getObject(
+  return storage.getObject(
     table,
     f.id,
     id
@@ -29,7 +29,7 @@ const getByID = (id) => {
  * function, this query only returns one class.
  */
 const getByName = (name, instr_name) => {
-  storage.getList(
+  return storage.getList(
     table,
     [f.name, f.instr_name],
     [name, instr_name]
@@ -40,7 +40,7 @@ const getByName = (name, instr_name) => {
  * Get every class taught by the given instructor.
  */
 const getByInstructor = (instr_name) => {
-  storage.getList(
+  return storage.getList(
     table,
     [f.instr_name],
     [instr_name]
