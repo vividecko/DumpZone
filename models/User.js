@@ -1,4 +1,5 @@
 const storage = require('../storage');
+const bcrypt = require('bcrypt');
 const table = 'user';
 
 /* DB field names */
@@ -27,6 +28,26 @@ const getAllStudents = () => {
   return storage.getList(table, [f.is_teacher], [0]);
 }
 
+/*
+ * Change user password.
+ */
+const updatePassword = async (username, new_password, confirmation) => {
+
+  let errorCode = 0;
+
+  if (new_password === confirmation) {
+
+    const hashedPassword = await bcrypt.hash(new_password, 10);
+    await storage.update(table, f.pw, [f.uname], [username], hashedPassword);
+    
+  } else {
+    errorCode = -1;
+  }
+
+  return errorCode;
+}
+
 module.exports.create = create;
 module.exports.get = get;
 module.exports.getAllStudents = getAllStudents;
+module.exports.updatePassword = updatePassword;

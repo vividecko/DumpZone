@@ -486,6 +486,22 @@ app.get('/settings', (req, res) => {
   });
 });
 
+/*
+ * Settings: change password
+ */
+app.post('/change/password', checkAuthenticated, async (req, res) => {
+
+  let errorCode = await models.User.updatePassword(req.session.passport.user, req.body.password_new, req.body.password_confirm); 
+
+  if (errorCode === 0) {
+    console.log("Password has been changed!");
+    res.redirect("/logout");
+  } else {
+    console.log("Password change unsuccessful");
+    res.redirect("/");
+  }
+
+});
 
 /*
  * Registration pages/forms, where new users are created.
@@ -582,7 +598,7 @@ function checkNotAuthenticated(req, res, next) {
 /*
  * Ensure the user is a teacher before accessing teacher pages.
  */
-async function checkIfTeacher(req, res, next) {;
+async function checkIfTeacher(req, res, next) {
 
   let user = await models.User.get(req.session.passport.user);
 

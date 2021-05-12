@@ -233,3 +233,82 @@ section {
 .menuitem2:hover .submenu {
   display: block;
 }
+
+.popup-bg {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
+
+.prompt {
+  display: none;
+  background-color: white;
+  padding: 20px;
+  border-radius: 30px;
+  width: 300px;
+  position: relative;
+}
+
+.x-button {
+  color: var(--lite-fg-color);
+  position: absolute;
+  top: 5px;
+  right: 18px;
+  font-size: 40px;
+  transform: rotate(45deg);
+  transition: 0.2s;
+}
+.x-button:hover {
+  color: var(--off-color);
+}
+.x-button:active {
+  color: red;
+  transform: rotate(45deg) scale(0.95);
+}
+
+/*Imported from Work*/
+
+.answerfield, .submitanswer, .mcanswer {
+  font-size: 20px;
+  padding: 10px 20px;
+  border-radius: 30px;
+  width: 100%;
+  margin: 20px 0px 0px 0px;
+}
+
+.answerfield {
+  width: 87%;
+}
+
+.submitanswer {
+  background-color: #3ccc62;
+  height: 45px;
+}
+.submitanswer:hover {
+  background-color: #22a344;
+}
+
+.selectionbox {
+  border: none;
+  background-color: var(--lite-fg-color);
+  width: 100%;
+  -webkit-appearance: none;
+    -moz-appearance: none;
+    text-indent: 1px;
+    text-overflow: '';
+    transition: 0.2s;
+}
+
+.selectionbox:hover {
+  background-color: #bdbdbd;
+}
+
+.selectionbox option {
+  background-color: white;
+}

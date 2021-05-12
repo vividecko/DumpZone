@@ -34,10 +34,7 @@ const getAwards = (username) => {
  * Add a student by ID to the specified classroom.
  */
 const addToClass = (username, class_id) => {
-
-  //storage.update(table, get_column_by, field, update_this_column_with, value);
   storage.update(table, f.classroom_id, ['user_name'], [username], class_id);
-
 }
 
 

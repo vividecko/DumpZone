@@ -55,8 +55,8 @@
      <%- username %>
 
      <div class="submenu highlighted shadow">
-       <a href="#"><p class="pop">Change password</p></a>
-       <a href="#"><p class="pop">Change icon</p></a>
+      <p class="pop" style="display: block; padding: 20px; text-align: center;">Change icon</p>
+       <p class="pop" id="changePass" style="display: block; padding: 20px; text-align: center;">Change password</p>
      </div>
 
    </p></div>
@@ -66,6 +66,47 @@
    </a>
 
  </div>
+
+ <div class="popup-bg" id="settingsBG" style="z-index: 3;">
+  <div class="change-settings-box prompt shadow">
+
+    <div class="x-button noselect" onclick="closePrompts();">+</div>
+
+    <h2>Change Password</h2>
+
+    <form action="/change/password" method="POST">
+      <!--<input class="answerfield" type="password" name="password_old" placeholder="Old password" minlength="8">-->
+      <input class="answerfield" type="password" name="password_new" placeholder="New password" minlength="8">
+      <input class="answerfield" type="password" name="password_confirm" placeholder="Confirm password" minlength="8">
+      
+      <button class="submitanswer pop" type="submit" class="pop">Submit</button>
+    </form>
+
+  </div>
+ </div>
+
+ <script type="text/javascript">
+   
+  document.getElementById("changePass").addEventListener("click", function() {
+
+    document.getElementById("settingsBG").style.display = "flex";
+    document.querySelector(".change-settings-box").style.display = "block";
+
+  });
+
+  function closePrompts() {
+
+    let prompts = document.querySelectorAll(".prompt");
+
+    for (var i = 0; i < prompts.length; i++) {
+      prompts[i].style.display = "none";
+    }
+
+    document.querySelector(".popup-bg").style.display = "none";
+
+  }
+
+ </script>
 
 <% } %>
 
