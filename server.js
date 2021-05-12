@@ -100,13 +100,37 @@ app.get('/', checkAuthenticated, checkIfStudent, async (req, res) => {
 
 
 /*
+ * Parse the given JSON file, representing a question, and return an HTML
+ * string that can be displayed to the student as they do assignments.
+ */
+function questionToHTML() {
+}
+
+/*
  * Work page, where students do assignments or tests.
  */
 app.get('/work', checkAuthenticated, checkIfStudent, checkIfInClass, async (req, res) => {
   const theuser = await models.Student.get(req.session.passport.user);
-  const currentClass = models.Classroom.getByID(theuser.classroom_id);
+  const currentClass = await models.Classroom.getByID(theuser.classroom_id);
+  const recentAssignment = await models.WorkAssignment.getRecent(theuser.classroom_id);
+  const questions = await models.WorkQuestion.getByAssignment(recentAssignment.id);
 
-  //models.WorkAssignment.
+  let recentAttempt = await models.WorkAssignment.getRecentAttempt(
+    req.session.passport.user,
+    recentAssignment.id
+  );
+
+  if (!recentAttempt || recentAttempt.num_questions_attempted === questions.length) {
+    recentAttempt = models.WorkAssignment.createAttempt(
+      req.session.passport.user,
+      recentAssignment.id,
+      new Date(),
+      new Array(questions.length).fill(0),  /* answers 0 (not correct) by default */
+      0,    /* no questions attempted yet */
+      0     /* no questions correct yet */
+    );
+  }
+
   res.render('template.ejs', {
     title: 'Work',
     doc: 'work',
@@ -117,7 +141,7 @@ app.get('/work', checkAuthenticated, checkIfStudent, checkIfInClass, async (req,
 });
 
 app.post('/work', checkAuthenticated, checkIfStudent, checkIfInClass, (req, res) => {
-  console.log('answer received');
+  const user_answer = req.body.answer;
 });
 
 
