@@ -47,7 +47,7 @@
 
           <% tutorials.forEach(function(tuto) { if (tuto.classroom_id == currentClass.id) { %>
 
-            <div class="mcanswer pop noselect" onclick="loadVideo('<%- tuto.name%>', '<%- tuto.video_url%>', '<%- tuto.description%>')"><%- tuto.tag %></div>
+            <div class="videoentry pop noselect" onclick="loadVideo('<%- tuto.name%>', '<%- tuto.video_url%>', '<%- tuto.description%>')"><%- tuto.tag %></div>
 
           <% }}); %>
 
