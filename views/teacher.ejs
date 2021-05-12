@@ -223,6 +223,11 @@
           <input class="answerfield" type="text" name="work_name" placeholder="Name" required>
           <input class="answerfield" type="text" name="work_description" placeholder="Description">
           <input class="answerfield" type="number" name="time_limit" placeholder="Time limit (minutes)">
+          <select class="answerfield selectionbox" name="preset">
+            <% presets.forEach((ps) => { %>
+              <%- '<option value="' + <%- ps.id %> + '"><%- ps.name %></option>' %>
+            <% }); %>
+          </select>
           <input class="answerfield" type="datetime" name="due_date" placeholder="Due date" required>
           <button class="submitanswer pop" type="submit" class="pop">Submit</button>
         </form>

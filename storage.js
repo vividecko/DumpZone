@@ -10,6 +10,8 @@
  */
 
 const mysql = require('mysql2/promise');
+
+/* Nick's DB info
 const db = mysql.createPool({
   connectionLimit: 50,
   connectTimeout: 60 * 60 * 1000,
@@ -18,16 +20,17 @@ const db = mysql.createPool({
   password: 'root',
   database: 'homemath'
 });
-/* PHPMyAdmin Alt. Info
-const db = mysql.createPool({
-  connectionLimit: 50,
-  connectTimeout: 60 * 60 * 1000,
-  host: 'localhost', 
-  user: 'root',
-  password: '',
-  database: 'homemath2'
-});
 */
+
+/* Mike's DB info */
+const db = mysql.createPool({
+    connectionLimit: 50,
+    connectTimeout: 60 * 60 * 1000,
+    host: 'localhost',
+    user: 'server',
+    password: 'dgPqnf1vtPje7dLoLu3h',
+    database: 'homemath'
+});
 
 const NodeCache = require('node-cache');
 const ttl = 60 * 60 * 1;
@@ -145,6 +148,16 @@ const insert = (table, fields, values) => {
   db.query(
     `INSERT INTO ${table} (${fields}) VALUES (${params})`,
     values,
+    errFunction
+  );
+}
+
+const update = (table, fields, values, updated_field, updated_value) => {
+  const params = '?,'.repeat(values.length-1) + '?';
+  db.query(
+    `UPDATE ${table} SET ${updated_field}=?`
+    + ` WHERE ${fields.join('=? AND ') + '=?'}`,
+    [updated_value, ...values],
     errFunction
   );
 }

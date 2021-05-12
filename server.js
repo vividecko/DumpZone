@@ -189,6 +189,7 @@ app.get('/tp', checkAuthenticated, checkIfTeacher, async (req, res) => {
 
   let tutorialList = await models.TutorialAssignment.getByClass(1);
   const assignmentList = await models.WorkAssignment.getByClass(1);
+  const presetList = await models.QuestionPreset.getAll();
 
   if (classroomList.length > 0) {
     res.render('template.ejs', {
@@ -199,7 +200,8 @@ app.get('/tp', checkAuthenticated, checkIfTeacher, async (req, res) => {
       currentClass: classroomList[0],
       classrooms: classroomList,
       tutorials: tutorialList,
-      assignments: assignmentList
+      assignments: assignmentList,
+      presets: presetList
     });
   } else {
     res.render('template.ejs', {
@@ -209,7 +211,8 @@ app.get('/tp', checkAuthenticated, checkIfTeacher, async (req, res) => {
       teacher: 1,
       classrooms: classroomList,
       tutorials: tutorialList,
-      assignments: assignmentList
+      assignments: assignmentList,
+      presets: presetList
     });
   }
 
@@ -259,6 +262,19 @@ app.post('/add/assignment', checkAuthenticated, checkIfTeacher, async (req, res)
       time_limit,
       dueDate
     );
+
+    // get class ID to get new_assign
+    const new_assign = await models.WorkAssignment.getRecent();
+    const questions = await models.Question.getByPreset(req.body.preset);
+    for (let i = 0; i < questions.length; i++) {
+      models.WorkQuestion.create(
+        new_assign.id,
+        questions[i].id,
+        1,  // placeholder
+        i,
+        3   // placeholder
+      );
+    }
 
     console.log("New assignment created!");
     res.redirect('/tp');
