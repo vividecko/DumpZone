@@ -12,7 +12,7 @@ const f = {
   is_teacher: 'is_teacher'
 }
 
-const create = (username, fname, lname, email, hashed_pw, is_teacher) => {
+const create = async (username, fname, lname, email, hashed_pw, is_teacher) => {
 
   let errorCode = 0;
 
@@ -25,12 +25,26 @@ const create = (username, fname, lname, email, hashed_pw, is_teacher) => {
   }
 
   if (errorCode == 0) {
-    console.log("inside if");
-    storage.insert(
-      table,
-      [f.uname, f.fname, f.lname, f.email, f.pw, f.is_teacher],
-      [username, fname, lname, email, hashed_pw, is_teacher]
-    );
+
+    //Checks if username or email already exists
+    let usernameResult = await storage.getList(table, [f.uname], [username]);
+    let emailResult = await storage.getList(table, [f.email], [email]);
+
+    if (emailResult.length > 0) {
+      errorCode = -4;
+    } else if (usernameResult.length > 0) {
+      errorCode = -5
+    }
+
+    if (errorCode == 0) {
+      console.log("inside if");
+      storage.insert(
+        table,
+        [f.uname, f.fname, f.lname, f.email, f.pw, f.is_teacher],
+        [username, fname, lname, email, hashed_pw, is_teacher]
+      );
+    }
+
   }
 
   return errorCode;
