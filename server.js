@@ -222,15 +222,11 @@ app.get('/parrots', checkAuthenticated, checkIfInClass, async (req, res) => {
 
 /*
  * Teacher dashboard page, where teachers can manage their virtual classrooms.
+ * If the teacher has not created any classrooms yet, then they are shown a
+ * panel informing them of this and allowing them to create their first class.
  */
 app.get('/tp', checkAuthenticated, checkIfTeacher, async (req, res) => {
-
   let classroomList = await models.Classroom.getByInstructor(req.session.passport.user);
-  let studentList = await models.User.getAllStudents();
-
-  let tutorialList = await models.TutorialAssignment.getByClass(1);
-  const assignmentList = await models.WorkAssignment.getByClass(1);
-  const presetList = await models.QuestionPreset.getAll();
 
   if (classroomList.length > 0) {
 
@@ -243,6 +239,9 @@ app.get('/tp', checkAuthenticated, checkIfTeacher, async (req, res) => {
     }
 
     let tutorialList = await models.TutorialAssignment.getByClass(selectedClass.id);
+    let studentList = await models.User.getAllStudents();
+    const assignmentList = await models.WorkAssignment.getByClass(selectedClass.id);
+    const presetList = await models.QuestionPreset.getAll();
 
     res.render('template.ejs', {
       title: 'Teacher Dashboard',
@@ -263,10 +262,7 @@ app.get('/tp', checkAuthenticated, checkIfTeacher, async (req, res) => {
       doc: 'teacher',
       username: req.session.passport.user,
       teacher: 1,
-      classrooms: classroomList,
-      tutorials: tutorialList,
-      assignments: assignmentList,
-      presets: presetList
+      classrooms: classroomList
     });
   }
 

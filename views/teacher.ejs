@@ -66,41 +66,15 @@
             <th>Completed</th>
           </tr>
 
-          <tr>
-            <td class="duedate pop noselect"><p>12/18</p></td>
-            <td>Math Test 1</td>
-            <td>20</td>
-          </tr>
-
-          <tr>
-            <td class="duedate pop noselect"><p>12/18</p></td>
-            <td>Math Test 1</td>
-            <td>20</td>
-          </tr>
-
-          <tr>
-            <td class="duedate pop noselect"><p>12/18</p></td>
-            <td>Math Test 1</td>
-            <td>20</td>
-          </tr>
-
-          <tr>
-            <td class="duedate pop noselect"><p>12/18</p></td>
-            <td>Math Test 1</td>
-            <td>20</td>
-          </tr>
-
-          <tr>
-            <td class="duedate pop noselect"><p>12/18</p></td>
-            <td>Math Test 1</td>
-            <td>20</td>
-          </tr>
-
-          <tr>
-            <td class="duedate pop noselect"><p>12/18</p></td>
-            <td>Math Test 1</td>
-            <td>20</td>
-          </tr>
+          <% assignments.forEach(function(assign) { %>
+            <tr>
+              <td class="duedate pop noselect"><p>
+                <%= assign.due_date.getMonth() + 1 %>/<%- assign.due_date.getDate() %>
+              </p></td>
+              <td><%= assign.name %></td>
+              <td>20</td>
+            </tr>
+          <% }); %>
 
         </table>
 
@@ -248,19 +222,22 @@
         <h2>Add Student</h2>
 
         <form action="/add/student" method="POST">
-          <select class="answerfield selectionbox" name="student_username" placeholder="Username">
-
+          <input class="answerfield" name="student_username" placeholder="Student username" list="student_names">
+            <!--
                 <option value="" disabled selected>Select a student...</option>
-
-            <% if (students !== 0) { %>
-              <% students.forEach(function(student) { %>
-
-                <option value="<%= student.user_name%>"><%- student.first_name%> <%- student.last_name%></option>
-
-              <% }); %>
-            <% } %>
-
-          </select>
+            -->
+            <datalist id="student_names">
+              <% if (students.length !== 0) { %>
+                <% students.forEach(function(student) { %>
+                  <option value="<%= student.user_name%>">
+                    <%= student.user_name + ': ' %>
+                    <%= student.first_name %>
+                    <%= student.last_name %>
+                  </option>
+                <% }); %>
+              <% } %>
+            </datalist>
+          </input>
 
           <button class="submitanswer pop" type="submit" class="pop">Submit</button>
         </form>
@@ -271,8 +248,8 @@
         <div class="x-button noselect" onclick="closePrompts();">+</div>
         <h2>Create Classroom</h2>
         <form action="/add/class" method="POST">
-          <input class="answerfield" type="text" name="class_name" placeholder="Name">
-          <select class="answerfield selectionbox" name="grade">
+          <input class="answerfield" type="text" name="class_name" placeholder="Name" required>
+          <select class="answerfield selectionbox" name="grade" required>
             <option value="K">K</option>
             <option value="1">1</option>
             <option value="2">2</option>
