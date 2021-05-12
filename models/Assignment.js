@@ -44,6 +44,30 @@ const getRecent = (table, class_id) => {
   );
 }
 
+const createAttempt = (table, student_id, assign_id, att_date, other_fields,
+other_values) => {
+  storage.insert(
+    table,
+    [f.student_id, f.assign_id, f.att_date, ...other_fields],
+    [student_id, assign_id, att_date, ...other_values]
+  );
+}
+
+/*
+ * Update some field in the most recently created attempt by the given student
+ * on the given assignment.
+ */
+const updateAttempt = (table, updated_field, student_name, assign_id,
+updated_value) => {
+  storage.update(
+    table,
+    updated_field,
+    [f.student_name, f.assign_id],
+    [student_name, assign_id],
+    updated_value
+  );
+}
+
 /*
  * Get the most recently worked on attempt for the given student on the given
  * assignment. Once a new attempt is begun, old attempts are inaccessible by
@@ -52,9 +76,9 @@ const getRecent = (table, class_id) => {
 const getRecentAttempt = (table, student_name, assign_id) => {
   return storage.getMax(
     table,
-    f.att_date,
     [f.student_name, f.assign_id],
-    [student_name, assign_id]
+    [student_name, assign_id],
+    f.att_date
   );
 }
 
@@ -73,5 +97,7 @@ module.exports.create = create;
 module.exports.getByID = getByID;
 module.exports.getByClass = getByClass;
 module.exports.getRecent = getRecent;
+module.exports.createAttempt = createAttempt;
+module.exports.updateAttempt = updateAttempt;
 module.exports.getRecentAttempt = getRecentAttempt;
 module.exports.getAttempts = getAttempts;
