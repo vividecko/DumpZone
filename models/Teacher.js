@@ -5,7 +5,7 @@ const user = require('./User');
  * Add a new user with "is_teacher" set to 1 (true).
  */
 const create = (username, fname, lname, email, hashed_pw) => {
-  user.create(username, fname, lname, email, hashed_pw, 1);
+  return user.create(username, fname, lname, email, hashed_pw, 1);
 }
 
 const get = (username) => {

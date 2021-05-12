@@ -456,10 +456,14 @@ app.post('/add/assignment', checkAuthenticated, checkIfTeacher, checkIfHasClasse
  * Login page/form.
  */
 app.get('/login', checkNotAuthenticated, (req, res) => {
+
+  console.log();
+
   res.render('template.ejs', {
     title: 'Login',
     doc: 'login',
-    teacher: 0
+    teacher: 0,
+    message: req.flash('signupMessage')
   });
 });
 
@@ -511,7 +515,8 @@ app.get('/register-student', checkNotAuthenticated, (req, res) => {
     title: 'Register',
     doc: 'register',
     user_type: 'student',
-    teacher: 0
+    teacher: 0,
+    message: req.flash('errorMessage')
   });
 });
 
@@ -520,7 +525,8 @@ app.get('/register-instructor', checkNotAuthenticated, (req, res) => {
     title: 'Register',
     doc: 'register',
     user_type: 'instructor',
-    teacher: 0
+    teacher: 0,
+    message: req.flash('errorMessage')
   });
 });
 
@@ -530,38 +536,63 @@ app.get('/register-instructor', checkNotAuthenticated, (req, res) => {
  * received from the user via the registration form.
  */
 app.post('/register-student', checkNotAuthenticated, async (req, res) => {
-  try {
-    const hashedPassword = await bcrypt.hash(req.body.password, 10);
-    models.Student.create(
-      req.body.username,
-      req.body.firstname,
-      req.body.lastname,
-      req.body.email,
-      hashedPassword
-    );
 
-    res.redirect('/login');
-  } catch {
-    res.redirect('/register-student');
+  let isUsername = models.User.isUsername(req.body.username);
+  let isEmail = models.User.isEmail(req.body.email);
+  let isFirstName = models.User.isName(req.body.firstname);
+  let isLastName = models.User.isName(req.body.lastname);
+
+  const hashedPassword = await bcrypt.hash(req.body.password, 10);
+  let errorCode = await models.Student.create(req.body.username, req.body.firstname, req.body.lastname, req.body.email, hashedPassword);
+
+  let theHeader;
+
+  if (errorCode == -3) {
+    req.flash('errorMessage', 'Username can only contain A-Z, 0-9, or underscore!');
+    theHeader = '/register-student';
+  } else if (errorCode == -2) {
+    req.flash('errorMessage', 'First name or last name contains illegal characters!');
+    theHeader = '/register-student';
+  } else if (errorCode == -1) {
+    req.flash('errorMessage', 'Please enter a valid email!');
+    theHeader = '/register-student';
+  } else if (errorCode == 0) {
+    req.flash('signupMessage', 'Your account has been created successfully!');
+    theHeader = '/login';
   }
+
+  res.redirect(theHeader);
+
 });
 
 app.post('/register-instructor', checkNotAuthenticated, async (req, res) => {
-  try {
-    const hashedPassword = await bcrypt.hash(req.body.password, 10);
-    models.Teacher.create(
-      req.body.username,
-      req.body.firstname,
-      req.body.lastname,
-      req.body.email,
-      hashedPassword
-    );
+  
+  let isUsername = models.User.isUsername(req.body.username);
+  let isEmail = models.User.isEmail(req.body.email);
+  let isFirstName = models.User.isName(req.body.firstname);
+  let isLastName = models.User.isName(req.body.lastname);
 
-    res.redirect('/login');
-  } catch (e) {
-    console.log(e);
-    res.redirect('/register-instructor');
+  const hashedPassword = await bcrypt.hash(req.body.password, 10);
+  let errorCode = await models.Teacher.create(req.body.username, req.body.firstname, req.body.lastname, req.body.email, hashedPassword);
+
+  let theHeader;
+
+  if (errorCode == -3) {
+    req.flash('errorMessage', 'Username can only contain A-Z, 0-9, or underscore!');
+    theHeader = '/register-instructor';
+  } else if (errorCode == -2) {
+    req.flash('errorMessage', 'First name or last name contains illegal characters!');
+    theHeader = '/register-instructor';
+  } else if (errorCode == -1) {
+    req.flash('errorMessage', 'Please enter a valid email!');
+    theHeader = '/register-instructor';
+  } else if (errorCode == 0) {
+    req.flash('signupMessage', 'Your account has been created successfully!');
+    theHeader = '/login';
   }
+
+  res.redirect(theHeader);
+
 });
 
 

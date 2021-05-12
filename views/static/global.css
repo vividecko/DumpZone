@@ -272,6 +272,16 @@ section {
   transform: rotate(45deg) scale(0.95);
 }
 
+.successMessage {
+  color: #347545;
+  background-color: #d3f5dc;
+}
+.errorMessage {
+  color: #802828;
+  background-color: #f0c2c2;
+}
+
+
 /*Imported from Work*/
 
 .answerfield, .submitanswer, .mcanswer {

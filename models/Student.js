@@ -15,7 +15,7 @@ const f = {
  * Add a new user with "is_teacher" set to 0 (false).
  */
 const create = (username, fname, lname, email, hashed_pw) => {
-  user.create(username, fname, lname, email, hashed_pw, 0);
+  return user.create(username, fname, lname, email, hashed_pw, 0);
 }
 
 const get = (username) => {

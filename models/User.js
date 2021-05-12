@@ -13,11 +13,27 @@ const f = {
 }
 
 const create = (username, fname, lname, email, hashed_pw, is_teacher) => {
-  storage.insert(
-    table,
-    [f.uname, f.fname, f.lname, f.email, f.pw, f.is_teacher],
-    [username, fname, lname, email, hashed_pw, is_teacher]
-  );
+
+  let errorCode = 0;
+
+  if (!isUsername(username)) {
+    errorCode = -3;
+  } else if (!isName(fname) || !isName(lname)) {
+    errorCode = -2;
+  } else if (!isEmail(email)) {
+    errorCode = -1;
+  }
+
+  if (errorCode == 0) {
+    console.log("inside if");
+    storage.insert(
+      table,
+      [f.uname, f.fname, f.lname, f.email, f.pw, f.is_teacher],
+      [username, fname, lname, email, hashed_pw, is_teacher]
+    );
+  }
+
+  return errorCode;
 }
 
 const get = (username) => {
@@ -39,7 +55,7 @@ const updatePassword = async (username, new_password, confirmation) => {
 
     const hashedPassword = await bcrypt.hash(new_password, 10);
     await storage.update(table, f.pw, [f.uname], [username], hashedPassword);
-    
+
   } else {
     errorCode = -1;
   }
@@ -47,7 +63,53 @@ const updatePassword = async (username, new_password, confirmation) => {
   return errorCode;
 }
 
+
+//Boolean methods
+  
+  const isUsername = (username) => {
+
+    //Checks for 4 characters
+    //Can contain A-Z, number, underscore
+    var regex = /^[a-zA-Z0-9_]{4,}$/;
+
+    if (username.search(regex) > -1) {
+      return true;
+    } else {
+      return false;
+    }
+
+  }
+
+  const isEmail = (email) => {
+
+    var regex = /^([a-zA-Z0-9_.-]+)@([a-zA-Z0-9-]+)[.]([a-zA-Z0-9.]+)$/;
+
+    if (email.search(regex) > -1) {
+      return true;
+    } else {
+      return false;
+    }
+
+  }
+
+  const isName = (name) => {
+
+    //Can contain A-Z
+    var regex = /^[a-zA-Z]+$/;
+
+    if (name.search(regex) > -1) {
+      return true;
+    } else {
+      return false;
+    }
+
+  }
+
+
 module.exports.create = create;
 module.exports.get = get;
 module.exports.getAllStudents = getAllStudents;
 module.exports.updatePassword = updatePassword;
+module.exports.isUsername = isUsername;
+module.exports.isEmail = isEmail;
+module.exports.isName = isName;
