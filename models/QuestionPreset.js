@@ -32,7 +32,12 @@ const getAll = () => {
   return storage.getByNullValue(table, null, null, f.author);
 }
 
+const getByTeacher = (teacher_name) => {
+  return storage.getList(table, [f.author], [teacher_name]);
+}
+
 module.exports.create = create;
 module.exports.get = get;
 module.exports.getByGrade = getByGrade;
 module.exports.getAll = getAll;
+module.exports.getByTeacher = getByTeacher;

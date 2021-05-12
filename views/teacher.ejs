@@ -84,10 +84,10 @@
         <div class="heading">
           <div class="title">
             <h2>Resources</h2>
-            <img src="https://cdn3.iconfinder.com/data/icons/navigation-icons-1/32/add-512.png" class="pop" id="addResource">
+            <img src="https://cdn3.iconfinder.com/data/icons/navigation-icons-1/32/add-512.png" class="pop" id="tutorialOrPractice">
           </div>
 
-          <a href="/tutorials" class="print pop noselect" style="margin-right: 5px; display: flex; align-items: center;">Visit</a>
+          <a href="/tutorials" class="print pop noselect" style="margin-right: 5px; display: flex; align-items: center; width: auto;">See tutorials</a>
         </div>
 
         <table>
@@ -103,6 +103,27 @@
               <td class="practice"><p><%- tuto.assign_date.getMonth() + 1 %>/<%- tuto.assign_date.getDate() %></p></td>
               <td><%- tuto.tag %></td>
               <td>0</td>
+            </tr>
+
+          <% }}); %>
+
+
+          <% if (practices.length > 0 && tutorials.length > 0) { %>
+
+            <tr>
+              <td>-</td>
+              <td>-</td>
+              <td>-</td>
+            </tr>
+
+          <% } %>
+
+          <% practices.forEach(function(practice) { if (practice.is_visible == 1) { %>
+
+            <tr>
+              <td class="practice"><p><%- practice.assign_date.getMonth() + 1 %>/<%- practice.assign_date.getDate() %></p></td>
+              <td><%- practice.name %></td>
+              <td>prac.</td>
             </tr>
 
           <% }}); %>
@@ -203,13 +224,32 @@
 
         <div class="x-button noselect" onclick="closePrompts();">+</div>
 
-        <h2>Add Resource</h2>
+        <h2>Add Tutorial</h2>
 
         <form action="/add/tutorial" method="POST">
           <input class="answerfield" type="text" name="tutorial_name" placeholder="Name">
           <input class="answerfield" type="text" name="tutorial_tag" placeholder="Division, Multiplication...">
           <input class="answerfield" type="text" name="tutorial_description" placeholder="Description">
           <input class="answerfield" type="text" name="tutorial_link" placeholder="Link">
+          <button class="submitanswer pop" type="submit" class="pop">Submit</button>
+        </form>
+
+      </div>
+
+      <div class="add-practice-box prompt shadow">
+
+        <div class="x-button noselect" onclick="closePrompts();">+</div>
+
+        <h2>Add Practice</h2>
+
+        <form action="/add/practice" method="POST">
+          <input class="answerfield" type="text" name="practice_name" placeholder="Name" required>
+          <input class="answerfield" type="text" name="practice_description" placeholder="Description">
+          <select class="answerfield selectionbox" name="preset">
+            <% presets.forEach(function(ps) { %>
+              <option value="<%=ps.id%>"><%= ps.name %></option>
+            <% }); %>
+          </select>
           <button class="submitanswer pop" type="submit" class="pop">Submit</button>
         </form>
 
@@ -244,6 +284,15 @@
 
       </div>
 
+      <div class="tuto-or-practice prompt shadow">
+        <div class="x-button noselect" onclick="closePrompts();">+</div>
+        <h2>Add Resource</h2>
+        
+          <button class="submitanswer pop"class="pop" id="addTuto">Tutorial</button>
+          <button class="submitanswer pop"class="pop" id="addPractice">Practice Problem</button>
+
+      </div>
+
       <div class="add-class-box prompt shadow">
         <div class="x-button noselect" onclick="closePrompts();">+</div>
         <h2>Create Classroom</h2>
@@ -271,10 +320,21 @@
 
       });
 
-      document.getElementById("addResource").addEventListener("click", function() {
+      document.getElementById("addTuto").addEventListener("click", function() {
+
+        closePrompts();
 
         document.querySelector(".popup-bg").style.display = "flex";
         document.querySelector(".add-resource-box").style.display = "block";
+
+      });
+
+      document.getElementById("addPractice").addEventListener("click", function() {
+
+        closePrompts();
+
+        document.querySelector(".popup-bg").style.display = "flex";
+        document.querySelector(".add-practice-box").style.display = "block";
 
       });
 
@@ -289,6 +349,13 @@
 
         document.querySelector(".popup-bg").style.display = "flex";
         document.querySelector(".add-class-box").style.display = "block";
+
+      });
+
+      document.getElementById("tutorialOrPractice").addEventListener("click", function() {
+
+        document.querySelector(".popup-bg").style.display = "flex";
+        document.querySelector(".tuto-or-practice").style.display = "block";
 
       });
 

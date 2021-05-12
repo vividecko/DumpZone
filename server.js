@@ -160,10 +160,10 @@ app.post('/work', checkAuthenticated, checkIfStudent, checkIfInClass, (req, res)
 app.get('/practice', checkAuthenticated, checkIfInClass, checkIfStudent, async (req, res) => {
   const theuser = await models.Student.get(req.session.passport.user);
   const currentClass = models.Classroom.getByID(theuser.classroom_id);
-  const recentAssignment = await models.WorkAssignment.getRecent(theuser.classroom_id);
+  const recentAssignment = await models.PracticeAssignment.getRecent(theuser.classroom_id);
 
   if (recentAssignment !== undefined) {
-    //
+
   }
 
   //models.WorkAssignment.
@@ -279,8 +279,9 @@ app.get('/tp', checkAuthenticated, checkIfTeacher, async (req, res) => {
 
     let tutorialList = await models.TutorialAssignment.getByClass(selectedClass.id);
     let studentList = await models.User.getAllStudents();
-    const assignmentList = await models.WorkAssignment.getByClass(selectedClass.id);
-    const presetList = await models.QuestionPreset.getAll();
+    let assignmentList = await models.WorkAssignment.getByClass(selectedClass.id);
+    let practiceList = await models.PracticeAssignment.getByClass(selectedClass.id);
+    let presetList = await models.QuestionPreset.getByTeacher(req.session.passport.user);
 
     res.render('template.ejs', {
       title: 'Teacher Dashboard',
@@ -291,6 +292,7 @@ app.get('/tp', checkAuthenticated, checkIfTeacher, async (req, res) => {
       classrooms: classroomList,
       tutorials: tutorialList,
       assignments: assignmentList,
+      practices: practiceList,
       presets: presetList,
       students: studentList
     });
@@ -366,6 +368,41 @@ app.post('/add/tutorial', checkAuthenticated, checkIfTeacher, checkIfHasClasses,
   } catch (e) {
     console.log(e);
   }
+});
+
+app.post('/add/practice', checkAuthenticated, checkIfTeacher, checkIfHasClasses, async (req, res) => {
+
+  try {
+    let classroomList = await models.Classroom.getByInstructor(req.session.passport.user);
+    let selectedClass;
+    
+    if (req.session.selectedClass !== undefined) {
+      selectedClass = req.session.selectedClass;
+    } else {
+      selectedClass = classroomList[0];
+    }
+
+    const currentDate = new Date();
+
+    await models.PracticeAssignment.create(req.body.practice_name, req.body.practice_description, 1, currentDate, selectedClass.id);
+
+    const questions = await models.Question.getByPreset(req.body.preset);
+    const new_assign = await models.PracticeAssignment.getRecent(selectedClass.id);
+    for (let i = 0; i < questions.length; i++) {
+      models.PracticeQuestion.create(
+        new_assign.id,
+        questions[i].id,
+        1,  // placeholder (allow_hints)
+        i,  /* question number */
+      );
+    }
+
+    console.log("New practice created!");
+    res.redirect('/tp');
+  } catch (e) {
+    console.log(e);
+  }
+
 });
 
 app.post('/add/assignment', checkAuthenticated, checkIfTeacher, checkIfHasClasses, async (req, res) => {
