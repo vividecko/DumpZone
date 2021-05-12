@@ -1,36 +1,52 @@
 <main>
 
-<%- include('student_header.ejs'); %>
+<% if (student.classroom_id == null) { %>
 
-<section class="shadow" style="height:615px;">
-  <div class="menu">
-    <div class="title">
-      <img src="pages.png" class="trophyicon pop">
-      <h2 class="menuitem" style="padding-left:10px;">Pages</h2>
+  <section class="shadow" style="display:flex; align-items:center; height:300px;">
+    
+    <div style="padding-top:2%; margin:0 auto; display: flex; justify-content: center; align-items: center; flex-flow: column;">
+      <h1 class="sub-text">
+        Hold on, your teacher is adding you to your class!
+      </h1>
     </div>
-  </div>
-  <div class="grid">
-    <a href="/work">
-      <img src="homework.png" alt="Work icon" class="appicon shadow">
-      <h3>Work</h3>
-    </a>
-    <a href="/tutorials">
-      <img src="tutorials.png" alt="Tutorials icon" class="appicon shadow">
-      <h3>Tutorials</h3>
-    </a>
-    <a href="/practice">
-      <img src="tests.png" alt="Practice tests icon" class="appicon shadow">
-      <h3>Practice Tests</h3>
-    </a>
-    <a href="/tp">
-      <img src="settings.png" alt="Settings icon" class="appicon shadow">
-      <h3>Teacher Panel</h3>
-    </a>
-    <a href="/parrots">
-      <img src="settings.png" alt="Settings icon" class="appicon shadow">
-      <h3>Parrots</h3>
-    </a>
-  </div>
-</section>
+
+  </section>
+
+<% } else { %>
+  
+  <%- include('student_header.ejs'); %>
+
+  <section class="shadow" style="height:615px;">
+    <div class="menu">
+      <div class="title">
+        <img src="pages.png" class="trophyicon pop">
+        <h2 class="menuitem" style="padding-left:10px;">Pages</h2>
+      </div>
+    </div>
+    <div class="grid">
+      <a href="/work">
+        <img src="homework.png" alt="Work icon" class="appicon shadow">
+        <h3>Work</h3>
+      </a>
+      <a href="/tutorials">
+        <img src="tutorials.png" alt="Tutorials icon" class="appicon shadow">
+        <h3>Tutorials</h3>
+      </a>
+      <a href="/practice">
+        <img src="tests.png" alt="Practice tests icon" class="appicon shadow">
+        <h3>Practice Tests</h3>
+      </a>
+      <a href="/tp">
+        <img src="settings.png" alt="Settings icon" class="appicon shadow">
+        <h3>Teacher Panel</h3>
+      </a>
+      <a href="/parrots">
+        <img src="settings.png" alt="Settings icon" class="appicon shadow">
+        <h3>Parrots</h3>
+      </a>
+    </div>
+  </section>
+
+<% } %>
 
 </main>

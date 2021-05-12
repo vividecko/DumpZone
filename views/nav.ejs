@@ -26,7 +26,7 @@
           <div class="submenu highlighted shadow">
             
             <% classrooms.forEach(function(classroom) { %>
-              <a href="/tp/?class=<%- classroom.name %>"><p class="pop"><%- classroom.name %></p></a>
+              <a href="/c/<%- classroom.name %>"><p class="pop"><%- classroom.name %></p></a>
             <% }); %>
 
           </div>
@@ -55,12 +55,6 @@
      <%- username %>
 
      <div class="submenu highlighted shadow">
-          <% if (teacher == 1) { %>
-
-            <a href="/tutorials"><p class="pop">View tutorials</p></a>
-
-          <% } %>
-
        <a href="#"><p class="pop">Change password</p></a>
        <a href="#"><p class="pop">Change icon</p></a>
      </div>
