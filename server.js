@@ -79,6 +79,8 @@ httpApp.all('*', (req, res) => res.redirect(300, 'https://localhost:3000'));
  */
 app.get('/', checkAuthenticated, checkIfStudent, async (req, res) => {
 
+  console.log();
+
   let aStudent = await models.User.get(req.session.passport.user);
   let theClassroom;
 
@@ -545,19 +547,25 @@ app.post('/register-student', checkNotAuthenticated, async (req, res) => {
   const hashedPassword = await bcrypt.hash(req.body.password, 10);
   let errorCode = await models.Student.create(req.body.username, req.body.firstname, req.body.lastname, req.body.email, hashedPassword);
 
-  let theHeader;
-
-  if (errorCode == -3) {
+  if (errorCode == -5) {
+    req.flash('errorMessage', 'A user with your username already exists!');
+  } else if (errorCode = -4) {
+    req.flash('errorMessage', 'A user with your email already exists!');
+  } else if (errorCode == -3) {
     req.flash('errorMessage', 'Username can only contain A-Z, 0-9, or underscore!');
-    theHeader = '/register-student';
   } else if (errorCode == -2) {
     req.flash('errorMessage', 'First name or last name contains illegal characters!');
-    theHeader = '/register-student';
   } else if (errorCode == -1) {
     req.flash('errorMessage', 'Please enter a valid email!');
-    theHeader = '/register-student';
   } else if (errorCode == 0) {
     req.flash('signupMessage', 'Your account has been created successfully!');
+  }
+
+  let theHeader;
+
+  if (errorCode < 0) {
+    theHeader = '/register-student';
+  } else {
     theHeader = '/login';
   }
 
@@ -575,19 +583,25 @@ app.post('/register-instructor', checkNotAuthenticated, async (req, res) => {
   const hashedPassword = await bcrypt.hash(req.body.password, 10);
   let errorCode = await models.Teacher.create(req.body.username, req.body.firstname, req.body.lastname, req.body.email, hashedPassword);
 
-  let theHeader;
-
-  if (errorCode == -3) {
+  if (errorCode == -5) {
+    req.flash('errorMessage', 'A user with your username already exists!');
+  } else if (errorCode = -4) {
+    req.flash('errorMessage', 'A user with your email already exists!');
+  } else if (errorCode == -3) {
     req.flash('errorMessage', 'Username can only contain A-Z, 0-9, or underscore!');
-    theHeader = '/register-instructor';
   } else if (errorCode == -2) {
     req.flash('errorMessage', 'First name or last name contains illegal characters!');
-    theHeader = '/register-instructor';
   } else if (errorCode == -1) {
     req.flash('errorMessage', 'Please enter a valid email!');
-    theHeader = '/register-instructor';
   } else if (errorCode == 0) {
     req.flash('signupMessage', 'Your account has been created successfully!');
+  }
+
+  let theHeader;
+
+  if (errorCode < 0) {
+    theHeader = '/register-instructor';
+  } else {
     theHeader = '/login';
   }
 
