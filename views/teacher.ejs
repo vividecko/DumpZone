@@ -210,9 +210,16 @@
 
         <h2>Add Assignment</h2>
 
-        <form action="#">
-          <input class="answerfield" type="text" name="assignment_name" placeholder="Name">
-          <input class="answerfield" type="text" name="assignment_material" placeholder="Material">
+        <form action="/add/assignment" method="POST">
+          <input class="answerfield" type="text" name="work_name" placeholder="Name" required>
+          <input class="answerfield" type="text" name="work_description" placeholder="Description">
+          <input class="answerfield" type="number" name="time_limit" placeholder="Time limit (minutes)">
+          <select class="answerfield selectionbox" name="preset">
+            <% presets.forEach(function(ps) { %>
+              <option value="<%=ps.id%>"><%= ps.name %></option>
+            <% }); %>
+          </select>
+          <input class="answerfield" type="datetime" name="due_date" placeholder="Due date" required>
           <button class="submitanswer pop" type="submit" class="pop">Submit</button>
         </form>
 
@@ -248,7 +255,7 @@
             <% if (students !== 0) { %>
               <% students.forEach(function(student) { %>
 
-                <option value="<%- student.user_name%>"><%- student.first_name%> <%- student.last_name%></option>
+                <option value="<%= student.user_name%>"><%- student.first_name%> <%- student.last_name%></option>
 
               <% }); %>
             <% } %>

@@ -10,6 +10,8 @@
  */
 
 const mysql = require('mysql2/promise');
+
+/* Nick's DB info
 const db = mysql.createPool({
   connectionLimit: 50,
   connectTimeout: 60 * 60 * 1000,
@@ -18,16 +20,17 @@ const db = mysql.createPool({
   password: 'root',
   database: 'homemath'
 });
-/* PHPMyAdmin Alt. Info
-const db = mysql.createPool({
-  connectionLimit: 50,
-  connectTimeout: 60 * 60 * 1000,
-  host: 'localhost', 
-  user: 'root',
-  password: '',
-  database: 'homemath2'
-});
 */
+
+/* Mike's DB info */
+const db = mysql.createPool({
+    connectionLimit: 50,
+    connectTimeout: 60 * 60 * 1000,
+    host: 'localhost',
+    user: 'server',
+    password: 'dgPqnf1vtPje7dLoLu3h',
+    database: 'homemath'
+});
 
 const NodeCache = require('node-cache');
 const ttl = 60 * 60 * 1;
@@ -96,21 +99,20 @@ const getList = async (table, fields, values) => {
   return list[0];
 }
 
-const getByNullValue = (table, fields, values, null_field) => {
+const getByNullValue = async (table, fields, values, null_field) => {
   const extra = (fields == null)
     ? '' : `AND ${fields.join('=? AND ') + '=?'}`;
-  const list = db.query(
-    `SELECT * FROM ${table}`
-    + `WHERE ${null_field} IS NULL`
-    + extra,
+  const sql = `SELECT * FROM ${table} WHERE ${null_field} IS NULL` + extra;
+  const list = await db.query(
+    sql,
     values,
     errFunction
   );
   return list[0];
 }
 
-const getAll = (table) => {
-  const list = db.query(
+const getAll = async (table) => {
+  const list = await db.query(
     `SELECT * FROM ${table}`,
     errFunction
   );
@@ -122,15 +124,13 @@ const getAll = (table) => {
  * "max_field". The lists "other_fields" and "other_values" determine further
  * selection criteria.
  */
-const getMax = (table, other_fields, other_values, max_field) => {
-  const value = db.query(
+const getMax = async (table, other_fields, other_values, max_field) => {
+  const value = await db.query(
     `SELECT * FROM ${table}`
     + ` WHERE ${other_fields.join('=? AND ') + '=?'}`
     + ` ORDER BY ${max_field} DESC LIMIT 1`,
     other_values,
-    (err, result) => {
-      if (err) throw err;
-    }
+    errFunction
   );
   return value[0][0];
 }
@@ -149,14 +149,12 @@ const insert = (table, fields, values) => {
   );
 }
 
-
 /*
  * Update data (e.g. a record for SQL) to "table" with a list of "fields" and
  * a list of their corresponding "values". Of course, the length of "fields"
  * should equal the length of "values".
  */
 const update = (table, updated_field, fields, values, updated_value) => {
-  const params = '?,'.repeat(values.length-1) + '?';
   db.query(
     `UPDATE ${table} SET ${updated_field}=?`
     + ` WHERE ${fields.join('=? AND ') + '=?'}`,
