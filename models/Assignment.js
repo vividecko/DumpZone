@@ -38,9 +38,9 @@ const getByClass = (table, class_id) => {
 const getRecent = (table, class_id) => {
   return storage.getMax(
     table,
-    f.date,
     [f.class_id, f.is_visible],
-    [class_id, 1]
+    [class_id, 1],
+    f.date
   );
 }
 

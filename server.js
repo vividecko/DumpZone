@@ -310,7 +310,6 @@ app.post('/add/student', checkAuthenticated, checkIfTeacher, checkIfHasClasses, 
 
 app.post('/add/tutorial', checkAuthenticated, checkIfTeacher, checkIfHasClasses, async (req, res) => {
   try {
-
     let selectedClass;
     
     if (req.session.selectedClass !== undefined) {
@@ -324,17 +323,48 @@ app.post('/add/tutorial', checkAuthenticated, checkIfTeacher, checkIfHasClasses,
     await models.TutorialAssignment.create(req.body.tutorial_name, req.body.tutorial_description, 1, currentDate, selectedClass.id, req.body.tutorial_link, req.body.tutorial_tag, null);
 
     console.log("New resource/tutorial created!");
+    res.redirect('/tp');
+  } catch (e) {
+    console.log(e);
+  }
+});
 
-    // get class ID to get new_assign
-    const new_assign = await models.WorkAssignment.getRecent();
+app.post('/add/assignment', checkAuthenticated, checkIfTeacher, checkIfHasClasses, async (req, res) => {
+  try {
+    let classroomList = await models.Classroom.getByInstructor(req.session.passport.user);
+    let selectedClass;
+    
+    if (req.session.selectedClass !== undefined) {
+      selectedClass = req.session.selectedClass;
+    } else {
+      selectedClass = classroomList[0];
+    }
+
+    const currentDate = new Date();
+    const dueDate = new Date(req.body.due_date);
+    let time_limit = req.body.time_limit;
+    if (!time_limit)
+      time_limit = 0;   /* understood to mean no time limit */
+
+    await models.WorkAssignment.create(
+      req.body.work_name,
+      req.body.work_description,
+      1,  /* is visible by default */
+      currentDate,
+      selectedClass.id,
+      time_limit,
+      dueDate
+    );
+
     const questions = await models.Question.getByPreset(req.body.preset);
+    const new_assign = await models.WorkAssignment.getRecent(selectedClass.id);
     for (let i = 0; i < questions.length; i++) {
       models.WorkQuestion.create(
         new_assign.id,
         questions[i].id,
-        1,  // placeholder
-        i,
-        3   // placeholder
+        1,  // placeholder (allow_hints)
+        i,  /* question number */
+        3   // placeholder  (max attempts
       );
     }
 

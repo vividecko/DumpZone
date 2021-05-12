@@ -16,7 +16,7 @@ other_fields, other_values) => {
   );
 }
 
-const get = (assign_id, question_id) => {
+const get = (table, assign_id, question_id) => {
   return storage.getList(
     table,
     [f.assign_id, f.question_id],
@@ -24,7 +24,7 @@ const get = (assign_id, question_id) => {
   );
 }
 
-const getByAssignment = (assign_id) => {
+const getByAssignment = (table, assign_id) => {
   return storage.getList(
     table,
     [f.assign_id],

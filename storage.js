@@ -99,21 +99,20 @@ const getList = async (table, fields, values) => {
   return list[0];
 }
 
-const getByNullValue = (table, fields, values, null_field) => {
+const getByNullValue = async (table, fields, values, null_field) => {
   const extra = (fields == null)
     ? '' : `AND ${fields.join('=? AND ') + '=?'}`;
-  const list = db.query(
-    `SELECT * FROM ${table}`
-    + `WHERE ${null_field} IS NULL`
-    + extra,
+  const sql = `SELECT * FROM ${table} WHERE ${null_field} IS NULL` + extra;
+  const list = await db.query(
+    sql,
     values,
     errFunction
   );
   return list[0];
 }
 
-const getAll = (table) => {
-  const list = db.query(
+const getAll = async (table) => {
+  const list = await db.query(
     `SELECT * FROM ${table}`,
     errFunction
   );
@@ -125,15 +124,13 @@ const getAll = (table) => {
  * "max_field". The lists "other_fields" and "other_values" determine further
  * selection criteria.
  */
-const getMax = (table, other_fields, other_values, max_field) => {
-  const value = db.query(
+const getMax = async (table, other_fields, other_values, max_field) => {
+  const value = await db.query(
     `SELECT * FROM ${table}`
     + ` WHERE ${other_fields.join('=? AND ') + '=?'}`
     + ` ORDER BY ${max_field} DESC LIMIT 1`,
     other_values,
-    (err, result) => {
-      if (err) throw err;
-    }
+    errFunction
   );
   return value[0][0];
 }
@@ -158,7 +155,6 @@ const insert = (table, fields, values) => {
  * should equal the length of "values".
  */
 const update = (table, updated_field, fields, values, updated_value) => {
-  const params = '?,'.repeat(values.length-1) + '?';
   db.query(
     `UPDATE ${table} SET ${updated_field}=?`
     + ` WHERE ${fields.join('=? AND ') + '=?'}`,

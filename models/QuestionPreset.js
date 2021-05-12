@@ -29,7 +29,7 @@ const getByGrade = (grade) => {
  * without an author.
  */
 const getAll = () => {
-  return storage.getByNullValue(table, null, null, author);
+  return storage.getByNullValue(table, null, null, f.author);
 }
 
 module.exports.create = create;
