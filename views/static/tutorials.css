@@ -52,7 +52,7 @@ h3 {
 	padding: 10px 0px;
 }
 
-.mcanswer {
+.videoentry {
 	color: gray;
 	background-color: var(--lite-fg-color);
 	height: 25px;
@@ -61,10 +61,10 @@ h3 {
 	padding: 10px 20px;
 	border-radius: 30px;
 }
-.mcanswer:hover {
+.videoentry:hover {
 	background-color: #bdbdbd;
 }
-.mcanswer:active {
+.videoentry:active {
 	color: white;
 	background-color: var(--hl1-color);
 }
