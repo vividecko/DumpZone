@@ -113,30 +113,38 @@ app.get('/work', checkAuthenticated, checkIfStudent, checkIfInClass, async (req,
   const theuser = await models.Student.get(req.session.passport.user);
   const currentClass = await models.Classroom.getByID(theuser.classroom_id);
   const recentAssignment = await models.WorkAssignment.getRecent(theuser.classroom_id);
-  const questions = await models.WorkQuestion.getByAssignment(recentAssignment.id);
 
-  let recentAttempt = await models.WorkAssignment.getRecentAttempt(
-    req.session.passport.user,
-    recentAssignment.id
-  );
+  if (recentAssignment !== undefined) {
 
-  if (!recentAttempt || recentAttempt.num_questions_attempted === questions.length) {
-    recentAttempt = models.WorkAssignment.createAttempt(
+    const questions = await models.WorkQuestion.getByAssignment(recentAssignment.id);
+
+    let recentAttempt = await models.WorkAssignment.getRecentAttempt(
       req.session.passport.user,
-      recentAssignment.id,
-      new Date(),
-      new Array(questions.length).fill(0),  /* answers 0 (not correct) by default */
-      0,    /* no questions attempted yet */
-      0     /* no questions correct yet */
+      recentAssignment.id
     );
+
+    if (!recentAttempt || recentAttempt.num_questions_attempted === questions.length) {
+     recentAttempt = models.WorkAssignment.createAttempt(
+        req.session.passport.user,
+        recentAssignment.id,
+        new Date(),
+        new Array(questions.length).fill(0),  /* answers 0 (not correct) by default */
+        0,    /* no questions attempted yet */
+        0     /* no questions correct yet */
+      );
+    }
+
   }
+  
 
   res.render('template.ejs', {
     title: 'Work',
     doc: 'work',
     username: req.session.passport.user,
     teacher: 0,
-    classroom: currentClass
+    classroom: currentClass,
+    active: recentAssignment,
+    practice: 0
   });
 });
 
@@ -152,6 +160,11 @@ app.post('/work', checkAuthenticated, checkIfStudent, checkIfInClass, (req, res)
 app.get('/practice', checkAuthenticated, checkIfInClass, checkIfStudent, async (req, res) => {
   const theuser = await models.Student.get(req.session.passport.user);
   const currentClass = models.Classroom.getByID(theuser.classroom_id);
+  const recentAssignment = await models.WorkAssignment.getRecent(theuser.classroom_id);
+
+  if (recentAssignment !== undefined) {
+    //
+  }
 
   //models.WorkAssignment.
   res.render('template.ejs', {
@@ -159,7 +172,9 @@ app.get('/practice', checkAuthenticated, checkIfInClass, checkIfStudent, async (
     doc: 'work',
     username: req.session.passport.user,
     teacher: 0,
-    classroom: currentClass
+    classroom: currentClass,
+    active: recentAssignment,
+    practice: 1
   });
 });
 
@@ -292,6 +307,10 @@ app.get('/tp', checkAuthenticated, checkIfTeacher, async (req, res) => {
 
 });
 
+
+/*
+ * Link for teachers to select what classroom they are currently viewing.
+ */
 app.get('/c/:classname', checkAuthenticated, checkIfTeacher, async (req, res) => {
 
   let classroom = await models.Classroom.getByName(req.params.classname, req.session.passport.user);

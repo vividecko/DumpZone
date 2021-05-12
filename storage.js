@@ -11,7 +11,7 @@
 
 const mysql = require('mysql2/promise');
 
-/* Nick's DB info
+/* Nick's DB info*/
 const db = mysql.createPool({
   connectionLimit: 50,
   connectTimeout: 60 * 60 * 1000,
@@ -20,9 +20,9 @@ const db = mysql.createPool({
   password: 'root',
   database: 'homemath'
 });
-*/
 
-/* Mike's DB info */
+
+/* Mike's DB info 
 const db = mysql.createPool({
     connectionLimit: 50,
     connectTimeout: 60 * 60 * 1000,
@@ -30,7 +30,7 @@ const db = mysql.createPool({
     user: 'server',
     password: 'dgPqnf1vtPje7dLoLu3h',
     database: 'homemath'
-});
+});*/
 
 const NodeCache = require('node-cache');
 const ttl = 60 * 60 * 1;
