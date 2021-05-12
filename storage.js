@@ -152,7 +152,12 @@ const insert = (table, fields, values) => {
   );
 }
 
-const update = (table, fields, values, updated_field, updated_value) => {
+/*
+ * Update data (e.g. a record for SQL) to "table" with a list of "fields" and
+ * a list of their corresponding "values". Of course, the length of "fields"
+ * should equal the length of "values".
+ */
+const update = (table, updated_field, fields, values, updated_value) => {
   const params = '?,'.repeat(values.length-1) + '?';
   db.query(
     `UPDATE ${table} SET ${updated_field}=?`
@@ -176,4 +181,5 @@ module.exports.getByNullValue = getByNullValue;
 module.exports.getAll = getAll;
 module.exports.getMax = getMax;
 module.exports.insert = insert;
+module.exports.update = update;
 module.exports.uncache = uncache;

@@ -23,5 +23,10 @@ const get = (username) => {
   return storage.getObject(table, f.uname, username);
 }
 
+const getAllStudents = () => {
+  return storage.getList(table, [f.is_teacher], [0]);
+}
+
 module.exports.create = create;
 module.exports.get = get;
+module.exports.getAllStudents = getAllStudents;

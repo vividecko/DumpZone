@@ -66,15 +66,41 @@
             <th>Completed</th>
           </tr>
 
-          <% assignments.forEach( (assign) => { %>
-            <tr>
-              <td class="duedate pop noselect"><p>
-                <%- assign.due_date.getMonth() + 1 %>/<%- assign.due_date.getDate() %>
-              </p></td>
-              <td><%- assign.name %></td>
-              <td>20</td>
-            </tr>
-          <% }); %>
+          <tr>
+            <td class="duedate pop noselect"><p>12/18</p></td>
+            <td>Math Test 1</td>
+            <td>20</td>
+          </tr>
+
+          <tr>
+            <td class="duedate pop noselect"><p>12/18</p></td>
+            <td>Math Test 1</td>
+            <td>20</td>
+          </tr>
+
+          <tr>
+            <td class="duedate pop noselect"><p>12/18</p></td>
+            <td>Math Test 1</td>
+            <td>20</td>
+          </tr>
+
+          <tr>
+            <td class="duedate pop noselect"><p>12/18</p></td>
+            <td>Math Test 1</td>
+            <td>20</td>
+          </tr>
+
+          <tr>
+            <td class="duedate pop noselect"><p>12/18</p></td>
+            <td>Math Test 1</td>
+            <td>20</td>
+          </tr>
+
+          <tr>
+            <td class="duedate pop noselect"><p>12/18</p></td>
+            <td>Math Test 1</td>
+            <td>20</td>
+          </tr>
 
         </table>
 
@@ -86,6 +112,8 @@
             <h2>Resources</h2>
             <img src="https://cdn3.iconfinder.com/data/icons/navigation-icons-1/32/add-512.png" class="pop" id="addResource">
           </div>
+
+          <a href="/tutorials" class="print pop noselect" style="margin-right: 5px; display: flex; align-items: center;">Visit</a>
         </div>
 
         <table>
@@ -126,82 +154,30 @@
               <img src="https://cdn3.iconfinder.com/data/icons/navigation-icons-1/32/add-512.png" class="pop" id="addStudent">
             </div>
 
-            <h2 style="color: #9d9d9d">Total: 20</h2>
+            <h2 style="color: #9d9d9d" id="studentTotal">Total: </h2>
           </div>
 
           <table class="student_table">
 
-            <tr>
-              <td class="student_name">Nick Ribeiro</td>
-              <td class="parrot"><img src="https://cdn3.iconfinder.com/data/icons/navigation-icons-1/32/add-512.png" class="pop parrot"></td>
-              <td class="trophy_count">x2</td>
-              <td class="pop print noselect"><p>Print</p></td>
-              <td class="student_grade">80%</td>
-            </tr>
+            <% let counter = 0; %>
 
-            <tr>
-              <td class="student_name">Nick Ribeiro</td>
-              <td class="parrot"><img src="https://cdn3.iconfinder.com/data/icons/navigation-icons-1/32/add-512.png" class="pop parrot"></td>
-              <td class="trophy_count">x2</td>
-              <td class="pop print noselect"><p>Print</p></td>
-              <td class="student_grade">80%</td>
-            </tr>
+            <% students.forEach(function(student) { %>
 
-            <tr>
-              <td class="student_name">Nick Ribeiro</td>
-              <td class="parrot"><img src="https://cdn3.iconfinder.com/data/icons/navigation-icons-1/32/add-512.png" class="pop parrot"></td>
-              <td class="trophy_count">x2</td>
-              <td class="pop print noselect"><p>Print</p></td>
-              <td class="student_grade">80%</td>
-            </tr>
+              <% if (student.classroom_id == currentClass.id) { %>
 
-            <tr>
-              <td class="student_name">Nick Ribeiro</td>
-              <td class="parrot"><img src="https://cdn3.iconfinder.com/data/icons/navigation-icons-1/32/add-512.png" class="pop parrot"></td>
-              <td class="trophy_count">x2</td>
-              <td class="pop print noselect"><p>Print</p></td>
-              <td class="student_grade">80%</td>
-            </tr>
+                <tr>
+                  <td class="student_name"><%- student.first_name %> <%- student.last_name %></td>
+                  <td class="parrot"><img src="https://cdn3.iconfinder.com/data/icons/navigation-icons-1/32/add-512.png" class="pop parrot"></td>
+                  <td class="trophy_count">x2</td>
+                  <td class="pop print noselect"><p>Print</p></td>
+                  <td class="student_grade">80%</td>
+                </tr>
 
-            <tr>
-              <td class="student_name">Nick Ribeiro</td>
-              <td class="parrot"><img src="https://cdn3.iconfinder.com/data/icons/navigation-icons-1/32/add-512.png" class="pop parrot"></td>
-              <td class="trophy_count">x2</td>
-              <td class="pop print noselect"><p>Print</p></td>
-              <td class="student_grade">80%</td>
-            </tr>
+                <% counter += 1; %>
 
-            <tr>
-              <td class="student_name">Nick Ribeiro</td>
-              <td class="parrot"><img src="https://cdn3.iconfinder.com/data/icons/navigation-icons-1/32/add-512.png" class="pop parrot"></td>
-              <td class="trophy_count">x2</td>
-              <td class="pop print noselect"><p>Print</p></td>
-              <td class="student_grade">80%</td>
-            </tr>
+              <% } %>
 
-            <tr>
-              <td class="student_name">Nick Ribeiro</td>
-              <td class="parrot"><img src="https://cdn3.iconfinder.com/data/icons/navigation-icons-1/32/add-512.png" class="pop parrot"></td>
-              <td class="trophy_count">x2</td>
-              <td class="pop print noselect"><p>Print</p></td>
-              <td class="student_grade">80%</td>
-            </tr>
-
-            <tr>
-              <td class="student_name">Nick Ribeiro</td>
-              <td class="parrot"><img src="https://cdn3.iconfinder.com/data/icons/navigation-icons-1/32/add-512.png" class="pop parrot"></td>
-              <td class="trophy_count">x2</td>
-              <td class="pop print noselect"><p>Print</p></td>
-              <td class="student_grade">80%</td>
-            </tr>
-
-            <tr>
-              <td class="student_name">Nick Ribeiro</td>
-              <td class="parrot"><img src="https://cdn3.iconfinder.com/data/icons/navigation-icons-1/32/add-512.png" class="pop parrot"></td>
-              <td class="trophy_count">x2</td>
-              <td class="pop print noselect"><p>Print</p></td>
-              <td class="student_grade">80%</td>
-            </tr>
+            <% }); %>
 
           </table>
 
@@ -210,6 +186,21 @@
       </div>
 
     </section>
+
+    <br />
+
+    <section class="shadow">
+      
+      <div class="heading" style="padding: 20px;">
+        <div class="title">
+          <h2>Add a new class</h2>
+          <img src="https://cdn3.iconfinder.com/data/icons/navigation-icons-1/32/add-512.png" class="pop" id="addClass">
+        </div>
+      </div>
+
+    </section>
+
+    <br />
 
     <div class="popup-bg">
       
@@ -240,9 +231,11 @@
 
         <h2>Add Resource</h2>
 
-        <form action="#">
-          <input class="answerfield" type="text" name="assignment_name" placeholder="Name">
-          <input class="answerfield" type="text" name="assignment_material" placeholder="Link">
+        <form action="/add/tutorial" method="POST">
+          <input class="answerfield" type="text" name="tutorial_name" placeholder="Name">
+          <input class="answerfield" type="text" name="tutorial_tag" placeholder="Division, Multiplication...">
+          <input class="answerfield" type="text" name="tutorial_description" placeholder="Description">
+          <input class="answerfield" type="text" name="tutorial_link" placeholder="Link">
           <button class="submitanswer pop" type="submit" class="pop">Submit</button>
         </form>
 
@@ -254,11 +247,40 @@
 
         <h2>Add Student</h2>
 
-        <form action="#">
-          <input class="answerfield" type="text" name="assignment_name" placeholder="Username">
+        <form action="/add/student" method="POST">
+          <select class="answerfield selectionbox" name="student_username" placeholder="Username">
+
+                <option value="" disabled selected>Select a student...</option>
+
+            <% if (students !== 0) { %>
+              <% students.forEach(function(student) { %>
+
+                <option value="<%- student.user_name%>"><%- student.first_name%> <%- student.last_name%></option>
+
+              <% }); %>
+            <% } %>
+
+          </select>
+
           <button class="submitanswer pop" type="submit" class="pop">Submit</button>
         </form>
 
+      </div>
+
+      <div class="add-class-box prompt shadow">
+        <div class="x-button noselect" onclick="closePrompts();">+</div>
+        <h2>Create Classroom</h2>
+        <form action="/add/class" method="POST">
+          <input class="answerfield" type="text" name="class_name" placeholder="Name">
+          <select class="answerfield selectionbox" name="grade">
+            <option value="K">K</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+          </select>
+          <button class="submitanswer pop" type="submit" class="pop">Submit</button>
+        </form>
       </div>
 
     </div>
@@ -286,6 +308,13 @@
 
       });
 
+      document.getElementById("addClass").addEventListener("click", function() {
+
+        document.querySelector(".popup-bg").style.display = "flex";
+        document.querySelector(".add-class-box").style.display = "block";
+
+      });
+
       function closePrompts() {
 
         let prompts = document.querySelectorAll(".prompt");
@@ -297,6 +326,10 @@
         document.querySelector(".popup-bg").style.display = "none";
 
       }
+
+      let studentTotal = document.getElementById("studentTotal");
+
+      studentTotal.innerHTML = "Total: " + <%= counter %>;
 
     </script>
 

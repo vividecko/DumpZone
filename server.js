@@ -77,13 +77,24 @@ httpApp.all('*', (req, res) => res.redirect(300, 'https://localhost:3000'));
  * Home page/dashboard, which differs based on whether the user is a student
  * or an instructor.
  */
-app.get('/', checkAuthenticated, checkIfStudent, (req, res) => {
+app.get('/', checkAuthenticated, checkIfStudent, async (req, res) => {
+
+  let aStudent = await models.User.get(req.session.passport.user);
+  let theClassroom;
+
+  if (aStudent.classroom_id !== null) {
+    theClassroom = await models.Classroom.getByID(aStudent.classroom_id);
+  } else {
+    theClassroom = null;
+  }
 
   res.render('template.ejs', {
     title: 'Home',
     doc: 'index',
     username: req.session.passport.user,
-    teacher: 0
+    teacher: 0,
+    student: aStudent,
+    classroom: theClassroom
   });
 });
 
@@ -91,18 +102,21 @@ app.get('/', checkAuthenticated, checkIfStudent, (req, res) => {
 /*
  * Work page, where students do assignments or tests.
  */
-app.get('/work', checkAuthenticated, checkIfStudent, (req, res) => {
-  //const user = models.Student.get(req.session.passport.user);
+app.get('/work', checkAuthenticated, checkIfStudent, checkIfInClass, async (req, res) => {
+  const theuser = await models.Student.get(req.session.passport.user);
+  const currentClass = models.Classroom.getByID(theuser.classroom_id);
+
   //models.WorkAssignment.
   res.render('template.ejs', {
     title: 'Work',
     doc: 'work',
     username: req.session.passport.user,
-    teacher: 0
+    teacher: 0,
+    classroom: currentClass
   });
 });
 
-app.post('/work', checkAuthenticated, checkIfStudent, (req, res) => {
+app.post('/work', checkAuthenticated, checkIfStudent, checkIfInClass, (req, res) => {
   console.log('answer received');
 });
 
@@ -111,14 +125,17 @@ app.post('/work', checkAuthenticated, checkIfStudent, (req, res) => {
  * Practice page, where students can try problems an unlimited number of
  * times.
  */
-app.get('/practice', checkAuthenticated, checkIfStudent, (req, res) => {
-  //const user = models.Student.get(req.session.passport.user);
+app.get('/practice', checkAuthenticated, checkIfInClass, checkIfStudent, async (req, res) => {
+  const theuser = await models.Student.get(req.session.passport.user);
+  const currentClass = models.Classroom.getByID(theuser.classroom_id);
+
   //models.WorkAssignment.
   res.render('template.ejs', {
     title: 'Practice',
     doc: 'work',
     username: req.session.passport.user,
-    teacher: 0
+    teacher: 0,
+    classroom: currentClass
   });
 });
 
@@ -130,26 +147,44 @@ app.post('/practice', (req, res) => {
 /*
  * Tutorial page, where students view video tutorials.
  */
-app.get('/tutorials', checkAuthenticated, async (req, res) => {
+app.get('/tutorials', checkAuthenticated, checkIfInClass, async (req, res) => {
 
   let theuser = await models.User.get(req.session.passport.user);
 
   if (theuser.is_teacher == 1) {
 
     let classroomList = await models.Classroom.getByInstructor(req.session.passport.user);
-    let tutorialList = await models.TutorialAssignment.getByClass(1);
 
-    res.render('template.ejs', {
-      title: 'Tutorials',
-      doc: 'tutorials',
-      username: req.session.passport.user,
-      teacher: theuser.is_teacher,
-      currentClass: classroomList[0],
-      classrooms: classroomList,
-      tutorials: tutorialList
-    });
+    if (classroomList.length > 0) {
+
+      let selectedClass;
+      let tutorialList;
+
+      if (req.session.selectedClass == undefined) {
+        selectedClass = classroomList[0];
+        tutorialList = await models.TutorialAssignment.getByClass(1);
+      } else {
+        selectedClass = req.session.selectedClass;
+        tutorialList = await models.TutorialAssignment.getByClass(req.session.selectedClass.id);
+      }
+
+      res.render('template.ejs', {
+        title: 'Tutorials',
+        doc: 'tutorials',
+        username: req.session.passport.user,
+        teacher: theuser.is_teacher,
+        currentClass: selectedClass,
+        classrooms: classroomList,
+        tutorials: tutorialList
+      });
+    } else {
+      res.redirect('/');
+    }
 
   } else {
+
+    let theClassroom = await models.Classroom.getByID(theuser.classroom_id);
+    let tutorialList = await models.TutorialAssignment.getByClass(theClassroom.id);
 
     //Gonna organize this better once there's a way to specify which class
     res.render('template.ejs', {
@@ -157,8 +192,8 @@ app.get('/tutorials', checkAuthenticated, async (req, res) => {
       doc: 'tutorials',
       username: req.session.passport.user,
       teacher: theuser.is_teacher,
-      currentClass: new Object(),
-      tutorials: []
+      currentClass: theClassroom,
+      tutorials: tutorialList
     });
 
   }
@@ -170,12 +205,17 @@ app.get('/tutorials', checkAuthenticated, async (req, res) => {
  * Parrot collection page, where students can gaze upon their majestic
  * collection of party parrots.
  */
-app.get('/parrots', (req, res) => {
+app.get('/parrots', checkAuthenticated, checkIfInClass, async (req, res) => {
+
+  let theuser = await models.User.get(req.session.passport.user);
+  let theClassroom = await models.Classroom.getByID(theuser.classroom_id);
+
   res.render('template.ejs', {
     title: 'Parrot Collection',
     doc: 'parrots',
     username: req.session.passport.user,
-    teacher: 0
+    teacher: 0,
+    classroom: theClassroom
   });
 });
 
@@ -186,23 +226,37 @@ app.get('/parrots', (req, res) => {
 app.get('/tp', checkAuthenticated, checkIfTeacher, async (req, res) => {
 
   let classroomList = await models.Classroom.getByInstructor(req.session.passport.user);
+  let studentList = await models.User.getAllStudents();
 
   let tutorialList = await models.TutorialAssignment.getByClass(1);
   const assignmentList = await models.WorkAssignment.getByClass(1);
   const presetList = await models.QuestionPreset.getAll();
 
   if (classroomList.length > 0) {
+
+    let selectedClass;
+
+    if (req.session.selectedClass !== undefined) {
+      selectedClass = req.session.selectedClass;
+    } else {
+      selectedClass = classroomList[0];
+    }
+
+    let tutorialList = await models.TutorialAssignment.getByClass(selectedClass.id);
+
     res.render('template.ejs', {
       title: 'Teacher Dashboard',
       doc: 'teacher',
       username: req.session.passport.user,
       teacher: 1,
-      currentClass: classroomList[0],
+      currentClass: selectedClass,
       classrooms: classroomList,
       tutorials: tutorialList,
       assignments: assignmentList,
-      presets: presetList
+      presets: presetList,
+      students: studentList
     });
+
   } else {
     res.render('template.ejs', {
       title: 'Teacher Dashboard',
@@ -215,6 +269,16 @@ app.get('/tp', checkAuthenticated, checkIfTeacher, async (req, res) => {
       presets: presetList
     });
   }
+
+});
+
+app.get('/c/:classname', checkAuthenticated, checkIfTeacher, async (req, res) => {
+
+  let classroom = await models.Classroom.getByName(req.params.classname, req.session.passport.user);
+
+  req.session.selectedClass = classroom[0];
+
+  res.redirect('/');
 
 });
 
@@ -227,41 +291,39 @@ app.post('/add/class', checkAuthenticated, checkIfTeacher, (req, res) => {
   res.redirect('/');
 });
 
-app.post('/add/tutorial', checkAuthenticated, checkIfTeacher, async (req, res) => {
-  try {
-    let currentDate = new Date();
+app.post('/add/student', checkAuthenticated, checkIfTeacher, checkIfHasClasses, async (req, res) => {
 
-    await models.TutorialAssignment.create(req.body.tutorial_name, req.body.tutorial_description, 1, currentDate, 1, req.body.tutorial_link, req.body.tutorial_tag, null);
+  let classroomList = await models.Classroom.getByInstructor(req.session.passport.user);
 
-    console.log("New resource/tutorial created!");
+  let selectedClass;
 
-    res.redirect('/tp');
-  } catch (e) {
-    console.log(e);
+  if (req.session.selectedClass !== undefined) {
+    selectedClass = req.session.selectedClass;
+  } else {
+    selectedClass = classroomList[0];
   }
+
+  models.Student.addToClass(req.body.student_username, selectedClass.id);
+
+  res.redirect('/');
 });
 
-app.post('/add/assignment', checkAuthenticated, checkIfTeacher, async (req, res) => {
+app.post('/add/tutorial', checkAuthenticated, checkIfTeacher, checkIfHasClasses, async (req, res) => {
   try {
-    const currentDate = new Date();
-    const dueDate = new Date(req.body.due_date);
-    const desc = (req.body.work_description) ? req.body.work_description : '';
-    const time_limit = (req.body.time_limit) ? req.body.time_limit : 0;
 
-    /* Should do something better with this later. */
-    if (dueDate < currentDate) {
-      res.redirect('/tp');
+    let selectedClass;
+    
+    if (req.session.selectedClass !== undefined) {
+      selectedClass = req.session.selectedClass;
+    } else {
+      selectedClass = classroomList[0];
     }
 
-    await models.WorkAssignment.create(
-      req.body.work_name,
-      desc,
-      1,
-      currentDate,
-      1,
-      time_limit,
-      dueDate
-    );
+    let currentDate = new Date();
+
+    await models.TutorialAssignment.create(req.body.tutorial_name, req.body.tutorial_description, 1, currentDate, selectedClass.id, req.body.tutorial_link, req.body.tutorial_tag, null);
+
+    console.log("New resource/tutorial created!");
 
     // get class ID to get new_assign
     const new_assign = await models.WorkAssignment.getRecent();
@@ -384,8 +446,9 @@ app.post('/register-instructor', checkNotAuthenticated, async (req, res) => {
 /*
  * Log the user out and end the session.
  */
-app.get('/logout', (req, res) => {
+app.get('/logout', checkAuthenticated, (req, res) => {
   storage.uncache(req.session.passport.user);
+  req.session.selectedClass = undefined;
   req.logOut();
   res.redirect('/login');
 });
@@ -413,7 +476,7 @@ function checkNotAuthenticated(req, res, next) {
 /*
  * Ensure the user is a teacher before accessing teacher pages.
  */
-async function checkIfTeacher(req, res, next) {
+async function checkIfTeacher(req, res, next) {;
 
   let user = await models.User.get(req.session.passport.user);
 
@@ -430,6 +493,31 @@ async function checkIfStudent(req, res, next) {
   const user = await models.User.get(req.session.passport.user);
   if (user.is_teacher === 1) {    /* is teacher */
     return res.redirect('/tp');
+  }
+  next();
+}
+
+/*
+ * Ensure the student is in a classroom before accessing pages.
+ */
+async function checkIfInClass(req, res, next) {
+  const user = await models.User.get(req.session.passport.user);
+
+  if (user.classroom_id == null && user.is_teacher === 0) {    /* NOT in a class */
+    return res.redirect('/');
+  }
+  next();
+}
+
+/*
+ * Ensure the teacher has classes before accessing pages.
+ */
+async function checkIfHasClasses(req, res, next) {
+  const user = await models.User.get(req.session.passport.user);
+  const classroomList = await models.Classroom.getByInstructor(req.session.passport.user);
+
+  if (classroomList.length == 0 && user.is_teacher === 1) {    /* NOT in a class */
+    return res.redirect('/');
   }
   next();
 }
